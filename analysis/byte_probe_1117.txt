@@ -1,0 +1,31 @@
+﻿loaded raw_20261117_195108.csv frames=346
+loaded raw_20261117_195610.csv frames=346
+loaded raw_20261117_200455.csv frames=346
+loaded raw_20261117_201308.csv frames=347
+loaded raw_20261117_203330.csv frames=345
+loaded raw_20261117_204050.csv frames=346
+loaded raw_20261117_205242.csv frames=346
+loaded raw_20261117_211524.csv frames=345
+loaded raw_20261117_211953.csv frames=344
+loaded raw_20261117_214552.csv frames=347
+loaded raw_20261117_221245.csv frames=313
+loaded raw_20261117_221542.csv frames=49
+
+总帧 3820，文件 12
+
+== 每个字节的取值分布（只列取值数 >=2 的） ==
+idx  nvals   min    max   mean   corr(spd)  corr(sag)
+ 42    137     40    186    98.6          -      0.536
+ 47      3     32    160    49.9          -     -0.242
+ 61      2      0      4     0.0          -     -0.009
+ 63      7     23     29    27.1          -     -0.507
+ 64    230      0    255   141.1          -     -0.100
+ 65    256      0    255   115.3          -      0.115
+
+== 按相关性排序（|corr| 大的可能是电流/负载相关字段） ==
+idx= 42 nvals=137 range=[40,186] corr_spd=- corr_sag=0.536
+idx= 63 nvals=  7 range=[23,29] corr_spd=- corr_sag=-0.507
+idx= 47 nvals=  3 range=[32,160] corr_spd=- corr_sag=-0.242
+idx= 65 nvals=256 range=[0,255] corr_spd=- corr_sag=0.115
+idx= 64 nvals=230 range=[0,255] corr_spd=- corr_sag=-0.100
+idx= 61 nvals=  2 range=[0,4] corr_spd=- corr_sag=-0.009

@@ -1,0 +1,23 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.hud.engine'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 26
+    }
+
+    // Nordic 官方 BLE 库从 2.7 起是 Java 17 编译的，消费方也要 17（本机 JDK 就是 17）
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // 成熟方案：Nordic 官方 Android-BLE-Library
+    // 它替掉了我们自己写的 GATT 状态机 / CCCD 串行队列 / 133 重试 / 断开重连 /
+    // 超时与服务失效处理。我们只保留「订阅哪几路、异常怎么翻译成人话」这层业务逻辑。
+    implementation 'no.nordicsemi.android:ble:2.11.0'
+}

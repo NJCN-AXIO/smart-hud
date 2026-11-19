@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自适应图标背景：和 App 主界面同一个深色底（#0B0F13），中间稍微提亮一点，圆形遮罩下不发死黑 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#0B0F13" />
+</shape>

@@ -1,0 +1,25 @@
+// :protocol —— 纯 JVM 模块，不含任何 Android 类型。
+// 结构参考 moonheart/tailg-cast 的 :protocol（java-library + kotlin jvm + test-junit），
+// 目的：协议解析能被单元测试覆盖，不需要手机、不需要编译 APK。
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}

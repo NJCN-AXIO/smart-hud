@@ -1,0 +1,36 @@
+# ---- Gradle / Android 构建产物（不进仓库）----
+.gradle/
+build/
+*/build/
+app/build/
+captures/
+.cxx/
+*.iml
+.idea/
+local.properties
+
+# ---- 构建日志（一次一版，几百个，没必要进仓库）----
+build_*.txt
+lint_*.txt
+test_*.txt
+self_check*.txt
+*.hprof
+
+# ---- 安装包（体积大，走 Releases 而不是仓库）----
+dist/
+*.apk
+*.aab
+*.zip
+
+# ---- 系统 / 编辑器 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# ---- 第三方小程序反编译产物 / 抓包打包流水账（不进公开仓库）----
+analysis/yuning_out/
+analysis/src_zip_*.txt
+analysis/wxapkg_*.txt
+analysis/yuning_dec*.txt
+analysis/att_report.txt

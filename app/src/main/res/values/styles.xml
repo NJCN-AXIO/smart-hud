@@ -1,0 +1,21 @@
+<resources>
+    <!--
+        v1.0.49：面板专用深色主题。
+
+        旧版 PanelUi 用的是 `new Dialog(activity)`，它继承 Activity 的
+        `Theme.Material.NoActionBar` —— 那是浅色主题：输入框光标、选中手柄、
+        键盘上方的 actionMode 都按浅色画，偶尔会看到"白底原生弹窗"闪一下。
+        这里直接把对话框主题定成深色，和三个面板的 #0B0F13 / #35E07A 对齐。
+    -->
+    <style name="Theme.Hud.Dialog" parent="android:Theme.Material.Dialog.NoActionBar">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">#0B0F13</item>
+        <item name="android:colorAccent">#35E07A</item>
+        <item name="android:colorPrimary">#0B0F13</item>
+        <item name="android:textColorPrimary">#E9EEF4</item>
+        <item name="android:textColorSecondary">#8E9BA8</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+</resources>

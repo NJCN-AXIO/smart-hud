@@ -1,0 +1,62 @@
+﻿
+== idx 42: distinct=132 / delta ==
+   +0    1933 次
+   +255  136 次
+   +1    106 次
+   +251  65 次
+   +5    52 次
+   +250  34 次
+   前30: 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 30 F0 2F 9F 2F 49 49 49 49 49 49 49 49
+   后30: 5B 8F AA BB 95 ED EB 05 F1 EC 49 49 49 49 49 49 49 49 49 49 49 4A F4 49 49 49 49 49 49 49
+
+== idx 47: distinct=3 / delta ==
+   +0    3347 次
+   +186  77 次
+   +70   74 次
+   +198  3 次
+   +128  2 次
+   前30: 69 69 69 2F 2F 2F 2F 2F 2F 2F 2F 2F E9 E9 E9 E9 E9 E9 E9 E9 E9 E9 E9 E9 2F 2F 2F 2F 2F 2F
+   后30: E9 E9 E9 E9 E9 E9 E9 E9 E9 E9 E9 2F 2F 2F 2F 2F 2F 2F 2F 2F 2F 2F E9 E9 E9 2F 2F 2F 2F E9
+
+== idx 63: distinct=4 / delta ==
+   +0    2975 次
+   +9    139 次
+   +247  131 次
+   +245  107 次
+   +11   99 次
+   +1    16 次
+   前30: E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 DD E6 E6 E6 E6 E6 E6 E6 E6 E6 E6 E6
+   后30: E7 E8 E8 E8 E8 DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD DD
+
+== idx42 vs 帧序号（每 200 帧取一次）==
+   frame     0 -> 49
+   frame   116 -> C8
+   frame   232 -> 49
+   frame   348 -> 00
+   frame   464 -> 49
+   frame   580 -> 99
+   frame   696 -> BE
+   frame   812 -> 49
+   frame   928 -> 49
+   frame  1044 -> 8B
+   frame  1160 -> 5B
+   frame  1276 -> 49
+   frame  1392 -> 5B
+   frame  1508 -> 49
+   frame  1624 -> C8
+   frame  1740 -> F0
+   frame  1856 -> C0
+   frame  1972 -> F0
+   frame  2088 -> 06
+   frame  2204 -> 49
+   frame  2320 -> EE
+   frame  2436 -> 96
+   frame  2552 -> EC
+   frame  2668 -> 49
+   frame  2784 -> 49
+   frame  2900 -> 5C
+   frame  3016 -> 49
+   frame  3132 -> 8B
+   frame  3248 -> 7F
+   frame  3364 -> 7F
+   frame  3480 -> EB

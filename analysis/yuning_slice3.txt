@@ -1,0 +1,12 @@
+﻿
+==============================================================================
+KEY: onBLECharacteristicValueChange   hits=1
+
+--- @202255 ---
+(u=>{e.index.__f__("log","at pages/index.vue:2149",`device ${u.deviceId} 状态改变连接: ${u.connected}`),u.connected?e.index.stopBluetoothDevicesDiscovery({success:()=>e.index.__f__("log","at pages/index.vue:2151","匹配到蓝牙了，停止搜索蓝牙")}):He?e.index.__f__("log","at pages/index.vue:2153","切换其它蓝牙设备"):_e?(r.showToasts("连接断开","error"),je("1")):e.index.__f__("log","at pages/index.vue:2154","显示的过程中断开了连接")}),e.index.onBLECharacteristicValueChange(u=>{var o,t,i;if(u.deviceId!==Se)return;const l=new Uint8Array(u.value);if(b.value||(b.value=!0,n.serviceListDB.value[8].ok=!0),n.isPopu.value["固件升级"]){for(let e=0;e<l.length;e++){const u=l[e];if(null==u)continue;if(90!=u||uu||(uu=!0),!uu)continue;au.push(u);const a=au.length;if(2==a&&165!=au[1]){au.length=0,uu=!1;continue}if(a<3)continue;parseInt(au[2],10)+3==a&&(nu([...au]),au.length=0,uu=!1)}return}if(94==l[0]&&94==l[1]||k.value>=1e3){for(let e=0;e<l.length;e++){const u=l[e];if(null==u)continue;if(94!=u||ze||(ze=!0),!ze)continue;Ke.push(u);const a=Ke.length;if(2==a&&94!=Ke[1]){Ke.length=0,ze=!1;continue}if(a<3)continue;parseInt(Ke[2].toString(),10)+3==a&&(Ye(Ke),Ke.length=0,ze=!1)}return}if(201!=l[0]||156!=l[1]||204!=l[66])return void e.index.__f__("error","at pages/index.vue:2221","不是指令");for(let e=4;e<=65;e++)l[e]=l[e]-11,l[e]=85^l[e],l[e]=l[e]-e,l[e]=
+
+==============================================================================
+KEY: *0.05   hits=0
+
+==============================================================================
+KEY: 0.05*   hits=0

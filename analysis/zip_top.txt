@@ -1,0 +1,12 @@
+﻿   619264 analysis/yuning_plain/wxec023ccd2f4c8586___APP__.wxapkg
+   243444 analysis/yuning_out/app-service.js
+   180955 analysis/yuning_out/page-frame.html
+   141151 analysis/yuning_out/appservice.app.js
+   125785 analysis/yuning_out/chunk_0.webview.js
+    89227 build_core4.txt
+    70195 analysis/yuning_out/static/logo.png
+    69090 analysis/yuning_out/chunk_0.appservice.js
+    51009 README.md
+    48956 analysis/yuning_out/static/ble.jpg
+    45720 app/src/main/java/com/hud/delivery/MainActivity.java
+    43504 gradle/wrapper/gradle-wrapper.jar

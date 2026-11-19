@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Android 11 及以下：经典蓝牙权限 + 扫描需要定位权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <!-- GPS 兜底测速要用到定位权限（所有版本都需要） -->
+    <!-- v1.0.12：必须**同时**声明 COARSE。Android 12+ 的规则是"给了 FINE 就必须能降级到 COARSE"，
+         只声明 FINE 时，系统对话框可能只给"大致位置"（≈1km 精度），或者干脆拒绝。
+         这会让 GPS 速度/里程变成垃圾数据 —— 之前"时速不够准"很可能就是这一条。 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Android 12+：新蓝牙权限模型 -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- 前台服务保活 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <!-- v1.0.51：**必须声明定位型前台服务**。
+         Android 14 起，前台服务只声明 connectedDevice 时，App 退到后台（切到高德、锁屏）
+         再取定位会被当成"后台定位"，没有 ACCESS_BACKGROUND_LOCATION 就直接不给点位 ——
+         表现就是"切出去以后本次里程不涨、时速卡住"。
+         声明 location 类型后，"带定位型前台服务"= 在使用中，GPS 在后台继续工作。 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <!-- 可选的"始终允许"定位：不开也能用（带定位型前台服务已能后台取点），
+         但开机自启那一下是从后台启动服务，Android 14 要求这时有它才行。
+         声明在这里，设置页给一个入口引导去系统里改成「始终允许」，不强制。 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 引导用户把本 App 加进"忽略电池优化"，这是息屏后蓝牙被掐的主因 -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- 电量掉到危险线时震一下（骑车时不可能一直盯着屏幕） -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+
+    <!-- Android 11+ 包可见性：不声明这一条，TextToSpeech 找不到系统语音引擎 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
+
+    <application
+        android:name=".HudApp"
+        android:label="智能HUD"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".BleService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice|location" />
+
+        <!-- v1.0.4：读高德/百度导航通知里的"剩余 X 公里 · X 分钟"，显示在 HUD 底部。
+             只读系统通知，和控制器无关；没授权就什么也不做。 -->
+        <service
+            android:name=".NavBridge"
+            android:exported="true"
+            android:label="智能HUD · 导航信息"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 导出原始帧日志（解 67B 扩展帧要用它）：只开放 logs 目录，别把整个私有目录漏出去 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+</manifest>

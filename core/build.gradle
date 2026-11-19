@@ -1,0 +1,24 @@
+// :core —— 纯 JVM 算法层：里程积分 / 电量查表 / 滑动平均 / 耗电自学习。
+// 和 :protocol 一样不含 Android 类型，所以能直接在电脑上跑单元测试。
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}

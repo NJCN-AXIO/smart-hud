@@ -1,0 +1,43 @@
+﻿ACL packets on handle 0x0005: 315
+
+-- MTU --
+  ts=63963117745029911 op=02 mtu=517
+  ts=63963117745031224 op=03 mtu=517
+
+-- op histogram --
+  op=0x00  1
+  op=0x01  10
+  op=0x02  1
+  op=0x03  1
+  op=0x04  2
+  op=0x05  2
+  op=0x06  1
+  op=0x08  11
+  op=0x09  3
+  op=0x0D  91
+  op=0x10  3
+  op=0x11  2
+  op=0x12  2
+  op=0x13  2
+  op=0x16  90
+  op=0x1B  91
+  op=0x52  2
+
+-- writes: 4 --
+  ts=63963117745500450 op=0x12 handle=0x000B len=1
+     01
+  ts=63963117745513137 op=0x12 handle=0x0807 len=2
+     00 10
+  ts=63963117746413156 op=0x52 handle=0x-001 len=0
+     
+  ts=63963117791331890 op=0x52 handle=0x-001 len=0
+     
+
+-- notifies: 91 --
+  lengths: {1: 91}
+  distinct payloads: 1
+   x91   C9
+
+  首个通知 vs 67B 广播帧前缀一致: True
+  通知内容: C9
+  67B 前 1 字节: C9

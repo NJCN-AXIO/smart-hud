@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 智能HUD 图标前景：一圈仪表盘刻度 + 指针。
+     108dp 画布，内容全落在中间 66dp 安全区里，各家长方形/圆形遮罩都不会切到。 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 仪表弧（下面一圈深灰打底，上面一段亮绿） -->
+    <path
+        android:pathData="M27,64 A27,27 0 0 1 81,64"
+        android:strokeColor="#2A3540"
+        android:strokeWidth="7"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M27,64 A27,27 0 0 1 70,41"
+        android:strokeColor="#35E07A"
+        android:strokeWidth="7"
+        android:strokeLineCap="round" />
+
+    <!-- 指针 -->
+    <path
+        android:pathData="M54,64 L66,46"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M54,64 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"
+        android:fillColor="#FFFFFF" />
+
+    <!-- 底部两根小刻度，看起来像"表"，不是个抽象圈 -->
+    <path
+        android:pathData="M40,74 L43,70"
+        android:strokeColor="#5C6B78"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M68,74 L65,70"
+        android:strokeColor="#5C6B78"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+</vector>

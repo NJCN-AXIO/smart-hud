@@ -1,0 +1,14 @@
+﻿==============================================================
+红线自检：除了 CCCD 开通知，不向控制器写任何数据
+==============================================================
+
+[允许] 手写 CCCD 写（开启通知）：
+  engine\src\main\java\com\hud\engine\BleLink.java:475  boolean ok = gatt.writeDescriptor(d);
+
+[允许] 库的订阅入口（库内部只写 CCCD 0x2902）：
+  engine\src\main\java\com\hud\engine\NordicBleLink.java:602  enableNotifications(c)
+
+[禁止] 写特征值 / 可靠写 / 写类型常量：
+  未发现 —— 通过
+
+结论：通过（CCCD 订阅路径 2 处 = 手写 1 + 库 1）

@@ -1,0 +1,3 @@
+﻿testzip: None
+entries: 142
+dex: ['classes.dex', 'classes2.dex', 'classes3.dex', 'classes4.dex', 'classes5.dex', 'classes6.dex', 'classes7.dex', 'classes8.dex']

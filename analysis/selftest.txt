@@ -1,0 +1,2 @@
+﻿SELFTEST: best = offset=2 len=2 LE scale=0.05 maxRes=0.125
+SELFTEST: PASS

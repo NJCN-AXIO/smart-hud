@@ -1,0 +1,30 @@
+﻿Compiled from "ConnectionPriorityRequest.java"
+public final class no.nordicsemi.android.ble.ConnectionPriorityRequest extends no.nordicsemi.android.ble.SimpleValueRequest<no.nordicsemi.android.ble.callback.ConnectionParametersUpdatedCallback> implements no.nordicsemi.android.ble.Operation {
+  public static final int CONNECTION_PRIORITY_BALANCED;
+  public static final int CONNECTION_PRIORITY_HIGH;
+  public static final int CONNECTION_PRIORITY_LOW_POWER;
+  no.nordicsemi.android.ble.ConnectionPriorityRequest(no.nordicsemi.android.ble.Request$Type, int);
+  no.nordicsemi.android.ble.ConnectionPriorityRequest setRequestHandler(no.nordicsemi.android.ble.RequestHandler);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest setHandler(android.os.Handler);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest done(no.nordicsemi.android.ble.callback.SuccessCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest fail(no.nordicsemi.android.ble.callback.FailCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest invalid(no.nordicsemi.android.ble.callback.InvalidRequestCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest before(no.nordicsemi.android.ble.callback.BeforeCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest then(no.nordicsemi.android.ble.callback.AfterCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest with(no.nordicsemi.android.ble.callback.ConnectionPriorityCallback);
+  public no.nordicsemi.android.ble.ConnectionPriorityRequest with(no.nordicsemi.android.ble.callback.ConnectionParametersUpdatedCallback);
+  public <E extends no.nordicsemi.android.ble.callback.ConnectionParametersUpdatedCallback> E await(java.lang.Class<E>) throws no.nordicsemi.android.ble.exception.RequestFailedException, no.nordicsemi.android.ble.exception.DeviceDisconnectedException, no.nordicsemi.android.ble.exception.BluetoothDisabledException, no.nordicsemi.android.ble.exception.InvalidRequestException;
+  public <E extends no.nordicsemi.android.ble.callback.ConnectionParametersUpdatedCallback> E await(E) throws no.nordicsemi.android.ble.exception.RequestFailedException, no.nordicsemi.android.ble.exception.DeviceDisconnectedException, no.nordicsemi.android.ble.exception.BluetoothDisabledException, no.nordicsemi.android.ble.exception.InvalidRequestException;
+  void notifyConnectionPriorityChanged(android.bluetooth.BluetoothDevice, int, int, int);
+  int getRequiredPriority();
+  public java.lang.Object await(java.lang.Class) throws no.nordicsemi.android.ble.exception.RequestFailedException, no.nordicsemi.android.ble.exception.DeviceDisconnectedException, no.nordicsemi.android.ble.exception.BluetoothDisabledException, no.nordicsemi.android.ble.exception.InvalidRequestException;
+  public java.lang.Object await(java.lang.Object) throws no.nordicsemi.android.ble.exception.RequestFailedException, no.nordicsemi.android.ble.exception.DeviceDisconnectedException, no.nordicsemi.android.ble.exception.BluetoothDisabledException, no.nordicsemi.android.ble.exception.InvalidRequestException;
+  public no.nordicsemi.android.ble.SimpleValueRequest with(java.lang.Object);
+  public no.nordicsemi.android.ble.Request then(no.nordicsemi.android.ble.callback.AfterCallback);
+  public no.nordicsemi.android.ble.Request before(no.nordicsemi.android.ble.callback.BeforeCallback);
+  public no.nordicsemi.android.ble.Request invalid(no.nordicsemi.android.ble.callback.InvalidRequestCallback);
+  public no.nordicsemi.android.ble.Request fail(no.nordicsemi.android.ble.callback.FailCallback);
+  public no.nordicsemi.android.ble.Request done(no.nordicsemi.android.ble.callback.SuccessCallback);
+  public no.nordicsemi.android.ble.Request setHandler(android.os.Handler);
+  no.nordicsemi.android.ble.Request setRequestHandler(no.nordicsemi.android.ble.RequestHandler);
+}

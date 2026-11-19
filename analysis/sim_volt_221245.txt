@@ -1,0 +1,5 @@
+﻿frames: 313
+raw   mean=65.15 median=65.52 min=58.26 max=69.19
+shown mean=65.31 median=65.36 min=58.55 max=68.43
+step p50=0.02V p90=0.59V max=3.35V
+old 8-frame mean: mean=65.13 median=65.27 min=58.92 max=68.43
