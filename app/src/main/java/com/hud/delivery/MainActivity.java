@@ -661,7 +661,8 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 : String.format(Locale.US, "%.1f", HudState.odoKm), true);
         ui.row(in, "仪表显示 (km)", "照车上那个数填，整数就行", et);
         ui.note(in, "对齐只改整车里程的起点，不影响本次里程、电量和续航。\n"
-                + "差多少会记进日志，用来判断里程是偏多还是偏少。");
+                + "v1.0.53：每对一次表，App 会自动学一次「仪表 / GPS」的比例（单次最多调 4%），"
+                + "跑几趟后就基本不用再手动对。");
 
         ui.primary("对齐", v -> {
             float target = parseFloat(et.getText().toString(), Float.NaN);
@@ -1051,19 +1052,30 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         ui.row(run, "定位点", "停了 = 里程不会涨", ui.value(fixTxt, false));
         ui.row(run, "后台定位", "「始终允许」最稳，可选",
                 ui.value(bgLoc ? "始终允许 ✅" : "仅使用时 ⚠", false));
+        // v1.0.53：里程是不是全程都在记，看这一行就够 —— 出现"盲区"就说明那段时间
+        // GPS 在报速、但一个位移点都没拿到（日志里对应 "odo blind"）。
+        String blindTxt = HudState.odoBlind <= 0
+                ? "0 次 ✅ 全程都在记"
+                : (HudState.odoBlind + " 次 ⚠ 有速度没位移，那几段没记上");
+        ui.row(run, "里程盲区", "有速度却没位移 = 漏记", ui.value(blindTxt, false));
 
         // ---- 电量 ----
         LinearLayout bat = ui.section("电量");
         EditText etRange = ui.input(String.valueOf(prefs.estRangeKm()), false);
         ui.row(bat, "满电续航 (km)", "兜底值；学到实测后会被取代", etRange);
         EditText etFull = ui.input(String.format(Locale.US, "%.1f", prefs.vFull()), true);
-        ui.row(bat, "满电静置电压 (V)", "默认 76.5（与表头口径一致）", etFull);
+        ui.row(bat, "满电静置电压 (V)", String.format(Locale.US,
+                "实测 %.1f；停稳 ≥8 分钟读到这个数才算真满", prefs.vFull()), etFull);
         EditText etEmpty = ui.input(String.format(Locale.US, "%.1f", prefs.vEmpty()), true);
-        ui.row(bat, "欠压保护电压 (V)", "控制器保护点，一般 63.0", etEmpty);
+        // v1.0.53：这一项的口径变了 —— 不再是"控制器欠压点"，而是**耗尽后的静置电压**。
+        // 带载报警线由程序自己按 60.5V 判（实测这车彻底没电时带载 58.26V）。
+        ui.row(bat, "耗尽静置电压 (V)", String.format(Locale.US,
+                "实测 %.1f；带载报警线自动按 %.1f 判", prefs.vEmpty(), prefs.vEmpty() - 3.3f), etEmpty);
         EditText etPackV = ui.input(String.valueOf(prefs.packV()), false);
         ui.row(bat, "额定电压 (V)", null, etPackV);
         EditText etPackAh = ui.input(String.valueOf(prefs.packAh()), false);
-        ui.row(bat, "容量 (Ah)", "72V 21Ah ≈ 1512Wh", etPackAh);
+        ui.row(bat, "容量 (Ah)", String.format(Locale.US, "按当前设置 %dV × %dAh ≈ %dWh",
+                prefs.packV(), prefs.packAh(), (int) prefs.packWh()), etPackAh);
         // v1.0.27：这里原本是"整车累计 = 本次里程为 0 那一刻的读数"（也就是基准），
         // 而主屏那行长按填的是"仪表现在显示的数"（基准+累计+本次）——
         // 同一个数字出现两种含义，改一个另一个就跟着变，等于互相打架。
@@ -1071,7 +1083,7 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         EditText etOdo = ui.input(Float.isNaN(HudState.odoKm)
                 ? String.valueOf(prefs.odoBaseKm())
                 : String.format(Locale.US, "%.1f", HudState.odoKm), true);
-        ui.row(bat, "总里程 (km)", "照车上仪表填；保存后立刻按这个数显示", etOdo);
+        ui.row(bat, "总里程 (km)", "照车上仪表填；对齐后会自动学里程比例", etOdo);
         // v1.0.53：把"里程系数"和上次对表的两个数摆出来 —— 用户能直接看出
         // "是我填的准，还是 App 一直少记"，不用再去翻日志。
         float scNow = prefs.odoScale();
@@ -1089,8 +1101,15 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                     "上次对表 %s：仪表 %.1f / App %.1f。再对一次表，上面这个系数会自动再学一步（每次最多 4%%）。",
                     when, calDash, calApp));
         }
-        // v1.0.45：把"充满自动清本次里程"写明在这里，免得骑手以为要手动去清
-        ui.note(bat, "充满电（静置 ≥76.1V）时会自动把「本次里程」清零重新计一趟，总里程不变。");
+        // v1.0.45 原本写"静置 ≥76.1V"；v1.0.53 门槛改了两处（电压按 78.6 满电重标 + 加了停稳/位移条件），
+        // 文案必须跟着走，否则骑手会拿一个早就作废的数去判断"为什么没自动清"。
+        ui.note(bat, String.format(Locale.US,
+                "充满自动清「本次里程」的条件：静置 ≥8 分钟 + 电压 ≥%.1fV + 距上次满电已跑 30km 或 6 小时。"
+                        + "总里程不受影响。", prefs.vFull() - 0.3f));
+        // v1.0.53：电量算法换成人话摆在这。以前只在文档里写，界面上一个字都没有，
+        // 骑手看到"停车 65%、骑起来 71%"只会以为坏了。
+        ui.note(bat, "电量怎么算：停稳 ≥20 秒 → 按电压查表（这时最准）；骑行中 → 按「这一箱电跑了多少 km」推算，"
+                + "电压不参与（骑行电压被压降打乱，越骑越不准）。两个口径切换时最多纠 5 个百分点。");
 
         ui.inlineButton(bat, Float.isNaN(HudState.kmThisCharge)
                 ? "按已用电量校准满电续航"

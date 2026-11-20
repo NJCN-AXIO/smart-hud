@@ -50,7 +50,8 @@ import java.util.Locale
  * 极简仪表盘：三个大数字（电压 / 电量 / 本次里程）。
  *
  * 颜色规则直接写在 Compose 里（不再散落在 Canvas 绘制代码里）：
- *   电压  < 67V        红
+ *   电压  带载 < 62.8V 红、< 65.8V 黄（v1.0.53：基线随设置的耗尽静置电压走，不再写死 67V）
+ *   时速  超「超速提醒」阈值红、85% 黄（v1.0.53：不再写死 25/35 —— 那是电动自行车国标线）
  *   电量  ≤20% 红、≤40% 黄
  *   里程  50–60km 黄、>60km 红
  *   剩余  <8km 红、<15km 黄
@@ -82,15 +83,20 @@ private val BAR = Color(0xFF141A21)
 /** 匹配 "11:22:33:44:55:66" 这种 MAC，用于在状态栏里换成设备名 */
 
 /**
- * 电压颜色：按"离欠压还有多远"着色，而不是写死 67V。
- * 72V 铅酸欠压 63V：低于 +3V 红（再骑几公里就趴窝）、低于 +6V 黄（该找充电桩了）。
+ * 电压颜色：按"离彻底没电还有多远"着色。
+ *
+ * v1.0.53 修正：`vEmpty` 的口径已经变成**静置**耗尽电压（63.8）了，而屏幕上显示的是
+ * **带载**电压 —— 这车带载满跑时会比静置低 5V 左右。原来的 "empty+3 / empty+6" 于是
+ * 变成 66.8V 就标红：那时其实还有 15–20%，等于一直在吓人。
+ * 现在把基线挪到"带载起点 = vEmpty − 4"上（63.8 → 59.8），红 < 62.8、黄 < 65.8。
  */
 private fun voltageColor(v: Float): Color {
     if (v.isNaN()) return MUTED
-    val empty = HudState.vEmpty.takeIf { it > 0f } ?: 63f
+    val restEmpty = HudState.vEmpty.takeIf { it > 0f } ?: 63.8f
+    val loadedEmpty = restEmpty - 4f
     return when {
-        v < empty + 3f -> RED
-        v < empty + 6f -> AMBER
+        v < loadedEmpty + 3f -> RED
+        v < loadedEmpty + 6f -> AMBER
         else -> accent()
     }
 }
@@ -140,14 +146,25 @@ private fun freezeAgeText(): String {
 }
 
 /**
- * 时速颜色。25km/h 是电动自行车国标线：贴着线黄、明显超了红。
- * 这个颜色不是催你快，是让你一眼看到自己有没有到危险区。
+ * 时速颜色：跟着设置里的「超速提醒」走。
+ *
+ * v1.0.53 修正：原来写死 25 黄 / 35 红 —— 那是电动自行车的国标线，
+ * 而这台 72V 电摩实测能上 50，设置里也可以把阈值改到 50，两边早就对不上。
+ * 现在：超过阈值红；到阈值的 85% 黄；阈值为 0（关掉提醒）时退回 25/35。
  */
-private fun speedColor(kmh: Float): Color = when {
-    kmh.isNaN() -> DIM
-    kmh > 35f -> RED
-    kmh >= 25f -> AMBER
-    else -> accent()
+private fun speedColor(kmh: Float): Color {
+    if (kmh.isNaN()) return DIM
+    val lim = HudState.speedLimitKmh
+    if (lim <= 0) return when {
+        kmh > 35f -> RED
+        kmh >= 25f -> AMBER
+        else -> accent()
+    }
+    return when {
+        kmh > lim.toFloat() -> RED
+        kmh >= lim * 0.85f -> AMBER
+        else -> accent()
+    }
 }
 
 private fun one(v: Float): String =
@@ -354,7 +371,9 @@ fun HudScreen(
                 unit = "%",
                 color = socColor(soc),
                 sub = when {
-                    src == HudState.SRC_BLE -> "电压直读"
+                    // v1.0.53：同上 —— 骑行中电量走里程账本，不是电压直读
+                    src == HudState.SRC_BLE && HudState.socAtRest -> "停稳 · 按电压"
+                    src == HudState.SRC_BLE -> "骑行 · 按里程"
                     // v1.0.50：这四档原来写反了 —— 断开后（SRC_FROZEN）落到 else 显示"等待电压"，
                     // 而真正靠推算的（SRC_EST）反而写"断开前读数"。按来源逐档说清。
                     src == HudState.SRC_FROZEN -> "断开前读数"
@@ -388,7 +407,10 @@ fun HudScreen(
             // 电量口径必须写清楚，但别写出和上面数字打架的话
             // v1.0.30：连上就是控制器电压直读（和小程序同一口径）；断开只冻结、不再按里程往下猜。
             sub = when {
-                src == HudState.SRC_BLE -> "电压直读"
+                // v1.0.53：口径变了 —— 骑行中已经**不拿电压算电量**了（电压被压降打乱），
+                // 这里再写"电压直读"就是骗人：骑起来那个数其实是里程账本推的。
+                src == HudState.SRC_BLE && HudState.socAtRest -> "停稳 · 按电压查表"
+                src == HudState.SRC_BLE -> "骑行 · 按里程推算"
                 // v1.0.50：同上一格，来源口径逐档写清（这一档原来把"推算"写成"上次读数"）
                 src == HudState.SRC_FROZEN -> "已断开 · 断开前读数"
                 src == HudState.SRC_EST || src == HudState.SRC_MANUAL -> "已断开 · 按里程推算"

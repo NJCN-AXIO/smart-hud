@@ -37,6 +37,13 @@ public final class HudState {
     public static volatile float tripKm = 0f;
     /** 整车累计（仪表基准 + App 累计 + 本次），只用于显示，不参与任何计算（v1.0.4） */
     public static volatile float odoKm = Float.NaN;
+    /**
+     * v1.0.53：里程盲区次数 —— "GPS 在报 8km/h 以上、但这一秒既没有位移也没有积分"的次数。
+     * 每次进盲区里程就少记一点；设置页把它摆出来，骑手不用翻日志就知道这趟漏没漏。
+     */
+    public static volatile int odoBlind = 0;
+    /** v1.0.53：最近一次进盲区的时刻（0 = 本趟没有过），界面写"刚才 xx 前还在漏" */
+    public static volatile long odoBlindTs = 0L;
 
     /** 手动录入电压及其时间（协议标定成功前用来先顶上） */
     public static volatile float manualV = Float.NaN;
@@ -136,13 +143,26 @@ public final class HudState {
     /** 转把电压（0.019×f42），NaN = 没解出来 */
     public static volatile float throttleV = Float.NaN;
 
-    /** 欠压阈值（V），设置里可改；界面用它决定电压颜色，不再写死 67 */
-    public static volatile float vEmpty = 63f;
+    /**
+     * 耗尽**静置**电压（V），v1.0.53 起默认 63.8（11-19 实车耗尽后静置实测）。
+     * v1.0.52 之前它是"控制器欠压点 63.0"，那是**带载**口径 —— 同一个 63.0
+     * 在带载时是彻底没电、在静置时还有 15%，混用就会 66.8V 就标红。
+     * 界面拿它算颜色时按"带载起点 = vEmpty − 4"来分档（见 HudScreen.voltageColor）。
+     */
+    public static volatile float vEmpty = 63.8f;
+    /** 超速提醒阈值（km/h，0 = 关闭）。界面拿它决定时速颜色，别再写死 25/35 */
+    public static volatile int speedLimitKmh = 30;
+    /**
+     * v1.0.53：当前这个电量百分比是按哪种口径算出来的 —— true = 停稳查电压（准），
+     * false = 骑行中按里程账本推。界面上必须写出来，否则骑手看到"停车 65%、骑起来 71%"
+     * 只会以为坏了（其实是两个口径）。
+     */
+    public static volatile boolean socAtRest = true;
     /** 压降补偿后的空载电压（OCV），电量就是按它查出来的；NaN = 没有实测 */
     public static volatile float ocvV = Float.NaN;
     /** 当前大数字显示的是不是"静置电压"（v1.0.17；停车 ≥12 秒后切到静置口径） */
     public static volatile boolean voltIsOcv = false;
-    /** 当前补偿了多少伏（速度越快越多，封顶 2.6V），底部说明用 */
+    /** 当前补偿了多少伏（速度越快越多，封顶 6.5V —— v1.0.53 实测 30km/h 压降中位 5.25V），底部说明用 */
     public static volatile float sagV = 0f;
 
     /** 链路是否已升到 HIGH 连接优先级（Nordic 库文档建议；0.9.3 起） */

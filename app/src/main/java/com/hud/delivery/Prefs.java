@@ -37,6 +37,31 @@ public final class Prefs {
             sp.edit().putBoolean("mig_vfull_765", true).apply();
         }
         migrateVFull786();
+        migrateCaliber153();
+    }
+
+    /**
+     * v1.0.53：**把旧口径学出来的数清掉。**
+     *
+     * 这一条比改默认值更要紧：以前学到的 %/km、电量锚点、电压账本、本箱电起算点，
+     * 全是按 76.5/63.0 那张表算出来的。表换了以后这些数在新口径里就是错的 ——
+     * 不清掉，会出现"电量算法改了、屏幕上还是旧结论"（用户说的"设置里还是旧数据"就是这个）。
+     * 只清一次（flag 落盘），之后重新学。
+     */
+    private void migrateCaliber153() {
+        if (sp.getBoolean("mig_caliber_153", false)) return;
+        sp.edit()
+                .putFloat("per_km_pct", Float.NaN)
+                .putFloat("socperkm", 0f)
+                .putInt("socperkm_n", 0)
+                .putString("vbook", "")
+                .remove("soc_anchor_soc")
+                .remove("soc_anchor_km")
+                .remove("soc_anchor_ts")
+                .remove("charge_soc")
+                .remove("charge_odo_km")
+                .putBoolean("mig_caliber_153", true)
+                .apply();
     }
 
     /**

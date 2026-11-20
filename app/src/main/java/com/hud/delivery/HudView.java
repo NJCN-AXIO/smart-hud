@@ -127,7 +127,14 @@ public final class HudView extends View {
         if (Float.isNaN(rk)) {
             rangeTxt = "剩余里程 --（再录一次电压就能算出来）";
         } else {
-            rangeTxt = String.format(Locale.US, "还能跑 ~%.0f km · 每公里约耗 %.1f%%", rk, HudState.socPerKm);
+            // v1.0.53：socPerKm 在换口径后（旧学习成果被清空）会是 0 或 NaN，
+            // 直接拼进格式串会出现"每公里约耗 NaN%"——看着像坏了。没有就干脆不写这半句。
+            float pk = HudState.socPerKm;
+            if (!Float.isNaN(pk) && pk > 0.01f && pk < 20f) {
+                rangeTxt = String.format(Locale.US, "还能跑 ~%.0f km · 每公里约耗 %.1f%%", rk, pk);
+            } else {
+                rangeTxt = String.format(Locale.US, "还能跑 ~%.0f km（能耗还在学）", rk);
+            }
             rangeColor = rk < 8f ? C_RED : (rk < 15f ? C_AMBER : C_DIM);
         }
         p.setColor(rangeColor);

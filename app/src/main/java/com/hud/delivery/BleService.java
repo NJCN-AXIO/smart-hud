@@ -911,10 +911,14 @@ public class BleService extends Service implements HudBle.Listener {
         // 断开后电量是冻结值（很可能是昨晚的 2%），再拿它震一次毫无意义 ——
         // 手机揣兜里走路也会被震，还以为是车出事了。
         if (src != HudState.SRC_BLE) return;
-        boolean low = socVal <= 20f || (!Float.isNaN(v) && v < prefs.vEmpty() + 3f);
+        // v1.0.53：vEmpty 现在表示**静置**耗尽电压（63.8），而这里拿到的 v 是带载端电压。
+        // 直接 +3 会变成 66.8V 就震 —— 那时电池还有 15~20%，一路被震到真没电。
+        // 按"带载起点 = vEmpty − 4"来判（63.8 → 59.8，+3 = 62.8）。
+        float vLowLine = prefs.vEmpty() - 4f + 3f;
+        boolean low = socVal <= 20f || (!Float.isNaN(v) && v < vLowLine);
         if (!low) return;
         // 电压低但电量账本说还有电（刚停下车还在 66V？那是噪声），以电量为主
-        if (!Float.isNaN(socVal) && socVal > 30f && !Float.isNaN(v) && v < prefs.vEmpty() + 3f) {
+        if (!Float.isNaN(socVal) && socVal > 30f && !Float.isNaN(v) && v < vLowLine) {
             RawLog.sys(now, String.format(Locale.US,
                     "low voltage but soc=%.0f%%, skip alert (noise guard)", socVal));
             return;
@@ -1488,6 +1492,8 @@ public class BleService extends Service implements HudBle.Listener {
             if (linked && !Float.isNaN(HudState.gpsKmh) && HudState.gpsKmh >= 8f
                     && Float.isNaN(posDelta) && now - lastOdoBlindLogMs > 60_000L) {
                 lastOdoBlindLogMs = now;
+                HudState.odoBlind++;
+                HudState.odoBlindTs = now;
                 RawLog.sys(now, String.format(Locale.US,
                         "odo blind: spd=%.1fkm/h but no gps delta for %ds (km not growing)",
                         HudState.gpsKmh, (now - Math.max(kmGrowingTs, now - 3_600_000L)) / 1000));
@@ -1623,6 +1629,8 @@ public class BleService extends Service implements HudBle.Listener {
                 boolean atRest = stationarySince > 0L && now - stationarySince >= 20_000L
                         && (Float.isNaN(speedKmh) || speedKmh <= 2f)
                         && (Float.isNaN(thrV) || thrV < 1.5f);
+                // v1.0.53：把口径摆给界面（“停稳·按电压” / “骑行·按里程”）
+                HudState.socAtRest = atRest;
                 // 查表电压优先用"逐帧配平的 OCV 候选"（这个值里已经含了每一帧自己的压降），
                 // v1.0.44：候选样本不够时，**沿用上一次的 vMap**，不再退回"本帧 + 本帧压降"。
                 // 实测（224404 日志）就是这么抖的：ocvCand 样本数在 8 附近来回穿，
@@ -1854,6 +1862,9 @@ public class BleService extends Service implements HudBle.Listener {
                 }
             }
             // v1.0.33：超速提醒（借鉴 DigiHUD 的 warning speed：超过阈值变红 + 语音，60 秒只喊一次）
+            // v1.0.53：顺手把阈值同步给界面（时速颜色以前写死 25/35，那是国标电动自行车的线，
+            // 这台是 72V 电摩、实测能上 50，早就对不上设置里的数）
+            HudState.speedLimitKmh = prefs.speedLimit();
             if (!Float.isNaN(speedKmh) && prefs.voice()) {
                 int lim = prefs.speedLimit();
                 if (lim > 0 && speedKmh > lim + 2f && now - lastSpeedWarnMs > 60_000L) {
