@@ -1627,3 +1627,22 @@ dc（未补偿值）、sra（直接拿原始电压查表的结果）。
 - `HudState` 新增 `fgsText/locOk/bgLocOk/gpsFixAgeS`（只给界面用）；`startForegroundSafe()` 填前三项，tick 每秒更新 `gpsFixAgeS`。日志 `fgs type=..` 保留（工程复盘用）。
 - 验证：红线通过；protocol 11 / core 109；lint **0 error / 23 warning**；self_check 6/6（APK 8,916,314 B、vc89/1.0.52）。
 - 文档：`analysis/56_v1.0.52_不用翻日志的运行状态.md`。
+
+## 4.79 v1.0.53（2026-11-20，电量分"站/跑"＋里程全程记录）
+
+- **电量改两段式（本次核心）**：`BleService` 电量分支新增 `atRest` 判定（停稳 ≥20s + 速度 ≤2km/h + 转把 <1.5V）。
+  - **站着**：仍走电压查表（端电压≈OCV，准），但纠偏**一次最多 5 点**（一天停十几次也不会看到数字来回蹦，几次停靠自然收敛）。
+  - **跑着**：`socTracker.predict(tripKm)` —— 用"上次静置锚点 − 每公里耗电% × 里程"推，电压完全不参与显示。11-19 复盘里"10 秒窗电量摆幅中位 25%、最大 91%"的根就在骑行中查表。
+  - 显示层 `riding` 参数由 `speed>=8||thr>1.5` 改为 `!atRest`（骑行目标已平滑，死区 3 只防单步抖动）。
+- **锚点只认静置**：账本同步从 `anchorRest` 改为 `anchorRestGuarded`，且只在 `atRest` 时执行。旧版骑行中也拿带载电压当锚，每个红绿灯往下拽一点，26.8km 只剩 4%。
+- **`SocModel` 重标**：`vFull=78.6 / vEmpty=63.8`（实测 78.67 / 63.8）；`V_REF` 按"静置电压↔已跑公里"重排为 `78.6/77.3/75.9/74.9/74.0/73.3/72.6/72.1/70.6/66.3/63.8`，`SOC` 为 `100/94/87/78/70/63/50/41/28/15/0`。`Prefs.migrate()` 先跑旧 78.0→76.5，再跑 `mig_vfull_786`（vf≤77.5→78.6、|ve−63.0|<0.2→63.8），顺序不可反。
+- **`LoadComp` 整文件重写**：`SPEED_SAG={0→0,10→0.8,20→2.7,30→5.0,45→6.0}` + 转把项 `1.35×(thr−0.8)`，**取 max 不相加**（同一份电流的两个侧面），封顶 6.5V。旧 `0.06V/(km/h)` 在 30km/h 只补 1.8V，实测中位 5.25V，少补 3.4V ≈ 少算 12 点。删除 `loadSagCapV`。
+- **满电判定加硬门槛**（`maybeAnchorFull`）：① `v >= vFull−0.3`；② 距上次判满 ≥30km 或 ≥6h（否则直接 return）；③ 真静止 ≥8 分钟。11-19 两次"76~77V 被当成充满、自动清本次里程"从根上堵住。
+- **欠压提示线单列 60.5V**（带载口径）：不再拿静置口径的 `vEmpty` 去喊"拧油门不走"。
+- **里程全程记录 + 学比例**：
+  - tick 里程积分改 `linked = lastLiveVMs<8s ? 1.5km/h : 8km/h` 分档闸门（连着控制器时推车/挪车都记，断开才挡纯走路漂移），GPS 增量乘 `prefs.odoScale()`。
+  - `MainActivity.alignOdoTo` 加前置学习：读 `odoCalDash/odoCalApp`，两次校准的增量比 → `ratio`，`newScale=clamp(old×ratio,0.85,1.15)`，日志 `ODO_SCALE learn: dash +.. vs app +.. -> ratio .., scale .. -> ..`；对齐后再落 `setOdoCalDash/App/Ts`。**校准两次即收敛**（第一次只对起点，第二次起学比例）。
+  - `Prefs` 新增 `odo_scale / odo_cal_dash / odo_cal_app / odo_cal_ts`（scale 夹 0.85~1.15，默认 1.0）。
+- **测试同步**：`CoreAlgorithmsTest` 按新表/新压降更新断言（查表锚点、往返闭合、`sagOf(30)=5.0`、`sagOf(15,4.2)=4.59`、`sagOf(80)=6.0`、`EcoBook` 学习样本改用 78.6→74.0/6km 与 74.0→72.6/5km）。`tools/self_check.py` 的 gradle/aapt2 路径改为 `GRADLE_BAT`/`AAPT2` 环境变量覆盖 + `~` 展开（仓库内仍是脱敏路径）。
+- **验证**：protocol 11 / core **109** 单测全过；`assembleDebug` + `lintDebug` → **0 error / 23 warning**；红线 `check_no_write` 通过（CCCD 2 处，无写特征值）；`self_check.py --skip-build` **6/6**（APK 8,917,882 B，vc90/1.0.53）。dist：`delivery-hud-1.0.53-debug.apk` + `-1.0.53-src.zip`。
+- **文档**：`analysis/58_v1.0.53_电量分站跑与里程对齐.md`。

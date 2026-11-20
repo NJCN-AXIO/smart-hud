@@ -934,27 +934,33 @@ public class BleService extends Service implements HudBle.Listener {
         }
     }
 
-    private void maybeAnchorFull(long now, float v) {        if (Float.isNaN(v)) return;
+    private void maybeAnchorFull(long now, float v) {
+        if (Float.isNaN(v)) return;
+        // v1.0.53：**"满了"必须是真满了**。
+        // 11-19 实测：骑到中段静置 76~77V，旧阈值（vFull−0.4=76.1）就判"充满"，
+        // 一晚误判两次 —— 自动清本次里程 12km、电量 76→100→73 来回抽。
+        // 现在三条硬门槛同时成立才算：
+        //   ① 电压 ≥ vFull−0.3（新 vFull=78.6 → 78.3，中段 76~77 再也进不来）
+        //   ② 已经真正停稳 ≥8 分钟（不是"这一秒速度 0"）
+        //   ③ 距上次判满 ≥30km 或 ≥6 小时（骑两公里重启 App 不会再清一次）
         long ts = prefs.cycleTs();
-        // v1.0.3：去重窗口从 6 小时缩到 30 分钟 —— 中午回家补一次电，下午出门也该认"满电"，
-        // 6 小时的窗口会让电量停在上午剩下的数字，骑手以为没充进去。
-        if (ts > 0 && now - ts < 30L * 60_000L) return;
+        boolean farEnough = ts <= 0L || (now - ts >= 6L * 3600_000L);
+        if (!farEnough) {
+            float ranSince = Math.max(0f, HudState.odoKm - prefs.chargeOdoKm());
+            farEnough = ranSince >= 30f;
+            if (!farEnough) return;
+        }
+        if (v < prefs.vFull() - 0.3f) return;
         float speed = Float.isNaN(HudState.speedKmh) ? HudState.gpsKmh : HudState.speedKmh;
-        // v1.0.29：GPS 没定位时 speed 是 NaN，旧代码直接 return ——
-        // 结果"停在室内充电、一开机"这种最该校准的场景反而永远校不了（充电器旁边常常没星）。
-        // 现在 NaN 也能判"没在动"：用"最近 20 秒里程没涨"当静止依据。
-        // v1.0.46：但这个"20 秒"太松了 —— 07:42 日志里车正在以 25km/h 跑，
-        // 因为开机后里程还没开始长（kmGrowingTs 刚建立），被判成"停稳"，
-        // 于是在骑行途中触发满电锚点、把当时 6.9km 的本次里程折走了。
-        // 收紧到 90 秒，并且要求服务已经跑够 90 秒（冷启动那一下不算"停稳"）。
         boolean quiet;
         if (Float.isNaN(speed)) {
-            quiet = kmGrowingTs > 0L && now - kmGrowingTs > 90_000L && now - bootMs > 90_000L;
+            quiet = kmGrowingTs > 0L && now - kmGrowingTs > 480_000L && now - bootMs > 480_000L;
         } else {
             quiet = speed <= 2f;
         }
         if (!quiet) return;
-        if (v < prefs.vFull() - 0.4f) return;
+        // ② 停稳要"持续"：只有这一秒速度 0 不算，看真正静止了多久
+        if (stationarySince <= 0L || now - stationarySince < 480_000L) return;
         prefs.setCycleSoc(100f);
         // v1.0.47：这里原来是 setCycleKm(tripKm)，紧接着 resetTripFoldingOdo 又把本次清零 ——
         // 于是"本箱电已跑"的起点记成了一个已经不存在的里程。改成 0：满电就是从 0 起算。
@@ -1431,9 +1437,14 @@ public class BleService extends Service implements HudBle.Listener {
                 // 所以这里按电动车的物理下限判一次 —— 稳定速度有数且 < 8km/h = 不是车在跑，
                 // 这段距离不记（速度是 NaN 时照记：GPS 速度精度被判不合格不等于没在骑）。
                 float gk = HudState.gpsKm;
-                boolean looksLikeRiding = Float.isNaN(HudState.gpsKmh) || HudState.gpsKmh >= 8f;
+                // v1.0.53：连上车时，"推着走"也算里程（车轮真的在转、仪表也记）；
+                // 没连车时按 8km/h 挡走路（手机揣兜里散步不该给车加里程）。
+                boolean linked = lastLiveVMs > 0L && now - lastLiveVMs < 8000L;
+                float gate = linked ? 1.5f : 8f;
+                boolean looksLikeRiding = Float.isNaN(HudState.gpsKmh) || HudState.gpsKmh >= gate;
                 if (looksLikeRiding && lastGpsKm >= 0f && !Float.isNaN(gk) && gk - lastGpsKm >= 0.001f) {
-                    trip.addKm(gk - lastGpsKm, now);
+                    // v1.0.53：每个字都按"这台车"的比例折算，不再默认 GPS=车轮
+                    trip.addKm((gk - lastGpsKm) * prefs.odoScale(), now);
                 } else if (!looksLikeRiding && lastGpsKm >= 0f && !Float.isNaN(gk)
                         && gk - lastGpsKm >= 0.02f && now - lastWalkLogMs > 30_000L) {
                     // 只在"确实攒了 20 米以上"时记一笔，不然走路时日志会被刷满
@@ -1566,6 +1577,15 @@ public class BleService extends Service implements HudBle.Listener {
                 }
                 boolean allowSnap = snapWindowUntil > 0L && now <= snapWindowUntil;
                 lastLiveTickMs = now;
+                // v1.0.53：**分清"站着"和"跑着"**，这是这次复盘最核心的一条。
+                // 11-19 全程里，屏幕上显示 64% 的同一刻，电压换算只有 58%；骑行中 10 秒窗口
+                // 内电压换算的电量摆幅中位 25%、最大 91%（见 analysis/57）。所以：
+                //   站着（停稳 20 秒 + 没油门）→ 电压可信，查表（这是"量血压"）
+                //   跑着 → 电压不可信，按里程账本推（这是"数步子"）
+                // 旧版两种情况都拿电压查表，所以永远在"多估"和"少估"之间抽。
+                boolean atRest = stationarySince > 0L && now - stationarySince >= 20_000L
+                        && (Float.isNaN(speedKmh) || speedKmh <= 2f)
+                        && (Float.isNaN(thrV) || thrV < 1.5f);
                 // 查表电压优先用"逐帧配平的 OCV 候选"（这个值里已经含了每一帧自己的压降），
                 // v1.0.44：候选样本不够时，**沿用上一次的 vMap**，不再退回"本帧 + 本帧压降"。
                 // 实测（224404 日志）就是这么抖的：ocvCand 样本数在 8 附近来回穿，
@@ -1597,12 +1617,29 @@ public class BleService extends Service implements HudBle.Listener {
                 }
                 // v1.0.36：查表结果再进一次 6 秒窗中位数，压掉单帧跳变（见字段注释）
                 if (!Float.isNaN(socVal)) socVal = socSmooth.add(now, socVal);
+                // v1.0.53：**跑着的时候不信电压，走里程账本**。
+                // 账本 = 上一次静置锚点 − 每公里耗电% × 之后跑的里程；perKm 由每次静置校准学出来。
+                // 这样上坡掉电、松油门回弹、重连后一闪而过这几个老毛病，从源头上没有了
+                // —— 因为骑行过程中电压根本不参与显示。
+                if (!atRest && socTracker != null) {
+                    float pred = socTracker.predict(HudState.tripKm);
+                    if (!Float.isNaN(pred)) socVal = pred;
+                } else if (atRest && socTracker != null) {
+                    // 站着的时候允许"电压纠正"，但**一次最多纠 5 个点**：
+                    // 骑手一天在商场门口停十几次，每次整段对齐会看到数字来回蹦，
+                    // 限幅后既能纠偏又不会晃眼（几次停靠自然收敛）。
+                    float pred = socTracker.predict(HudState.tripKm);
+                    if (!Float.isNaN(pred) && !Float.isNaN(socVal)) {
+                        socVal = Math.max(pred - 5f, Math.min(pred + 5f, socVal));
+                    }
+                }
                 // v1.0.44：最后再走显示层（死区 + 限速），这才是上屏的那个数
                 // v1.0.49：骑行中单独一套参数（死区 3 分、上升 1 分/秒）—— 带载端电压自己在摆，
                 // 让屏幕跟着摆就成了"电量自己往上爬两格"。
                 if (!Float.isNaN(socVal)) {
-                    boolean riding = (!Float.isNaN(speedKmh) && speedKmh >= 8f)
-                            || (!Float.isNaN(thrV) && thrV > 1.5f);
+                    // v1.0.53：显示层的"骑行参数"改为 `!atRest`。骑行时目标已经是里程账本，
+                    // 本来就不会摆；死区 3 只是防单步抖动，停下后立刻回落到静置电压口径。
+                    boolean riding = !atRest;
                     float before = socDisplay.value();
                     socVal = socDisplay.onEstimate(now, socVal, allowSnap, riding);
                     // v1.0.46：真发生"确认后的直跳"就记一笔 —— 复盘时能区分
@@ -1614,13 +1651,15 @@ public class BleService extends Service implements HudBle.Listener {
                     }
                 }
                 if (!Float.isNaN(socVal)) lastLiveSoc = socVal;   // v1.0.37：留给"断开后冻结"用
-                // 账本跟着真值走：断开那一刻要有一份"断开前读数"当起点（60 秒或差 6 点以上同步一次）
-                if (!Float.isNaN(socVal) && socTracker != null
+                // 账本跟着真值走：只有**静置**时才拿电压口径当锚点（骑行中的电压不是真值，不能当锚）
+                // v1.0.53：改用 anchorRestGuarded —— 一次异常低压只挪 3 点、一箱电有预算，
+                // 不会像 11-18 那样"每个红绿灯往下拽一点，最后 26.8km 只剩 4%"。
+                if (atRest && !Float.isNaN(socVal) && socTracker != null
                         && (now - lastSocSyncMs > 60_000L
                         || Float.isNaN(socTracker.getShown())
                         || Math.abs(socVal - socTracker.getShown()) > 6f)) {
                     lastSocSyncMs = now;
-                    socTracker.anchorRest(now, socVal, HudState.tripKm);
+                    socTracker.anchorRestGuarded(now, socVal, HudState.tripKm);
                     prefs.setSocAnchorSoc(socTracker.getAnchorSoc());
                     prefs.setSocAnchorKm(socTracker.getAnchorKm());
                     prefs.setSocAnchorTs(now);
@@ -1714,7 +1753,10 @@ public class BleService extends Service implements HudBle.Listener {
             // v1.0.44：**欠压提示**。实车"没动力、拧油门不走"往往就是这一条：
             // 电压掉到欠压线以下，控制器在做低电压保护（不是坏了）。
             // 之前界面只有电压变红，没有一句话说明原因，骑手只能猜。
-            if (live && !Float.isNaN(disp) && disp < prefs.vEmpty()) {
+            // v1.0.53：欠压提示的判据不能再用 vEmpty（63.8 是**静置**口径）。
+            // 11-19 实测这车"彻底没电"时带载 58.26V，所以带载口径的报警线单列 60.5V，
+            // 否则骑到还剩 10km 就会天天喊"低压保护"。
+            if (live && !Float.isNaN(disp) && disp < LOW_VOLT_WARN_V) {
                 // v1.0.50：**先确认"真的走不动"，再喊低压保护。**
                 //
                 // 旧版只看端电压 < 欠压线就提示"拧油门不走"，可满载爬坡时端电压本来就会被
@@ -1939,10 +1981,11 @@ public class BleService extends Service implements HudBle.Listener {
     /** v1.0.19：连续几次"电压口径比能量口径低太多"（≥3 次才反过来认电压） */
     private int voltSuspectCount;
     /** 本轮停车已经做了几次静置校准（最多 3 次：120s / 3min / 8min） */
-    private int restCalCount;
-    private long lastRestCalMs;
+    private int restCalCount;    private long lastRestCalMs;
     /** 里程最近一次"在增长"的时刻：判断车到底是在跑还是停着 */
     private long kmGrowingTs;
+    /** v1.0.53：带载口径的低压报警线（实测这车"彻底没电"时带载 58.26V） */
+    private static final float LOW_VOLT_WARN_V = 60.5f;
     private float lastKmForMove;
     private float lastSummaryKmF = -1f;
     /** 里程：照 OpenTracks 的精度门限 + 抗漂移/抗跳点 */

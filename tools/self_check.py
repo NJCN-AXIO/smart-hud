@@ -21,7 +21,9 @@ import sys
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GRADLE = r"C:\Users\user\.gradle\wrapper\dists\gradle-8.9-bin\90ujzsggybs7v3y4eq2lwjyvr\gradle-8.9\bin\gradle.bat"
+# 本机可用环境变量 GRADLE_BAT 覆盖（仓库里的默认值已脱敏成通用路径）
+GRADLE = os.environ.get("GRADLE_BAT") or \
+    os.path.expanduser(r"~\.gradle\wrapper\dists\gradle-8.9-bin\90ujzsggybs7v3y4eq2lwjyvr\gradle-8.9\bin\gradle.bat")
 
 results = []
 
@@ -127,7 +129,8 @@ def main():
         want_code = vc.group(1) if vc else "?"
         want_name = vn.group(1) if vn else "?"
 
-        aapt2 = r"C:\Users\user\Android\Sdk\build-tools\34.0.0\aapt2.exe"
+        aapt2 = os.environ.get("AAPT2") or \
+            os.path.expanduser(r"~\Android\Sdk\build-tools\34.0.0\aapt2.exe")
         got = None
         if os.path.isfile(aapt2):
             rc2, out2 = run([aapt2, "dump", "badging", apk])

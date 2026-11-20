@@ -596,6 +596,26 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
      * 设置页和主屏长按共用这一个入口 —— 早前两处各写一套含义，才会出现"改这个那个就变"。
      */
     private void alignOdoTo(float target, String why) {
+        // v1.0.53：对齐的同时**学习比例系数** —— 这是"校准完又跑偏"的解药。
+        // 两次校准之间：仪表走了 ΔD、App 走了 ΔA，比值就是这台车 GPS 与车轮的真实比例。
+        // 只有基线够长（≥5km）才学，避免刚校准完又校准一次把系数拉飞。
+        float prevDash = prefs.odoCalDash();
+        float prevApp = prefs.odoCalApp();
+        float oldApp = HudState.odoKm;
+        if (!Float.isNaN(prevDash) && !Float.isNaN(prevApp) && !Float.isNaN(oldApp)) {
+            float dDash = target - prevDash;
+            float dApp = oldApp - prevApp;
+            if (dDash >= 5f && dApp >= 5f) {
+                float ratio = dDash / dApp;
+                float oldScale = prefs.odoScale();
+                float newScale = oldScale * ratio;
+                newScale = Math.min(1.15f, Math.max(0.85f, newScale));
+                prefs.setOdoScale(newScale);
+                RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
+                        "ODO_SCALE learn: dash +%.2f vs app +%.2f -> ratio %.4f, scale %.4f -> %.4f",
+                        dDash, dApp, ratio, oldScale, newScale));
+            }
+        }
         float trip = Float.isNaN(HudState.tripKm) ? 0f : HudState.tripKm;
         float old = HudState.odoKm;
         int base = prefs.odoBaseKm();
@@ -608,6 +628,10 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         prefs.setOdoBaseKm(base);
         prefs.setOdoAccumKm(accum);
         HudState.odoKm = base + accum + trip;
+        // 记下这次校准点，下次校准才有 Δ 可算
+        prefs.setOdoCalDash(target);
+        prefs.setOdoCalApp(HudState.odoKm);
+        prefs.setOdoCalTs(System.currentTimeMillis());
         HudState.gapWarn = "";      // v1.0.43：对齐完成，断档提示撤掉
         HudState.touch();
         float delta = Float.isNaN(old) ? 0f : (target - old);

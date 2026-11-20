@@ -28,12 +28,32 @@ public final class Prefs {
      * 只迁移"还是老默认 78.0"的用户；用户自己改过的值（比如按实测标的 75.6）不动。
      */
     private void migrate() {
-        if (sp.getBoolean("mig_vfull_765", false)) return;
-        float saved = sp.getFloat("v_full", 76.5f);
-        if (Math.abs(saved - 78.0f) < 0.01f) {
-            sp.edit().putFloat("v_full", 76.5f).apply();
+        // 先跑老迁移（78.0 → 76.5），再跑新迁移（≤77.5 → 78.6），顺序不能反
+        if (!sp.getBoolean("mig_vfull_765", false)) {
+            float saved = sp.getFloat("v_full", 76.5f);
+            if (Math.abs(saved - 78.0f) < 0.01f) {
+                sp.edit().putFloat("v_full", 76.5f).apply();
+            }
+            sp.edit().putBoolean("mig_vfull_765", true).apply();
         }
-        sp.edit().putBoolean("mig_vfull_765", true).apply();
+        migrateVFull786();
+    }
+
+    /**
+     * v1.0.53：满电/空电两端锚点按 11-19 实车全程重标。
+     *
+     * 实测：满电静置 **78.67V**、耗尽带载 **58.26V**。旧值 76.5/63.0 让中段 76~77V
+     * 被判成"充满了"（自动清本次里程、电量拽到 100，一晚两次），并且 0% 提前 10km 出现。
+     *
+     * 只迁移"还是旧默认"的用户：76.5 → 78.6、63.0 → 63.8。用户自己填过的值不动。
+     */
+    private void migrateVFull786() {
+        if (sp.getBoolean("mig_vfull_786", false)) return;
+        float vf = sp.getFloat("v_full", 76.5f);
+        if (vf <= 77.5f) sp.edit().putFloat("v_full", 78.6f).apply();
+        float ve = sp.getFloat("v_empty", 63.0f);
+        if (Math.abs(ve - 63.0f) < 0.2f) sp.edit().putFloat("v_empty", 63.8f).apply();
+        sp.edit().putBoolean("mig_vfull_786", true).apply();
     }
 
     // ---------- 车辆 / 蓝牙 ----------
@@ -108,13 +128,12 @@ public final class Prefs {
     public void setSScale(float v) { sp.edit().putFloat("s_scale", v).apply(); }
 
     // ---------- 电量模型 ----------
-    /** 满电静置电压。实测充满静置 78.3V（72V 铅酸 6 块），所以默认给 78.0，不再用 76.5 */
-    /** 满电静置电压（OCV，不是充电时的浮充电压）。72V 铅酸充满静置一晚 ≈ 76.2–76.5 */
-    public float vFull() { return sp.getFloat("v_full", 76.5f); }
+    /** 满电静置电压（OCV，不是充电时的浮充电压）。v1.0.53 按 11-19 实测：78.67V */
+    public float vFull() { return sp.getFloat("v_full", 78.6f); }
     public void setVFull(float v) { sp.edit().putFloat("v_full", v).apply(); }
 
-    /** 空电（欠压保护）电压 */
-    public float vEmpty() { return sp.getFloat("v_empty", 63.0f); }
+    /** 空电电压（静置口径）。v1.0.53 按 11-19 实测：耗尽时带载 58.26V、静置 63.8V */
+    public float vEmpty() { return sp.getFloat("v_empty", 63.8f); }
     public void setVEmpty(float v) { sp.edit().putFloat("v_empty", v).apply(); }
 
     // ---------- 里程 ----------
@@ -132,6 +151,33 @@ public final class Prefs {
     public void setOdoBaseKm(int v) { sp.edit().putInt("odo_base_km", Math.max(0, v)).apply(); }
     public float odoAccumKm() { return sp.getFloat("odo_accum_km", 0f); }
     public void setOdoAccumKm(float v) { sp.edit().putFloat("odo_accum_km", Math.max(0f, v)).apply(); }
+
+    // ---------- v1.0.53：GPS 里程 ↔ 仪表里程的偏差学习 ----------
+    //
+    // 用户实测：中途校准过总里程，跑到最后又和仪表差了好几公里 —— 因为校准只改"起点"，
+    // 不纠正"跑一公里 GPS 算多远"。GPS 在城市里通常比车轮里程偏 2–4%，一趟 80km 就差 2-3km，
+    // 越骑越远，最后拿来判断"还能不能到家"就会误事。
+    //
+    // 现在每次校准除了对齐起点，还会用"两次校准之间的 Δ仪表 / ΔApp"算一个比例系数，
+    // 之后每一段 GPS 距离都按这个系数折算 —— 相当于让 App 学会这台车的轮径/胎压/误差。
+
+    /** 里程比例系数（1.0 = GPS 与仪表一致）；夹在 0.85–1.15，防止一次输错把表拉飞 */
+    public float odoScale() { return sp.getFloat("odo_scale", 1.0f); }
+    public void setOdoScale(float v) {
+        sp.edit().putFloat("odo_scale", Math.min(1.15f, Math.max(0.85f, v))).apply();
+    }
+
+    /** 上一次校准时的仪表读数 */
+    public float odoCalDash() { return sp.getFloat("odo_cal_dash", Float.NaN); }
+    public void setOdoCalDash(float v) { sp.edit().putFloat("odo_cal_dash", v).apply(); }
+
+    /** 上一次校准时的 App 显示里程（用于算 Δ） */
+    public float odoCalApp() { return sp.getFloat("odo_cal_app", Float.NaN); }
+    public void setOdoCalApp(float v) { sp.edit().putFloat("odo_cal_app", v).apply(); }
+
+    /** 上次校准的时间：太近（<3km）的两次校准不参与比例学习，噪声太大 */
+    public long odoCalTs() { return sp.getLong("odo_cal_ts", 0L); }
+    public void setOdoCalTs(long v) { sp.edit().putLong("odo_cal_ts", v).apply(); }
 
     /** 轮周长（毫米），用于将来用转速换算速度 */
     public int wheelMm() { return sp.getInt("wheel_mm", 1350); }

@@ -15,18 +15,19 @@ class CoreAlgorithmsTest {
 
     @Test
     fun `查表在参考锚点上精确命中`() {
+        // v1.0.53：锚点按 11-19 实车全程重标（78.67V 真满电 / 63.8V 真耗尽静置）
         val m = SocModel()
-        assertEquals(100f, m.soc(76.5f), 0.001f)
-        assertEquals(80f, m.soc(74.7f), 0.001f)
-        assertEquals(50f, m.soc(72.0f), 0.001f)
-        assertEquals(10f, m.soc(69.6f), 0.001f)
-        assertEquals(0f, m.soc(63.0f), 0.001f)
+        assertEquals(100f, m.soc(78.6f), 0.001f)
+        assertEquals(94f, m.soc(77.3f), 0.001f)
+        assertEquals(50f, m.soc(72.6f), 0.001f)
+        assertEquals(15f, m.soc(66.3f), 0.001f)
+        assertEquals(0f, m.soc(63.8f), 0.001f)
     }
 
     @Test
     fun `电压与电量往返闭合（六个点，误差小于 0点01V）`() {
         val m = SocModel()
-        for (v in listOf(76.4f, 74.2f, 72.0f, 70.6f, 69.2f, 67.0f)) {
+        for (v in listOf(78.0f, 76.4f, 74.9f, 72.6f, 70.6f, 66.3f)) {
             val back = m.voltageOf(m.soc(v))
             assertEquals("v=$v 往返应闭合", v, back, 0.01f)
         }
@@ -36,12 +37,12 @@ class CoreAlgorithmsTest {
     fun `超出量程被夹紧而不是外推`() {
         val m = SocModel()
         assertEquals(100f, m.soc(82f), 0.001f)
-        assertEquals(0f, m.soc(58f), 0.001f)
+        assertEquals(0f, m.soc(60f), 0.001f)
         assertTrue(m.soc(Float.NaN).isNaN())
         assertTrue(m.voltageOf(Float.NaN).isNaN())
-        assertEquals(63f, m.voltageOf(0f), 0.001f)     // 0% → 空电电压 63V
-        assertEquals(63f, m.voltageOf(-5f), 0.001f)    // 负电量按 0% 夹紧
-        assertEquals(76.5f, m.voltageOf(150f), 0.001f) // 超 100% 按满电夹紧
+        assertEquals(63.8f, m.voltageOf(0f), 0.001f)    // 0% → 空电静置电压 63.8V
+        assertEquals(63.8f, m.voltageOf(-5f), 0.001f)   // 负电量按 0% 夹紧
+        assertEquals(78.6f, m.voltageOf(150f), 0.001f)  // 超 100% 按满电夹紧
     }
 
     @Test
@@ -172,8 +173,8 @@ class CoreAlgorithmsTest {
     fun `满电到 80 电量跑 4 公里应该学出约 5 百分点每公里`() {
         val m = SocModel()
         val book = EcoBook()
-        // 76.5V(100%) → 74.7V(80%)，4km ⇒ 20%/4km = 5%/km
-        val r = book.evaluate(entry(0L, 76.5f, 0f), entry(3_600_000L, 74.7f, 4f), m)
+        // v1.0.53 表：78.6V=100%、74.0V=70%，6km ⇒ 30%/6km = 5%/km
+        val r = book.evaluate(entry(0L, 78.6f, 0f), entry(3_600_000L, 74.0f, 6f), m)
         assertTrue(r.learned)
         assertEquals(5f, r.newRate!!, 1e-4f)
         assertEquals(5f, r.segmentRate!!, 1e-4f)
@@ -186,7 +187,7 @@ class CoreAlgorithmsTest {
     fun `距离太短不学`() {
         val m = SocModel()
         val book = EcoBook()
-        val r = book.evaluate(entry(0L, 76.5f, 0f), entry(60_000L, 74.7f, 1.5f), m)
+        val r = book.evaluate(entry(0L, 78.6f, 0f), entry(60_000L, 74.0f, 1.5f), m)
         assertFalse(r.learned)
         assertFalse(book.commit(r))
     }
@@ -204,7 +205,7 @@ class CoreAlgorithmsTest {
         val m = SocModel()
         val book = EcoBook()
         // 3 公里从 100% 掉到 0% ⇒ 33%/km，超过 20 的上限
-        val r = book.evaluate(entry(0L, 76.5f, 0f), entry(600_000L, 63.0f, 3f), m)
+        val r = book.evaluate(entry(0L, 78.6f, 0f), entry(600_000L, 63.8f, 3f), m)
         assertFalse(r.learned)
     }
 
@@ -212,10 +213,11 @@ class CoreAlgorithmsTest {
     fun `第二次学习走 EMA 0点7 旧加 0点3 新`() {
         val m = SocModel()
         val book = EcoBook()
-        val first = book.evaluate(entry(0L, 76.5f, 0f), entry(1_000L, 74.7f, 4f), m)  // 5%/km
+        // 第一段：78.6V(100%) → 74.0V(70%)，6km ⇒ 5%/km
+        val first = book.evaluate(entry(0L, 78.6f, 0f), entry(1_000L, 74.0f, 6f), m)
         book.commit(first)
-        // 第二段：74.7(80%) → 73.8(70%)，2.5km ⇒ 4%/km
-        val second = book.evaluate(entry(2_000L, 74.7f, 4f), entry(3_000L, 73.8f, 6.5f), m)
+        // 第二段：74.0V(70%) → 72.6V(50%)，5km ⇒ 4%/km
+        val second = book.evaluate(entry(2_000L, 74.0f, 6f), entry(3_000L, 72.6f, 11f), m)
         assertTrue(second.learned)
         assertEquals(5f * 0.7f + 4f * 0.3f, second.newRate!!, 1e-4f)
         book.commit(second)
@@ -242,7 +244,7 @@ class CoreAlgorithmsTest {
      */
     @Test
     fun `演示剧本预演：电压走完一轮时电量与里程的变化`() {
-        val model = SocModel(78.0f, 63f)   // 按实测满电 78V 的推荐设置
+        val model = SocModel(78.6f, 63.8f)   // v1.0.53 的实测推荐值
         val trip = TripIntegrator()
         var now = 0L
         val rows = StringBuilder()
@@ -540,18 +542,18 @@ class CoreAlgorithmsTest {
     }
 
     @Test
-    fun `30km-h 时补 1点8V，把带载电压抬回空载`() {
+    fun `30km-h 时补 5V，把带载电压抬回空载`() {
         val c = LoadComp()
-        // 实车：73.9V @ 30km/h → 静置约 75.7V（仍属"中段"，不该判成没电）
-        assertEquals(1.8f, c.sagOf(30f), 1e-4f)
-        assertEquals(75.7f, c.ocv(73.9f, 30f), 1e-4f)
+        // 11-19 实测：30km/h 以上带载压降中位 5.25V、P90 5.83V（旧版只补 1.8V）
+        assertEquals(5.0f, c.sagOf(30f), 1e-4f)
+        assertEquals(78.9f, c.ocv(73.9f, 30f), 1e-4f)
     }
 
     @Test
     fun `补偿封顶，高速时不会把电量算虚高`() {
         val c = LoadComp()
-        assertEquals(2.6f, c.sagOf(80f), 1e-4f)
-        assertEquals(2.6f, c.sagOf(200f), 1e-4f)
+        assertEquals(6.0f, c.sagOf(80f), 1e-4f)
+        assertEquals(6.0f, c.sagOf(200f), 1e-4f)
     }
 
     @Test
@@ -564,10 +566,10 @@ class CoreAlgorithmsTest {
 
     @Test
     fun `补偿后的电压查表，比直接查表更接近真实电量`() {
-        val m = SocModel(vFull = 78f, vEmpty = 63f)
+        val m = SocModel(vFull = 78.6f, vEmpty = 63.8f)
         val c = LoadComp()
-        val loaded = m.soc(73.9f)                 // 直接拿带载电压查 → 偏低
-        val fixed = m.soc(c.ocv(73.9f, 30f))      // 补偿后再查
+        val loaded = m.soc(70.0f)                 // 直接拿带载电压查 → 偏低
+        val fixed = m.soc(c.ocv(70.0f, 30f))      // 补偿 +5V 后再查
         assertTrue("补偿后电量应更高", fixed > loaded)
         assertTrue("但不会直接拉到 100%", fixed < 100f)
     }
@@ -708,16 +710,17 @@ class CoreAlgorithmsTest {
     @Test
     fun `上坡满油门的压降要按油门补 不是按速度补`() {
         val c = LoadComp()
-        // 平路 30km/h、松油门（0.8V）：只补速度项 0.06*30 = 1.8V
-        assertEquals(1.8f, c.sagOf(30f, 0.8f), 0.01f)
-        // 上坡 15km/h、油门到底（4.2V）：速度项 0.9V + 油门项 1.35*(4.2-0.8)=4.59 → 5.49V（v1.0.31 实测标定）
-        assertEquals(5.49f, c.sagOf(15f, 4.2f), 0.01f)
+        // 平路 30km/h、松油门（0.8V）：只补速度项 → 5.0V
+        assertEquals(5.0f, c.sagOf(30f, 0.8f), 0.01f)
+        // 上坡 15km/h、油门到底（4.2V）：速度项 2.8V、油门项 1.35*(4.2-0.8)=4.59 → 取较大值 4.59V
+        // （v1.0.53 明确"取 max 不相加"：两个信号是同一份电流的两个侧面，相加会补过头）
+        assertEquals(4.59f, c.sagOf(15f, 4.2f), 0.01f)
         // 停车（速度 0、油门回位）：一点不补，得到的就是真实静置电压
         assertEquals(0f, c.sagOf(0f, 0.8f), 0.01f)
         // 转把未知时退化成只看速度，不该凭空多补
-        assertEquals(1.8f, c.sagOf(30f, Float.NaN), 0.01f)
+        assertEquals(5.0f, c.sagOf(30f, Float.NaN), 0.01f)
         // OCV = 带载 + 补偿
-        assertEquals(73.9f + 5.49f, c.ocv(73.9f, 15f, 4.2f), 0.05f)
+        assertEquals(73.9f + 4.59f, c.ocv(73.9f, 15f, 4.2f), 0.05f)
     }
 
     @Test
