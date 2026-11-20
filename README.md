@@ -1646,3 +1646,15 @@ dc（未补偿值）、sra（直接拿原始电压查表的结果）。
 - **测试同步**：`CoreAlgorithmsTest` 按新表/新压降更新断言（查表锚点、往返闭合、`sagOf(30)=5.0`、`sagOf(15,4.2)=4.59`、`sagOf(80)=6.0`、`EcoBook` 学习样本改用 78.6→74.0/6km 与 74.0→72.6/5km）。`tools/self_check.py` 的 gradle/aapt2 路径改为 `GRADLE_BAT`/`AAPT2` 环境变量覆盖 + `~` 展开（仓库内仍是脱敏路径）。
 - **验证**：protocol 11 / core **109** 单测全过；`assembleDebug` + `lintDebug` → **0 error / 23 warning**；红线 `check_no_write` 通过（CCCD 2 处，无写特征值）；`self_check.py --skip-build` **6/6**（APK 8,917,882 B，vc90/1.0.53）。dist：`delivery-hud-1.0.53-debug.apk` + `-1.0.53-src.zip`。
 - **文档**：`analysis/58_v1.0.53_电量分站跑与里程对齐.md`。
+
+
+## 4.80 v1.0.53 补丁（2026-11-20，对表复核后的三项修正）
+
+收到用户报的仪表读数（**11306 → 11392**）后把账对上了：仪表 86.00 km，App 也是 86.00 km，但后者里有 **20.16 km 是两次手动对表补进去的**（`22:08:16 +10.97`、`01:10:32 +9.19`），App 实际只记到 **65.84 km**。速度积分口径 ∫spd·dt=68.68 km 与之吻合，两次对表的增量比 1.32 / 1.29 高度一致 → 不是随机丢点，而是稳定比例差 + 结构漏记。详见 `analysis/58` 第六节。
+
+- **里程积分改为单通道（本次最关键）**：旧代码 `speedFromController ? trip.onSpeed(...) : trip.addKm(gk-lastGpsKm)` 是**互斥**结构 —— 走速度那条时 `lastGpsKm` 不更新，一断速就把攒下来的位移一次性补进（双计）；位移在涨、时速被判 NaN 时又整段丢。现在每秒只取一支：**位移优先（≥0.5m）、时速兜底（≥1km/h）**，用掉哪支就推进 `lastGpsKm`，不足门槛的零头继续攒（推车 3km/h 每秒 0.8m，旧 1m 门槛会把低速段整段吃掉）。
+- **盲区自检**：连着车 + 时速 ≥8 + 无位移持续 >60s → `odo blind: spd=..km/h but no gps delta for ..s (km not growing)`（60s 节流）。REC 新增 `gkm=` / `sc=`，日志里可直接拆"位移 / 速度积分 / 显示总里程 / 当前系数"。
+- **对表学习放宽 + 限步**：`Prefs.setOdoScale` 区间 0.85~1.15 → **0.75~1.35**（旧上限把 22~30% 的差硬卡在 1.15，是"怎么调都对不上"的直接原因）；`alignOdoTo` 单次调整限 **±4%**（防把"漏记"当比例一次拉满）。
+- **设置页「电量」新增两行**：`里程系数`（>1.02 时写明"仪表比 GPS 多算 X%，已折算"）与 `上次对表 MM-dd HH:mm：仪表 X / App Y`。
+- 新增工具：`tools/odo_gap_probe.py`（逐份日志的对表事件/walk gate/trip reset 清单 + ∫spd·dt 对照）、`tools/odo_gap_probe2.py`（gkm / ∫spd / odo / NaN% / src4% 一表对照）。
+- 验证：protocol 11 / core **109** 全过；lint **0 error / 23 warning**；APK 9,009,091 B（vc90/1.0.53）。

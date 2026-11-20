@@ -176,6 +176,8 @@ public class BleService extends Service implements HudBle.Listener {
     private float lastGpsKm = -1f;
     /** v1.0.49：上一次记"步行不记里程"这条日志的时刻（30 秒节流，别刷屏） */
     private long lastWalkLogMs = 0L;
+    /** v1.0.53：上一次记"里程盲区（有速度没位移）"的时刻（60 秒节流） */
+    private long lastOdoBlindLogMs = 0L;
     /** v1.0.50：上一次记"OCV 窗口刚重建、先不动"的时刻（30 秒节流） */
     private long lastFreshHoldLogMs = 0L;
     /** v1.0.50：端电压连续低于欠压线的起点（0 = 没低），避免满载爬坡被误报成"低压保护" */
@@ -1417,43 +1419,51 @@ public class BleService extends Service implements HudBle.Listener {
                 calibrateSocAtRest(now);
             }
 
-            // 速度来源：控制器报的速度（标定后）优先；没标定时不能用 GPS 速度积分
-            // （低速时 GPS 常报 0，且会和下面的距离增量重复计算 → 里程翻倍）
-            boolean speedFromController = !Float.isNaN(HudState.speedKmh);
-            if (speedFromController) {
-                trip.onSpeed(HudState.speedKmh, now);
+            // ---------- 里程积分（v1.0.53：位移优先、速度兜底，一条通道不重不漏）----------
+            // 旧版是"速度有数就走速度积分、没数才走 GPS 位移"，两条路**互斥**，两个坑：
+            //   ① 速度路径期间 lastGpsKm 不更新 → 一断速就把攒下来的位移一次性补进去（双计）；
+            //   ② 反过来，位移明明在涨、时速被判 NaN 的那几秒全丢。
+            // 11-19 两趟日志按对表算：App 一直少记 22~30%（86km 只记了 65.8km），就是这个结构。
+            // 现在每秒只取一支：有位移就用位移，没位移才用时速×1 秒，绝不两条叠加。
+            float gk = HudState.gpsKm;
+            // 连上车时"推着走"也算里程（车轮真在转、仪表也记）；没连车才按 8km/h 挡散步。
+            boolean linked = lastLiveVMs > 0L && now - lastLiveVMs < 8000L;
+            float gate = linked ? 1.5f : 8f;
+            boolean looksLikeRiding = Float.isNaN(HudState.gpsKmh) || HudState.gpsKmh >= gate;
+            float posDelta = (!Float.isNaN(gk) && lastGpsKm >= 0f) ? gk - lastGpsKm : Float.NaN;
+            boolean posUsed = false;
+            if (looksLikeRiding && !Float.isNaN(posDelta) && posDelta >= 0.0005f) {
+                // 0.5 米门槛：推车 3km/h 每秒只有 0.8 米，门槛再高就把低速段整段丢掉
+                trip.addKm(posDelta * prefs.odoScale(), now);
+                posUsed = true;
+            } else if (looksLikeRiding && !Float.isNaN(HudState.speedKmh)
+                    && HudState.speedKmh >= 1f) {
+                trip.onSpeed(HudState.speedKmh * prefs.odoScale(), now);
+                posUsed = true;          // 用了速度口径：本 tick 的位移就不要了（不叠加）
             } else {
-                // 没标定速度：只用相邻定位点的距离增量兜底。
-                //
-                // v1.0.9 修的真 bug：这里以前还要求 `GPS 速度 ≥ 3km/h`。
-                // 可 gpsKm 已经是 TrackDistance **过滤通过之后**才涨的（抖动、跳点、
-                // 速度一致性都过了），再加一道"显示速度够不够 3"完全是多余的；
-                // 而城市里 GPS 速度精度经常被判不合格（speedStab 保持 4 秒后就变 NaN），
-                // 那段时间里 gkm 在涨、里程却一条都不记 —— 就是"跑了一段，里程没动"。
-                // 现在只要"过滤后的里程涨了"就记，跟显示速度彻底解耦。
-                //
-                // v1.0.49 补一道闸：实车反映"没骑车、拿着手机走路，里程也在涨"。
-                // 走路 4–6km/h 也能过 TrackDistance 的那几道校验（它只管"点像不像真移动"），
-                // 所以这里按电动车的物理下限判一次 —— 稳定速度有数且 < 8km/h = 不是车在跑，
-                // 这段距离不记（速度是 NaN 时照记：GPS 速度精度被判不合格不等于没在骑）。
-                float gk = HudState.gpsKm;
-                // v1.0.53：连上车时，"推着走"也算里程（车轮真的在转、仪表也记）；
-                // 没连车时按 8km/h 挡走路（手机揣兜里散步不该给车加里程）。
-                boolean linked = lastLiveVMs > 0L && now - lastLiveVMs < 8000L;
-                float gate = linked ? 1.5f : 8f;
-                boolean looksLikeRiding = Float.isNaN(HudState.gpsKmh) || HudState.gpsKmh >= gate;
-                if (looksLikeRiding && lastGpsKm >= 0f && !Float.isNaN(gk) && gk - lastGpsKm >= 0.001f) {
-                    // v1.0.53：每个字都按"这台车"的比例折算，不再默认 GPS=车轮
-                    trip.addKm((gk - lastGpsKm) * prefs.odoScale(), now);
-                } else if (!looksLikeRiding && lastGpsKm >= 0f && !Float.isNaN(gk)
-                        && gk - lastGpsKm >= 0.02f && now - lastWalkLogMs > 30_000L) {
-                    // 只在"确实攒了 20 米以上"时记一笔，不然走路时日志会被刷满
-                    lastWalkLogMs = now;
-                    RawLog.sys(now, String.format(Locale.US,
-                            "walk gate: spd=%.1fkm/h < 8, skip %.2fkm (not a ride)", HudState.gpsKmh, gk - lastGpsKm));
-                }
-                // lastGpsKm 无论如何都要跟着走，否则"走路那一段"会攒成一次大跳，等速度一上来全补进去
+                trip.onSpeed(0f, now);   // 停着/走路：只推进时间戳，不累计
+            }
+            if (!looksLikeRiding && !Float.isNaN(posDelta) && posDelta >= 0.02f
+                    && now - lastWalkLogMs > 30_000L) {
+                // 只在"确实攒了 20 米以上"时记一笔，不然走路时日志会被刷满
+                lastWalkLogMs = now;
+                RawLog.sys(now, String.format(Locale.US,
+                        "walk gate: spd=%.1fkm/h < %.1f, skip %.2fkm (not a ride)",
+                        HudState.gpsKmh, gate, posDelta));
+            }
+            // lastGpsKm 何时推进是这件事的命门：
+            //   这支用掉了（位移或速度）→ 必须推进，否则下一支会把同一段再算一遍；
+            //   位移太小不足门槛 → 不推进，让它继续攒（否则推车每 0.4 米就被吃掉）；
+            if (posUsed || !looksLikeRiding || Float.isNaN(gk)) {
                 if (!Float.isNaN(gk)) lastGpsKm = gk;
+            }
+            // 盲区自检：连着车、GPS 在报速、却没有位移也没有积分 → 说明定位点没点上，里程在漏
+            if (linked && !Float.isNaN(HudState.gpsKmh) && HudState.gpsKmh >= 8f
+                    && Float.isNaN(posDelta) && now - lastOdoBlindLogMs > 60_000L) {
+                lastOdoBlindLogMs = now;
+                RawLog.sys(now, String.format(Locale.US,
+                        "odo blind: spd=%.1fkm/h but no gps delta for %ds (km not growing)",
+                        HudState.gpsKmh, (now - Math.max(kmGrowingTs, now - 3_600_000L)) / 1000));
             }
             HudState.tripKm = trip.km();
             // v1.0.49：本次里程如果被清零（或换过电瓶重来），锚点必须一起落地，
@@ -1907,6 +1917,10 @@ public class BleService extends Service implements HudBle.Listener {
                         .append(" spd=").append(n0(speedKmh))
                         .append(" km=").append(n2(HudState.tripKm))
                         .append(" odo=").append(n1(HudState.odoKm))
+                        // v1.0.53：把 GPS 位移口径也写进日志 —— 复盘时能直接看出
+                        // "位移 vs 速度积分 vs 显示总里程"三者差多少，不用再靠猜
+                        .append(" gkm=").append(n2(HudState.gpsKm))
+                        .append(" sc=").append(n3(prefs.odoScale()))
                         .append(" soc=").append(n0(socVal))
                         // v1.0.50：断链后 lastRawV 是"最后一帧"的残值，别再拿它算一个假 sra 出来
                         .append(" sra=").append(lastLiveVMs > 0L && now - lastLiveVMs < 8000L

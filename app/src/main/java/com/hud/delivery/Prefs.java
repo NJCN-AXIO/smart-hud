@@ -163,8 +163,10 @@ public final class Prefs {
 
     /** 里程比例系数（1.0 = GPS 与仪表一致）；夹在 0.85–1.15，防止一次输错把表拉飞 */
     public float odoScale() { return sp.getFloat("odo_scale", 1.0f); }
+    /** v1.0.53：区间放宽到 0.75~1.35 —— 11-19 实测这台车的仪表比 GPS 多算约 30%，
+     *  0.85~1.15 根本装不下（旧上限直接把"还差 22%"卡在 1.15，所以永远对不上）。 */
     public void setOdoScale(float v) {
-        sp.edit().putFloat("odo_scale", Math.min(1.15f, Math.max(0.85f, v))).apply();
+        sp.edit().putFloat("odo_scale", Math.min(1.35f, Math.max(0.75f, v))).apply();
     }
 
     /** 上一次校准时的仪表读数 */

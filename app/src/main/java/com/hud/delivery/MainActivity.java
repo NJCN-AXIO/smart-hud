@@ -609,7 +609,13 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 float ratio = dDash / dApp;
                 float oldScale = prefs.odoScale();
                 float newScale = oldScale * ratio;
-                newScale = Math.min(1.15f, Math.max(0.85f, newScale));
+                // v1.0.53：单次最多调 4%，区间 0.75~1.35。
+                // 11-19 实测"仪表比 GPS 多算 ~30%"，但这个差里可能还夹着"App 被系统停了一段"
+                // 的漏记 —— 一次就把系数拉满，会把漏记当成比例，下一趟反而记过头。
+                // 每次只挪一步，校准两三次自然收敛；万一某次是漏记，误差也只吃一次。
+                float lo = Math.max(0.75f, oldScale * 0.96f);
+                float hi = Math.min(1.35f, oldScale * 1.04f);
+                newScale = Math.min(hi, Math.max(lo, newScale));
                 prefs.setOdoScale(newScale);
                 RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
                         "ODO_SCALE learn: dash +%.2f vs app +%.2f -> ratio %.4f, scale %.4f -> %.4f",
@@ -1066,6 +1072,23 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 ? String.valueOf(prefs.odoBaseKm())
                 : String.format(Locale.US, "%.1f", HudState.odoKm), true);
         ui.row(bat, "总里程 (km)", "照车上仪表填；保存后立刻按这个数显示", etOdo);
+        // v1.0.53：把"里程系数"和上次对表的两个数摆出来 —— 用户能直接看出
+        // "是我填的准，还是 App 一直少记"，不用再去翻日志。
+        float scNow = prefs.odoScale();
+        ui.row(bat, "里程系数", scNow > 1.02f || scNow < 0.98f
+                        ? String.format(Locale.US, "仪表比 GPS 多算 %.0f%%，已折算", (scNow - 1f) * 100f)
+                        : "1.000（GPS 与仪表一致）",
+                ui.value(String.format(Locale.US, "%.3f", scNow), true));
+        float calDash = prefs.odoCalDash();
+        if (!Float.isNaN(calDash)) {
+            float calApp = prefs.odoCalApp();
+            float calTs = prefs.odoCalTs();
+            String when = calTs > 0 ? new java.text.SimpleDateFormat("MM-dd HH:mm",
+                    Locale.CHINA).format(new java.util.Date((long) calTs)) : "--";
+            ui.note(bat, String.format(Locale.US,
+                    "上次对表 %s：仪表 %.1f / App %.1f。再对一次表，上面这个系数会自动再学一步（每次最多 4%%）。",
+                    when, calDash, calApp));
+        }
         // v1.0.45：把"充满自动清本次里程"写明在这里，免得骑手以为要手动去清
         ui.note(bat, "充满电（静置 ≥76.1V）时会自动把「本次里程」清零重新计一趟，总里程不变。");
 
