@@ -609,17 +609,29 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 float ratio = dDash / dApp;
                 float oldScale = prefs.odoScale();
                 float newScale = oldScale * ratio;
-                // v1.0.53：单次最多调 4%，区间 0.75~1.35。
-                // 11-19 实测"仪表比 GPS 多算 ~30%"，但这个差里可能还夹着"App 被系统停了一段"
-                // 的漏记 —— 一次就把系数拉满，会把漏记当成比例，下一趟反而记过头。
-                // 每次只挪一步，校准两三次自然收敛；万一某次是漏记，误差也只吃一次。
-                float lo = Math.max(0.75f, oldScale * 0.96f);
-                float hi = Math.min(1.35f, oldScale * 1.04f);
+                // v1.0.53：区间 0.75~1.35，单次最多 4%。
+                // v1.0.54：4% 太保守 —— 实测这台车仪表长期比 GPS 多算 25%~30%，
+                // 按 4% 一步要连对七八次表才追得上，中间几趟一直是错的。
+                // 现在分两种情形：
+                //   ① 系数还是出厂的 1.000（从没真正学过）且基线够长（≥8km）→ **直接采用实测比例**，
+                //      一趟就能准；只在 1.15 以上/0.87 以下才走，免得把一次漏记当成比例；
+                //   ② 已经学过 → 单次最多 12%（原来 4%），几步收敛。
+                float lo;
+                float hi;
+                if (Math.abs(oldScale - 1f) < 0.005f && dDash >= 8f && dApp >= 8f
+                        && (ratio >= 1.15f || ratio <= 0.87f)) {
+                    lo = 0.75f;
+                    hi = 1.35f;
+                } else {
+                    lo = Math.max(0.75f, oldScale * 0.88f);
+                    hi = Math.min(1.35f, oldScale * 1.12f);
+                }
                 newScale = Math.min(hi, Math.max(lo, newScale));
                 prefs.setOdoScale(newScale);
                 RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
-                        "ODO_SCALE learn: dash +%.2f vs app +%.2f -> ratio %.4f, scale %.4f -> %.4f",
-                        dDash, dApp, ratio, oldScale, newScale));
+                        "ODO_SCALE learn: dash +%.2f vs app +%.2f -> ratio %.4f, scale %.4f -> %.4f (%s)",
+                        dDash, dApp, ratio, oldScale, newScale,
+                        (hi - lo) > 0.2f ? "first-fit" : "step12"));
             }
         }
         float trip = Float.isNaN(HudState.tripKm) ? 0f : HudState.tripKm;
@@ -661,8 +673,8 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 : String.format(Locale.US, "%.1f", HudState.odoKm), true);
         ui.row(in, "仪表显示 (km)", "照车上那个数填，整数就行", et);
         ui.note(in, "对齐只改整车里程的起点，不影响本次里程、电量和续航。\n"
-                + "v1.0.53：每对一次表，App 会自动学一次「仪表 / GPS」的比例（单次最多调 4%），"
-                + "跑几趟后就基本不用再手动对。");
+                + "v1.0.54：每对一次表，App 会自动学一次「仪表 / GPS」的比例"
+                + "（还没学过比例时直接采用实测值，之后每次最多调 12%），跑两趟就基本不用再手动对。");
 
         ui.primary("对齐", v -> {
             float target = parseFloat(et.getText().toString(), Float.NaN);
@@ -1098,7 +1110,7 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
             String when = calTs > 0 ? new java.text.SimpleDateFormat("MM-dd HH:mm",
                     Locale.CHINA).format(new java.util.Date((long) calTs)) : "--";
             ui.note(bat, String.format(Locale.US,
-                    "上次对表 %s：仪表 %.1f / App %.1f。再对一次表，上面这个系数会自动再学一步（每次最多 4%%）。",
+                    "上次对表 %s：仪表 %.1f / App %.1f。再对一次表，上面这个系数会自动再学一步（没见过比例时直接采用实测，之后每次最多调 12%%）。",
                     when, calDash, calApp));
         }
         // v1.0.45 原本写"静置 ≥76.1V"；v1.0.53 门槛改了两处（电压按 78.6 满电重标 + 加了停稳/位移条件），

@@ -180,6 +180,11 @@ public class BleService extends Service implements HudBle.Listener {
     private long lastOdoBlindLogMs = 0L;
     /** v1.0.53：上一次"连不上 → 硬重建链路"的时刻（10 分钟节流） */
     private long lastHardResetMs = 0L;
+    /**
+     * v1.0.54：硬重建的退避间隔（毫秒）。在家熄火时控制器本来就不应答，
+     * 固定 10 分钟重建一次纯属耗电；改成 6→12→24→30 分钟封顶，连上就复位。
+     */
+    private long hardResetBackoffMs = 6L * 60_000L;
     /** v1.0.50：上一次记"OCV 窗口刚重建、先不动"的时刻（30 秒节流） */
     private long lastFreshHoldLogMs = 0L;
     /** v1.0.50：端电压连续低于欠压线的起点（0 = 没低），避免满载爬坡被误报成"低压保护" */
@@ -1129,7 +1134,10 @@ public class BleService extends Service implements HudBle.Listener {
         // v1.0.7：记"上一次真正连上"的时刻。报警武装要用它做闸门 ——
         // 只有"半小时内还见过控制器"的停车，才算"车就在身边、刚停好"，
         // 否则手机放在家里/揣在身上去坐车，都会被当成"车被骑走"。
-        if (st == HudState.CONNECTED) lastConnOkTs = System.currentTimeMillis();
+        if (st == HudState.CONNECTED) {
+            lastConnOkTs = System.currentTimeMillis();
+            hardResetBackoffMs = 6L * 60_000L;   // v1.0.54：连上就复位重建退避
+        }
         updateNotification(text);
     }
 
@@ -1412,18 +1420,22 @@ public class BleService extends Service implements HudBle.Listener {
                 if (link != null) link.reconnectNow();
             }
 
-            // v1.0.53：**连不上 6 分钟就硬重置一次链路**。
+            // v1.0.53：**连不上就硬重置一次链路**。
             // 11-19 17:20–18:23 那一个多小时，日志里 35 次"控制器没应答连接请求"、
             // 34 次"连接失败(status=-5)"—— 控制器一直在广播、App 一直在扫，
             // 但每轮 connect 都卡在 GATT，说明这一侧的栈已经僵了，靠退避重试永远好不了。
-            // 现在：连续 6 分钟一次都没连上，就 stop → 重建链路 → start（不动蓝牙开关，
-            // 对骑手无感），每 10 分钟最多打一次。
+            // v1.0.54 修正：那一段其实是**用户在家、车熄火**（他本人更正），控制器本来就不应答。
+            // 所以不能每 10 分钟硬重建一次 —— 在家放一夜等于白拆十几次链路，费电又耗蓝牙。
+            // 改成退避：6 分钟 → 12 → 24 → 30 分钟封顶，连上一次就重置回 6 分钟。
             if (running && HudState.connState != HudState.CONNECTED
-                    && now - Math.max(lastConnOkTs, bootMs) > 6L * 60_000L
-                    && now - lastHardResetMs > 10L * 60_000L) {
+                    && now - Math.max(lastConnOkTs, bootMs) > hardResetBackoffMs
+                    && now - lastHardResetMs > hardResetBackoffMs) {
                 lastHardResetMs = now;
-                RawLog.sys(now, "conn: 6min 没连上 → 重建链路 (engine="
-                        + (prefs.nordicBle() ? "nordic" : "legacy") + ")");
+                hardResetBackoffMs = Math.min(30L * 60_000L,
+                        Math.max(6L * 60_000L, hardResetBackoffMs * 2L));
+                RawLog.sys(now, "conn: 长时间没连上 → 重建链路 (engine="
+                        + (prefs.nordicBle() ? "nordic" : "legacy")
+                        + ", next backoff " + (hardResetBackoffMs / 60_000L) + "min)");
                 try {
                     if (link != null) {
                         link.stop();
@@ -2131,11 +2143,11 @@ public class BleService extends Service implements HudBle.Listener {
             float moveM = lastLoc == null ? 0f : lastLoc.distanceTo(l);
 
             // v1.0.37 的"没连控制器就不算在骑车"在 v1.0.53 被**拆开重做**。
-            // 用户 11-19 实车：17:20–18:23 整整一个多小时蓝牙没应答（src=4），
-            // 人一直在骑，GPS 好好的，但里程按这条老规则一分不记 → 一小时丢 0 公里。
-            // 断开只该影响"电量/电压"，不该影响"我走了多远"。
-            // 现在：里程/断档补点只看**是不是真在骑车**（parkedMode + 速度闸门），
-            // 与蓝牙无关；只有"没连车 + 速度明显像走路（<8km/h）"才不记。
+            // 11-19 17:20–18:23 那一小时蓝牙确实没应答（src=4），但用户后来更正：
+            // **那段时间人在家、车熄火**，所以 0 km 是对的 —— 不是被规则吃掉。
+            // 但"里程要不要记"跟着蓝牙状态走，本身就不合理：控制器只是电量来源，
+            // 断开时 GPS 照样知道走了多远。所以现在里程只由"是不是真在骑车"决定
+            // （parkedMode + 速度闸门），与蓝牙无关；只有"没连车 + 速度像走路（<8km/h）"才不记。
             boolean linkFresh = lastLiveVMs > 0L
                     && System.currentTimeMillis() - lastLiveVMs < 15_000L;
 
@@ -2208,10 +2220,9 @@ public class BleService extends Service implements HudBle.Listener {
             }
 
             // ---- 时速显示值：1€ 滤波 + 停车归零 + 丢点保持 ----
-            // v1.0.37：控制器没连时把时速设为"无" —— 但这条同样过度了：
-            // 11-19 断开那一个多小时里 GPS 明明在报速，屏幕却一直是 "-- km/h"，
-            // 骑手既看不到时速，里程也断了。现在改成"照常显示 GPS 时速，
-            // 只是断开时把 <8km/h 的走路速度挡掉"，不再整段熄屏。
+            // v1.0.37：控制器没连时把时速设为"无" —— 这条过度了：
+            // 断开时 GPS 照样在报速，屏幕却一直是 "-- km/h"，骑手看不到自己多快。
+            // 现在改成"照常显示 GPS 时速，只是断开时把 <8km/h 的走路值挡掉"，不再整段熄屏。
             float shown = speedStab.push(now, rawSpeed);
             if (!linkFresh && !Float.isNaN(shown) && shown < 8f) shown = Float.NaN;
             HudState.gpsKmh = shown;
