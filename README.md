@@ -1658,3 +1658,14 @@ dc（未补偿值）、sra（直接拿原始电压查表的结果）。
 - **设置页「电量」新增两行**：`里程系数`（>1.02 时写明"仪表比 GPS 多算 X%，已折算"）与 `上次对表 MM-dd HH:mm：仪表 X / App Y`。
 - 新增工具：`tools/odo_gap_probe.py`（逐份日志的对表事件/walk gate/trip reset 清单 + ∫spd·dt 对照）、`tools/odo_gap_probe2.py`（gkm / ∫spd / odo / NaN% / src4% 一表对照）。
 - 验证：protocol 11 / core **109** 全过；lint **0 error / 23 warning**；APK 9,009,091 B（vc90/1.0.53）。
+
+
+## 4.81 v1.0.53 补丁 2（2026-11-20，断开冻结与链路自愈）
+
+用户确认 11-19 那两段时间"一直在骑车、没有长时间停留"后，20.16 km 的缺口定死为工程问题，不是仪表口径问题：
+
+- **`handleFix` 去掉 `linkFresh` 闸门（本次最关键）**：v1.0.37 的"没连控制器就不算在骑车"会把整个骑行段冻结。11-19 17:20–18:23 日志里 `控制器没应答连接请求` ×35、`连接失败(status=-5)` ×34，整整一小时 `src=4` → 里程 0。现在里程只由 `parkedMode` + 速度闸门决定；断开时仅在 GPS 速度 <8km/h（走路）才不记。
+- **断开时照常显示 GPS 时速**（只遮掉 <8km/h），不再整段 `-- km/h`；新增 `HudState.gpsKmhRaw` 给里程闸门用（显示值被遮成 NaN 时仍能判断是否在骑）。
+- **断档补点（GapFill）不再要求 `linkFresh`**，只要求非停车态。
+- **连不上 6 分钟 → 硬重建链路**：`link.stop() → buildEngine() → setTarget/start`，10 分钟节流，日志 `conn: 6min 没连上 → 重建链路 (engine=..)`。专门治"控制器在广播、每轮 connect 都卡在 GATT"的栈卡死。
+- 验证：protocol 11 / core **109** 全过；lint **0 error / 23 warning**；红线 `check_no_write` 通过；APK 9,009,476 B（vc90/1.0.53）。

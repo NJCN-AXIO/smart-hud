@@ -32,6 +32,8 @@ public final class HudState {
     public static volatile float soc = Float.NaN;
     public static volatile float speedKmh = Float.NaN;
     public static volatile float gpsKmh = Float.NaN;
+    /** v1.0.53：滤波后的 GPS 时速原值（断开控制器时显示值会被遮成 NaN，闸门要看这个） */
+    public static volatile float gpsKmhRaw = Float.NaN;
     public static volatile float tripKm = 0f;
     /** 整车累计（仪表基准 + App 累计 + 本次），只用于显示，不参与任何计算（v1.0.4） */
     public static volatile float odoKm = Float.NaN;

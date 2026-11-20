@@ -178,6 +178,8 @@ public class BleService extends Service implements HudBle.Listener {
     private long lastWalkLogMs = 0L;
     /** v1.0.53：上一次记"里程盲区（有速度没位移）"的时刻（60 秒节流） */
     private long lastOdoBlindLogMs = 0L;
+    /** v1.0.53：上一次"连不上 → 硬重建链路"的时刻（10 分钟节流） */
+    private long lastHardResetMs = 0L;
     /** v1.0.50：上一次记"OCV 窗口刚重建、先不动"的时刻（30 秒节流） */
     private long lastFreshHoldLogMs = 0L;
     /** v1.0.50：端电压连续低于欠压线的起点（0 = 没低），避免满载爬坡被误报成"低压保护" */
@@ -1406,6 +1408,30 @@ public class BleService extends Service implements HudBle.Listener {
                 if (link != null) link.reconnectNow();
             }
 
+            // v1.0.53：**连不上 6 分钟就硬重置一次链路**。
+            // 11-19 17:20–18:23 那一个多小时，日志里 35 次"控制器没应答连接请求"、
+            // 34 次"连接失败(status=-5)"—— 控制器一直在广播、App 一直在扫，
+            // 但每轮 connect 都卡在 GATT，说明这一侧的栈已经僵了，靠退避重试永远好不了。
+            // 现在：连续 6 分钟一次都没连上，就 stop → 重建链路 → start（不动蓝牙开关，
+            // 对骑手无感），每 10 分钟最多打一次。
+            if (running && HudState.connState != HudState.CONNECTED
+                    && now - Math.max(lastConnOkTs, bootMs) > 6L * 60_000L
+                    && now - lastHardResetMs > 10L * 60_000L) {
+                lastHardResetMs = now;
+                RawLog.sys(now, "conn: 6min 没连上 → 重建链路 (engine="
+                        + (prefs.nordicBle() ? "nordic" : "legacy") + ")");
+                try {
+                    if (link != null) {
+                        link.stop();
+                        link = buildEngine();
+                        link.setTarget(prefs.mac(), prefs.devName());
+                        link.start(prefs.mac(), prefs.devName());
+                    }
+                } catch (Throwable t) {
+                    RawLog.sys(now, "conn: rebuild failed " + stackOf(t));
+                }
+            }
+
             // 停车静置校准（v1.0.3 改成三段 + 里程闸门）：停稳 120 秒先校一次，之后每 3 分钟再校，
             // 一轮停车最多 3 次。铅酸静置越久越接近开路电压，第一校只能算"粗校"。
             // 闸门：最近 90 秒里程还在长 → 车根本没停，这时读到的电压是带载压降，不能当开路电压。
@@ -1429,7 +1455,8 @@ public class BleService extends Service implements HudBle.Listener {
             // 连上车时"推着走"也算里程（车轮真在转、仪表也记）；没连车才按 8km/h 挡散步。
             boolean linked = lastLiveVMs > 0L && now - lastLiveVMs < 8000L;
             float gate = linked ? 1.5f : 8f;
-            boolean looksLikeRiding = Float.isNaN(HudState.gpsKmh) || HudState.gpsKmh >= gate;
+            float gateSpd = !Float.isNaN(HudState.gpsKmh) ? HudState.gpsKmh : HudState.gpsKmhRaw;
+            boolean looksLikeRiding = Float.isNaN(gateSpd) || gateSpd >= gate;
             float posDelta = (!Float.isNaN(gk) && lastGpsKm >= 0f) ? gk - lastGpsKm : Float.NaN;
             boolean posUsed = false;
             if (looksLikeRiding && !Float.isNaN(posDelta) && posDelta >= 0.0005f) {
@@ -2092,18 +2119,19 @@ public class BleService extends Service implements HudBle.Listener {
             // 这一刻相对上一点真实挪了多少米（判断"车是不是停在等单"要用）
             float moveM = lastLoc == null ? 0f : lastLoc.distanceTo(l);
 
-            // v1.0.37：**没连控制器就不算在骑车**。
-            // 用户实测：断开连接后拿着手机走路，界面显示 2km/h、里程还在涨 ——
-            // 因为里程和时速一直只信 GPS。可这是一台"车仪表"：15 秒内没有控制器帧，
-            // 就说明手机不在车上（或车没通电），GPS 的位移不该记进里程。
-            // 注意这里只冻结"里程/时速"，位置基准照常更新，避免重连那一下蹦出一大段假里程。
+            // v1.0.37 的"没连控制器就不算在骑车"在 v1.0.53 被**拆开重做**。
+            // 用户 11-19 实车：17:20–18:23 整整一个多小时蓝牙没应答（src=4），
+            // 人一直在骑，GPS 好好的，但里程按这条老规则一分不记 → 一小时丢 0 公里。
+            // 断开只该影响"电量/电压"，不该影响"我走了多远"。
+            // 现在：里程/断档补点只看**是不是真在骑车**（parkedMode + 速度闸门），
+            // 与蓝牙无关；只有"没连车 + 速度明显像走路（<8km/h）"才不记。
             boolean linkFresh = lastLiveVMs > 0L
                     && System.currentTimeMillis() - lastLiveVMs < 15_000L;
 
             // ---- 隧道/桥洞断档：用断档前的速度把里程补回来（3–15 秒才补）----
             // v0.9.9：停车态一律不补。停车时 GPS 间隔变成 3 秒，正好撞上 GapFill 的 3 秒门槛，
             // 而静止时 GPS 速度仍有 2–6km/h 噪声 → 每 3 秒补一段假里程，停一小时能多出 3–6 公里。
-            if (lastLoc != null && !parkedMode && linkFresh) {
+            if (lastLoc != null && !parkedMode) {
                 long gap = now - lastLoc.getTime();
                 // 必须用"断档前那个点自己的速度"：SpeedStabilizer 只保持 4 秒，
                 // 8 秒的断档等回来时它已经是 0，拿它去补等于没补（老 bug）
@@ -2146,8 +2174,11 @@ public class BleService extends Service implements HudBle.Listener {
             // ---- 里程：门限式累计（OpenTracks 默认精度 50m，位移<3m 且低速算抖动）----
             // v1.0.1：停车态**完全不计**，只把基准点挪过去。停车时 GPS 速度噪声常有 3–6km/h，
             // 会骗过"速度>2km/h 才算在动"的那道门，停一小时能白记两三公里。
+            // v1.0.53：断开控制器时不再整段冻结（那是丢了一小时里程的元凶），
+            // 但"没连车 + 速度像走路（<8km/h）"仍然不计 —— 保住 v1.0.37 要挡的那件事。
+            boolean walkingWhileUnlinked = !linkFresh && !Float.isNaN(rawSpeed) && rawSpeed < 8f;
             double step;
-            if (parkedMode || !linkFresh) {
+            if (parkedMode || walkingWhileUnlinked) {
                 trackDist.rebind(now, l.getLatitude(), l.getLongitude());
                 step = 0;
             } else {
@@ -2166,16 +2197,16 @@ public class BleService extends Service implements HudBle.Listener {
             }
 
             // ---- 时速显示值：1€ 滤波 + 停车归零 + 丢点保持 ----
-            // v1.0.37：控制器没连（linkFresh=false）时直接把时速设为"无"，
-            // 并且重置滤波器 —— 否则它会按"丢点保持 4 秒"把走路最后那 2km/h 留在屏幕上。
-            float shown;
-            if (linkFresh) {
-                shown = speedStab.push(now, rawSpeed);
-            } else {
-                speedStab.reset();
-                shown = Float.NaN;
-            }
+            // v1.0.37：控制器没连时把时速设为"无" —— 但这条同样过度了：
+            // 11-19 断开那一个多小时里 GPS 明明在报速，屏幕却一直是 "-- km/h"，
+            // 骑手既看不到时速，里程也断了。现在改成"照常显示 GPS 时速，
+            // 只是断开时把 <8km/h 的走路速度挡掉"，不再整段熄屏。
+            float shown = speedStab.push(now, rawSpeed);
+            if (!linkFresh && !Float.isNaN(shown) && shown < 8f) shown = Float.NaN;
             HudState.gpsKmh = shown;
+            // v1.0.53：原始滤波值单独留一份 —— 里程闸门要用"真实速度"判断是不是在骑车，
+            // 不能用被遮成 NaN 的显示值（否则 NaN 一律按"在骑"就挡不住走路了）
+            HudState.gpsKmhRaw = shown;
             HudState.speedFromGps = !Float.isNaN(shown);
 
             if (!Double.isNaN(acc)) lastAccM = (float) acc;
