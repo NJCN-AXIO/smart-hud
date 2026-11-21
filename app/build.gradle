@@ -9,8 +9,8 @@ android {
         applicationId "com.hud.delivery"
         minSdk 26
         targetSdk 34
-        versionCode 93
-        versionName "1.0.56"
+        versionCode 94
+        versionName "1.0.57"
     }
 
     buildTypes {

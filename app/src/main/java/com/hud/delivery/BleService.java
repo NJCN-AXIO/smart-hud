@@ -88,6 +88,9 @@ public class BleService extends Service implements HudBle.Listener {
 
     /** 静置电压的 30 秒慢平滑：只用来"停车时校准电量锚点" */
     private VoltFilter restFilter;
+    /** v1.0.57：最后一次有效的静置均值（断链/熄火后 20 分钟内还能拿它做保守校准） */
+    private float lastRestV = Float.NaN;
+    private long lastRestVMs = 0L;
     /** v1.0.30：逐帧"电压 + 该帧压降"的分位器 —— 查电量表用的 OCV 从这里取，不再拿错配的值 */
     private VoltFilter ocvCand;
     /** 带载电压 → 空载电压的压降估计：只在"还没有锚点"时给电量一个起点用 */
@@ -1077,6 +1080,8 @@ public class BleService extends Service implements HudBle.Listener {
             prefs.setTripKm(0f);
             prefs.setTripStart(now);
         }
+        odoSpeedFill = false;                // v1.0.57：清零后不要拿旧盲区状态去吞第一段位移
+        odoSpdSinceMs = 0L;
         clearTripState(now);
     }
 
@@ -1462,7 +1467,15 @@ public class BleService extends Service implements HudBle.Listener {
 
                 bootMaxV = Float.NaN;
                 if (voltFilter != null) voltFilter.reset();
-                if (restFilter != null) restFilter.reset();
+                // v1.0.57：断链前先把"最后一段静置均值"存下来 —— 熄火停车后的校准要用它
+                if (restFilter != null) {
+                    float rv = restFilter.value(now);
+                    if (!Float.isNaN(rv)) {
+                        lastRestV = rv;
+                        lastRestVMs = now;
+                    }
+                    restFilter.reset();
+                }
                 if (ocvCand != null) ocvCand.reset();   // v1.0.30：断链后别拿旧候选算电量
                 // v1.0.46：**lastVMap 也必须清**。
                 // v1.0.44 为了修 0↔2 抖动，让"候选样本不足时沿用上次 vMap"；
@@ -1542,14 +1555,40 @@ public class BleService extends Service implements HudBle.Listener {
             boolean looksLikeRiding = Float.isNaN(gateSpd) || gateSpd >= gate;
             float posDelta = (!Float.isNaN(gk) && lastGpsKm >= 0f) ? gk - lastGpsKm : Float.NaN;
             boolean posUsed = false;
+            // v1.0.57：**时速兜底原来是一段死代码。**
+            //
+            // 这一支问的是 `HudState.speedKmh`，而它只由 Reading（67B 帧）写入 ——
+            // 协议里根本没有轮速，所以它恒为 NaN，于是"没位移就按速度积分"从来没执行过。
+            // 11-21 的日志把后果摆出来了：`odo blind: spd=26km/h but no gps delta for 62s`，
+            // 定位精度一超 50m（进商场、过桥洞），位移被丢掉，时速明明还准，里程却整段不涨。
+            // 现在按"控制器速度 → 显示时速 → 原始滤波时速"三级回落；GPS 口径要 4km/h 起、且持续
+            // 4 秒才算（停车漂移常见 1–3km/h，不能让它凭空生里程）。
+            float spdOdo = !Float.isNaN(HudState.speedKmh) ? HudState.speedKmh
+                    : (!Float.isNaN(HudState.gpsKmh) ? HudState.gpsKmh : HudState.gpsKmhRaw);
+            boolean spdFromGps = Float.isNaN(HudState.speedKmh);
+            float minOdoSpd = spdFromGps ? 4f : 1f;
+            boolean spdOk = looksLikeRiding && !Float.isNaN(spdOdo) && spdOdo >= minOdoSpd;
+            if (spdOk) {
+                if (odoSpdSinceMs == 0L) odoSpdSinceMs = now;
+            } else {
+                odoSpdSinceMs = 0L;
+            }
+            boolean spdSustained = spdOk && (!spdFromGps || now - odoSpdSinceMs >= 4_000L);
+
             if (looksLikeRiding && !Float.isNaN(posDelta) && posDelta >= 0.0005f) {
-                // 0.5 米门槛：推车 3km/h 每秒只有 0.8 米，门槛再高就把低速段整段丢掉
-                trip.addKm(posDelta * prefs.odoScale(), now);
+                if (odoSpeedFill) {
+                    // 盲区里已经按速度把这一段积过了：位移回来时这一大跳是"补课"，
+                    // 只对表、不再计一次（否则桥洞/商场那 1km 会被算两遍）
+                    odoSpeedFill = false;
+                } else {
+                    // 0.5 米门槛：推车 3km/h 每秒只有 0.8 米，门槛再高就把低速段整段丢掉
+                    trip.addKm(posDelta * prefs.odoScale(), now);
+                }
                 posUsed = true;
-            } else if (looksLikeRiding && !Float.isNaN(HudState.speedKmh)
-                    && HudState.speedKmh >= 1f) {
-                trip.onSpeed(HudState.speedKmh * prefs.odoScale(), now);
+            } else if (spdSustained) {
+                trip.onSpeed(spdOdo * prefs.odoScale(), now);
                 posUsed = true;          // 用了速度口径：本 tick 的位移就不要了（不叠加）
+                if (spdFromGps) odoSpeedFill = true;
             } else {
                 trip.onSpeed(0f, now);   // 停着/走路：只推进时间戳，不累计
             }
@@ -1883,6 +1922,14 @@ public class BleService extends Service implements HudBle.Listener {
                 float capKm = prefs.estRangeKm() > 10f ? prefs.estRangeKm() : 80f;
                 if (!Float.isNaN(kmCharge)) capKm = Math.max(0f, capKm - kmCharge);
                 HudState.rangeKm = Math.min(HudState.rangeKm, capKm);
+                // v1.0.57：**别出现"17% 但续航 0km"这种自相矛盾的屏。**
+                // 满电续航减去本箱已跑已经 ≤1km，说明这一箱电按学到的真实续航算到底了：
+                // 账本还挂着十几个点，只能是"斜率/锚点学歪"残留，直接压到 4% 以下，
+                // 让"电量 / 续航 / 底部提示"三处说同一件事。
+                if (!Float.isNaN(kmCharge) && capKm <= 1f && !Float.isNaN(socVal) && socVal > 4f) {
+                    socVal = 4f;
+                    HudState.rangeKm = 0f;
+                }
             }
             HudState.setPower(disp, socVal, src);
 
@@ -1892,7 +1939,18 @@ public class BleService extends Service implements HudBle.Listener {
             // v1.0.53：欠压提示的判据不能再用 vEmpty（63.8 是**静置**口径）。
             // 11-19 实测这车"彻底没电"时带载 58.26V，所以带载口径的报警线单列 60.5V，
             // 否则骑到还剩 10km 就会天天喊"低压保护"。
-            if (live && !Float.isNaN(disp) && disp < LOW_VOLT_WARN_V) {
+            // v1.0.57：**断电那一刻链路正好断掉，也不能漏判。**
+            // 11-21 18:24 的现场就是这样：控制器已经拧不动（P档），蓝牙却掉线了，
+            // 屏幕挂着 32 秒前的 68.0V（灰），于是"低压保护"这条根本没触发，电量还是 9%。
+            // 现在允许用 120 秒内的最后一次带载电压判 —— 断电保护不会在 2 分钟内自己变好。
+            if (live && !Float.isNaN(disp)) {
+                lastLiveDispV = disp;
+                lastLiveDispVMs = now;
+            }
+            float cutV = (live && !Float.isNaN(disp)) ? disp
+                    : ((lastLiveDispVMs > 0L && now - lastLiveDispVMs <= 120_000L)
+                    ? lastLiveDispV : Float.NaN);
+            if (!Float.isNaN(cutV) && cutV < LOW_VOLT_WARN_V) {
                 // v1.0.50：**先确认"真的走不动"，再喊低压保护。**
                 //
                 // 旧版只看端电压 < 欠压线就提示"拧油门不走"，可满载爬坡时端电压本来就会被
@@ -1916,8 +1974,9 @@ public class BleService extends Service implements HudBle.Listener {
                         HudState.rangeKm = 0f;
                         learnTrueRangeOnCutoff(kmCharge);
                         RawLog.sys(now, String.format(Locale.US,
-                                "EMPTY LATCH: controller cutout at v=%.1f, kmCharge=%s -> soc=3% range=0",
-                                disp, Float.isNaN(kmCharge) ? "-" : String.format(Locale.US, "%.1f", kmCharge)));
+                                "EMPTY LATCH: controller cutout at v=%.1f%s, kmCharge=%s -> soc=3%% range=0",
+                                cutV, live ? "" : " (link lost, last live)",
+                                Float.isNaN(kmCharge) ? "-" : String.format(Locale.US, "%.1f", kmCharge)));
                     }
                 } else {
                     HudState.lowVoltWarn = "";
@@ -2143,6 +2202,13 @@ public class BleService extends Service implements HudBle.Listener {
     private int restCalCount;    private long lastRestCalMs;
     /** 里程最近一次"在增长"的时刻：判断车到底是在跑还是停着 */
     private long kmGrowingTs;
+    /** v1.0.57：最后一次带载电压（链路掉线时用来判"断电保护"） */
+    private float lastLiveDispV = Float.NaN;
+    private long lastLiveDispVMs = 0L;
+    /** v1.0.57：GPS 速度兜底连续多久了（不到 4 秒不算，挡停车漂移） */
+    private long odoSpdSinceMs;
+    /** v1.0.57：盲区里已经按速度积过里程，位移恢复时别把那一段再算一遍 */
+    private boolean odoSpeedFill;
     /** v1.0.53：带载口径的低压报警线（实测这车"彻底没电"时带载 58.26V） */
     private static final float LOW_VOLT_WARN_V = 60.5f;
     private float lastKmForMove;
@@ -2402,30 +2468,58 @@ public class BleService extends Service implements HudBle.Listener {
         // 只用 30 秒慢平滑的静置均值，不再拿"最后一帧瞬时值"兜底（v1.0.1）：
         // 瞬时值是 ±5V 的噪声源，拿它当锚点等于把噪声焊死在电量里。
         float v = restFilter != null ? restFilter.value(now) : Float.NaN;
+        boolean staleV = false;
+        if (Float.isNaN(v) && lastRestVMs > 0L && now - lastRestVMs <= 20L * 60_000L) {
+            // v1.0.57：**熄火停车也能校准。**
+            //
+            // 骑手停好车往往就把钥匙拧掉 —— 控制器不再推帧，8 秒后 restFilter 被 reset，
+            // 于是"停稳 120s / 301s / 481s"三次校准全是 `no settled voltage`。
+            // 11-21 的日志里这类跳过有二十多条，静置校准形同虚设。
+            // 用"断链前最后一段静置均值"（≤20 分钟）当参考：它可能偏低（那是带载读数），
+            // 偏低只会把电量算少，宁可保守也不能让骑手以为还有电。
+            v = lastRestV;
+            staleV = true;
+        }
         if (Float.isNaN(v)) {
             RawLog.sys(now, "soc calibrate skipped: no settled voltage (waiting first stop)");
             return;
         }
+        if (!staleV) {
+            lastRestV = v;
+            lastRestVMs = now;
+        }
         // 闸门二：45 秒静置窗里"分位值"和"中位值"差太多 → 这个窗口跨了负载变化（刚松油门/刚起步），
         // 不是真正的静置平台，等下一次校准。
-        float med = restFilter.median(now);
-        if (!Float.isNaN(med) && Math.abs(v - med) > 1.2f) {
-            RawLog.sys(now, String.format(Locale.US,
-                    "soc calibrate skipped: window not settled (%.1f vs %.1f)", v, med));
-            return;
-        }
-        // 窗口里样本太少（刚重连完就来停车）也不算：均值不收敛。
-        // v1.0.3：这里原来查的是 5 秒显示窗（voltFilter），停车后只有 4–5 帧，经常正好卡在门槛下，
-        // 导致"该校准却跳过"。改查 45 秒静置窗（restFilter）：停车 90 秒后至少有 90 帧。
-        if (restFilter != null && restFilter.samplesIn(now) < 10) {
-            RawLog.sys(now, "soc calibrate skipped: too few settled samples");
-            return;
+        // （stale 值没有"窗口"可言，跳过这两道）
+        if (!staleV) {
+            float med = restFilter.median(now);
+            if (!Float.isNaN(med) && Math.abs(v - med) > 1.2f) {
+                RawLog.sys(now, String.format(Locale.US,
+                        "soc calibrate skipped: window not settled (%.1f vs %.1f)", v, med));
+                return;
+            }
+            // 窗口里样本太少（刚重连完就来停车）也不算：均值不收敛。
+            // v1.0.3：这里原来查的是 5 秒显示窗（voltFilter），停车后只有 4–5 帧，经常正好卡在门槛下，
+            // 导致"该校准却跳过"。改查 45 秒静置窗（restFilter）：停车 90 秒后至少有 90 帧。
+            if (restFilter != null && restFilter.samplesIn(now) < 10) {
+                RawLog.sys(now, "soc calibrate skipped: too few settled samples");
+                return;
+            }
         }
         // 只有"像静置电压"才校准：低于欠压+0.5 或高于满电+2 的读数多半是异常的
         if (v < prefs.vEmpty() || v > prefs.vFull() + 2f) return;
         float socRest = soc.soc(v);
         if (Float.isNaN(socRest)) return;
+        // v1.0.57：学斜率要用"电压说的那个数"，不能用下面能量体检修正过的数 ——
+        // 否则学进去的是我们自己压出来的下限，不是这段路的真实耗电。
+        float socVoltRaw = socRest;
         float pred = socTracker.predict(HudState.tripKm);
+        if (staleV && !Float.isNaN(pred) && socRest > pred) {
+            // 熄火后的旧读数只能往下压，不能往上抬（旧值可能只是带载压降，不是开路电压）
+            RawLog.sys(now, String.format(Locale.US,
+                    "soc stale rest %.1fV -> %.0f%% > ledger %.0f%%, ignore", v, socRest, pred));
+            return;
+        }
 
         // v1.0.19：先用"能量核算"给电压读数做一次体检，再决定信不信它。
         //
@@ -2505,6 +2599,26 @@ public class BleService extends Service implements HudBle.Listener {
         } else {
             RawLog.sys(now, String.format(Locale.US,
                     "soc anchored at rest v=%.1f soc=%.0f km=%.2f", v, socRest, HudState.tripKm));
+        }
+        // v1.0.57：**锚点跳不跳是一回事，斜率学不学是另一回事。**
+        // 上面 anchorRestGuarded 因为"差 17 点"拒掉的时候，那段 32km 的耗电证据也一起被丢了，
+        // perKm 于是一直卡在 1.14，底部一路偏乐观。这里独立再学一次（带"末端塌陷"过滤），
+        // 学到就把满电续航一起改过来 —— 续航上限 `estRange − kmCharge` 立刻跟着变紧。
+        float learned2 = socTracker.learnPerKmFromRest(socVoltRaw, HudState.tripKm);
+        if (!Float.isNaN(learned2)) {
+            prefs.setPerKmPct(learned2);
+            int er = Math.round(100f / learned2);
+            if (er >= 40 && er <= 250 && Math.abs(er - prefs.estRangeKm()) >= 3) {
+                int old = prefs.estRangeKm();
+                prefs.setEstRangeKm(er);
+                RawLog.sys(now, String.format(Locale.US,
+                        "per-km %.2f (rest sample) -> est_range %d -> %d km",
+                        learned2, old, er));
+            } else {
+                RawLog.sys(now, String.format(Locale.US,
+                        "per-km learned %.2f (declined from rest), range stays %d km",
+                        learned2, prefs.estRangeKm()));
+            }
         }
         HudState.touch();
     }

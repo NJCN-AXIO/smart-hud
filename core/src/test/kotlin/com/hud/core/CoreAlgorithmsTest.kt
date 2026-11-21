@@ -909,6 +909,40 @@ class CoreAlgorithmsTest {
     }
 
     @Test
+    fun `静置样本能学斜率，即使锚点差太多跳不过去`() {
+        // 11-20/21 现场：perKm 学成 1.14（折合 87.6km），真实 1.30（77km）
+        val t = SocTracker(1.14f, 80f, 18.46f)
+        t.defaultRangeKm = 87.6f
+        // 上次被电压确认过的锚点：80% @ 18.46km
+        t.anchorRest(1000L, 80f, 18.46f)
+        // 停在 58.74km，静置电压只给 15%：账本说 32%（差 17 点，跳不过去）
+        val learned = t.learnPerKmFromRest(15f, 58.74f)
+        // (80−15)/40.28 = 1.61%/km，权重 0.5 → 1.14/1.32 之间取中 ≈1.37
+        assertTrue("该把斜率往真实方向拉", learned > 1.3f && learned < 1.45f)
+        // 续航上限随之变紧：100/1.37 ≈ 73km，而不是 87.6
+        assertTrue(t.perKmPct > 1.3f)
+    }
+
+    @Test
+    fun `末端塌陷的静置读数不参与学斜率`() {
+        // 11-17 那台车的毛病：26.8km 静置只有 66.2V（查表 4%），折算满电只有 28km
+        val t = SocTracker(1.14f, 100f, 0f)
+        t.defaultRangeKm = 87.6f
+        t.anchorRest(1000L, 100f, 0f)
+        assertTrue(t.learnPerKmFromRest(4f, 26.8f).isNaN())
+        // 斜率没被带跑
+        assertEquals(1.14f, t.perKmPct, 0.01f)
+    }
+
+    @Test
+    fun `短段样本不学斜率`() {
+        val t = SocTracker(1.14f, 80f, 18.46f)
+        t.anchorRest(1000L, 80f, 18.46f)
+        // 只跑了 2km、只掉 3 点：噪声，不足以说明斜率
+        assertTrue(t.learnPerKmFromRest(77f, 20.46f).isNaN())
+    }
+
+    @Test
     fun `满电锚点会清空纠偏预算`() {
         val t = SocTracker(1.25f, 100f, 0f)
         t.nudgeBudgetPct = 6f

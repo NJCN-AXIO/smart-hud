@@ -61,6 +61,10 @@ class SocTracker(
     var rejects: Int = 0
         private set
 
+    /** v1.0.57：学习斜率的参考点（上一次被电压确认的锚点），[learnPerKmFromRest] 用 */
+    private var learnRefSoc: Float = Float.NaN
+    private var learnRefKm: Float = Float.NaN
+
     /** 行驶中"里程口径 vs 电压口径"分歧的门槛（点），不到这个差就当噪声 */
     var deadBandPct: Float = 12f
     /** 分歧要持续多久才动手（毫秒），一次长坡/猛加速能临时压掉 6–8 点，不能立刻追 */
@@ -171,7 +175,56 @@ class SocTracker(
         anchorKm = km
         shown = socRest          // 停车时的校正是"正当跳变"，允许直接对齐
         lastMs = 0L
+        // v1.0.57：这个锚点是"电压给的"、可信度最高，学习斜率时以它为参考
+        learnRefSoc = socRest
+        learnRefKm = km
         return learned
+    }
+
+    /**
+     * v1.0.57：**学"每公里掉多少电"这件事，不该被"能不能跳锚点"绑住。**
+     *
+     * 11-20/21 那一箱电的现场：17:38 停在 58.7km，静置电压查表 15%，里程账本 32%，
+     * 差 17 点 > [maxAnchorJumpPct](12) → [anchorRestGuarded] 拒了。拒得对（这台车末端电压会塌陷），
+     * 但副作用是**连"这一段到底耗了 1.45%/km"这个信息也一起丢了** —— perKm 于是永远停在 1.14，
+     * 底部一路偏乐观到"21% / 还能跑 19km"。
+     *
+     * 做法（和手机库仑计"只在对数点上更新斜率"一个思路）：
+     *  - 参考点 = 上一次**被电压确认过**的锚点（[learnRefSoc]/[learnRefKm]，由 [anchorRest] 维护）；
+     *  - 段要够长（≥8km）差值要够大（≥5 点），否则是噪声；
+     *  - 折算成满电续航必须落在 45–145km —— 这一条专门挡"末端塌陷"（26.8km 读到 4% 那种，
+     *    折算出来只有 28km，直接丢）；
+     *  - 一次不许跳太远（新旧斜率比 0.75–1.35），防止一个坏样本把模型带跑。
+     *
+     * @return 更新后的 %/km；没学到返回 NaN
+     */
+    fun learnPerKmFromRest(socRest: Float, km: Float): Float {
+        if (socRest.isNaN() || km.isNaN()) return Float.NaN
+        if (learnRefSoc.isNaN() || learnRefKm.isNaN()) {
+            learnRefSoc = socRest
+            learnRefKm = km
+            return Float.NaN
+        }
+        val dKm = km - learnRefKm
+        val dSoc = learnRefSoc - socRest
+        if (dKm < 8f || dSoc < 5f) return Float.NaN
+        val sample = dSoc / dKm
+        if (sample <= 0.05f) return Float.NaN
+        val impliedRange = 100f / sample
+        if (impliedRange < 45f || impliedRange > 145f) return Float.NaN
+        // 一次不许跳太远：段越长越可信，40km 的段允许斜率改 60%（1.14→1.61 就是这种），
+        // 10km 的段只允许 25%（防止一个坏样本把模型带跑）
+        val maxRatio = if (dKm >= 20f) 1.6f else 1.25f
+        val minRatio = if (dKm >= 20f) 0.7f else 0.8f
+        if (!perKmPct.isNaN() && (sample / perKmPct < minRatio || sample / perKmPct > maxRatio)) {
+            return Float.NaN
+        }
+        val w = (0.05f * dKm).coerceIn(0.2f, 0.5f)
+        perKmPct = if (perKmPct.isNaN()) sample else (1f - w) * perKmPct + w * sample
+        perKmPct = perKmPct.coerceIn(0.2f, MAX_PER_KM)
+        learnRefSoc = socRest
+        learnRefKm = km
+        return perKmPct
     }
 
     /**
