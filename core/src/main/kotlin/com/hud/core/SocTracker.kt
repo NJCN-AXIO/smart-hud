@@ -91,6 +91,13 @@ class SocTracker(
         const val UP_STEP = 1f
         const val UP_MIN_INTERVAL_MS = 5_000L
         const val UP_BUDGET = 10f
+
+        /**
+         * v1.0.56（已废弃，保留常量供后续调整）：
+         * 曾想用"静置电量 ≤ 25% 就由电压接管"，但单测里的"控制器末端塌陷"场景证明
+         * 这样做会退回"0% 还能骑十公里"。真正的空电判据是控制器断电保护（见 app 侧 emptyLatch）。
+         */
+        const val BOTTOM_TRUST_SOC = 25f
     }
 
     /** 每秒最多变化多少个百分点（2%/分钟）：既能跟上真实消耗，又挡掉噪声跳变 */
@@ -208,6 +215,10 @@ class SocTracker(
             return anchorRest(nowMs, socRest, km)
         }
         rejects++
+        // v1.0.56 曾经试过"底部一律信电压"，被单测否掉了（见 `一箱电的纠偏预算用完就不再往下拉`）：
+        // 这台车的末端电压会塌陷（11-17 在 26.8km 时静置只有 66.2V≈4%），若底部无条件信电压，
+        // 就会退回"0% 还能骑十公里"。真正的"到底了"只有一个硬证据 —— 控制器断电保护，
+        // 那条走空电硬着陆（emptyLatch），不在这里。
         // 前两次先不动（单次异常电压不能改口径），连续三次都偏低才慢慢纠
         if (rejects < 3) {
             anchorKm = km
@@ -236,6 +247,36 @@ class SocTracker(
     fun resetNudgeBudget() {
         nudgedTotal = 0f
         divergeSinceMs = 0L
+    }
+
+    /**
+     * v1.0.56：**空电硬着陆**。
+     *
+     * 控制器已经报"低电压保护、拧油门不走"的时候，账本说什么都不重要了 —— 电池确实到头了。
+     * 直接把锚点按到 [soc]（默认 3%）并同步显示值，避免"明明推车、屏幕还写 21% / 还能跑 19km"。
+     * 这个动作不参与 %/km 学习，也不占纠偏预算。
+     */
+    fun hardLand(nowMs: Long, km: Float, soc: Float) {
+        if (km.isNaN()) return
+        val s = soc.coerceIn(0f, 100f)
+        anchorSoc = s
+        anchorKm = km
+        shown = s
+        lastMs = nowMs
+        nudgedTotal = 0f
+        divergeSinceMs = 0L
+        rejects = 0
+    }
+
+    /**
+     * v1.0.56：把锚点里程平移 [delta] 公里。
+     *
+     * 对表时"本次里程"被补了一块（仪表口径），锚点里程也要跟着挪同样的距离，
+     * 否则下一秒 `predict` 就会因为里程突变而让电量跳一下。
+     */
+    fun shiftAnchorKm(delta: Float) {
+        if (delta == 0f || anchorKm.isNaN()) return
+        anchorKm = (anchorKm + delta).coerceAtLeast(0f)
     }
 
     /**

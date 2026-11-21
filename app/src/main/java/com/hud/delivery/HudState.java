@@ -158,6 +158,13 @@ public final class HudState {
      * 只会以为坏了（其实是两个口径）。
      */
     public static volatile boolean socAtRest = true;
+    /**
+     * v1.0.56：**已确认没电**（控制器低电压保护，拧油门不走）。
+     *
+     * 一旦立起，电量与续航锁在 0，不再由里程账本"回升"到 21%、"还能跑 19km"。
+     * 只有"真充满"（自动判满）或用户手动清本次里程时才解除。
+     */
+    public static volatile boolean emptyLatch = false;
     /** 压降补偿后的空载电压（OCV），电量就是按它查出来的；NaN = 没有实测 */
     public static volatile float ocvV = Float.NaN;
     /** 当前大数字显示的是不是"静置电压"（v1.0.17；停车 ≥12 秒后切到静置口径） */

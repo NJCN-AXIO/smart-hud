@@ -636,6 +636,22 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         }
         float trip = Float.isNaN(HudState.tripKm) ? 0f : HudState.tripKm;
         float old = HudState.odoKm;
+        float delta = Float.isNaN(old) ? 0f : (target - old);
+        // v1.0.56：**差额并进「本次里程」**。
+        // 用户反馈："总里程变了、本次里程数量没变，这里要修复一下" —— 对表补的正是
+        // "仪表比 App 多走的那一段"，它发生在这趟里；不并进去，总里程 11476 而本次只有 70.3，
+        // 续航与 %/km 又拿 70.3 去算，屏幕上两个数互相打脸。
+        // 并法：本次 += delta，App 累计 -= delta，总里程不变（还是正好等于你填的数）。
+        if (Math.abs(delta) > 0.02f) {
+            float newTrip = Math.max(0f, trip + delta);
+            delta = newTrip - trip;          // 真并进去多少（负数扣到 0 时会变）
+            trip = newTrip;
+            HudState.tripKm = trip;
+            Intent add = new Intent(BleService.ACTION_TRIP_ADD);
+            add.setPackage(getPackageName());
+            add.putExtra(BleService.EXTRA_TRIP_DELTA, delta);
+            sendBroadcast(add);              // 服务里那份 TripIntegrator 才是真身
+        }
         int base = prefs.odoBaseKm();
         float accum = target - base - trip;
         if (accum < 0f) {
@@ -652,10 +668,10 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         prefs.setOdoCalTs(System.currentTimeMillis());
         HudState.gapWarn = "";      // v1.0.43：对齐完成，断档提示撤掉
         HudState.touch();
-        float delta = Float.isNaN(old) ? 0f : (target - old);
+        float loggedDelta = Float.isNaN(old) ? 0f : (target - old);
         RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
                 "ODO_ALIGN(%s) app %.1f -> %.1f (meter) delta %+.2fkm base=%d accum=%.2f trip=%.2f",
-                why, old, target, delta, base, accum, trip));
+                why, old, target, loggedDelta, base, accum, trip));
     }
 
     private void showOdoAlignDialog() {
@@ -665,16 +681,17 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         ui.row(now, "App 记录", "基准 + App 累计 + 本次",
                 ui.value(Float.isNaN(HudState.odoKm) ? "--"
                         : String.format(Locale.US, "%.1f km", HudState.odoKm), true));
-        ui.row(now, "本次里程", "对齐时会算进基准，不会重复加",
+        ui.row(now, "本次里程", "对表补的差额会并进这里（v1.0.56）",
                 ui.value(String.format(Locale.US, "%.2f km", HudState.tripKm), false));
 
         LinearLayout in = ui.section("填仪表读数");
         EditText et = ui.input(Float.isNaN(HudState.odoKm) ? ""
                 : String.format(Locale.US, "%.1f", HudState.odoKm), true);
         ui.row(in, "仪表显示 (km)", "照车上那个数填，整数就行", et);
-        ui.note(in, "对齐只改整车里程的起点，不影响本次里程、电量和续航。\n"
-                + "v1.0.54：每对一次表，App 会自动学一次「仪表 / GPS」的比例"
-                + "（还没学过比例时直接采用实测值，之后每次最多调 12%），跑两趟就基本不用再手动对。");
+        ui.note(in, "对齐只改整车里程的起点，不影响电量与充电记录。\n"
+                + "v1.0.56：对表补进来的差额会**同时并进「本次里程」**（总里程仍正好等于你填的数），"
+                + "所以本次里程、续航、每公里耗电三者口径一致；另外每对一次表会自动学「仪表 / GPS」的比例"
+                + "（还没学过时直接采用实测值，之后每次最多调 12%）。");
 
         ui.primary("对齐", v -> {
             float target = parseFloat(et.getText().toString(), Float.NaN);

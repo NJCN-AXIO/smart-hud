@@ -377,12 +377,17 @@ public class BleService extends Service implements HudBle.Listener {
     private void registerTripResetReceiver() {
         tripResetRx = new BroadcastReceiver() {
             @Override public void onReceive(Context context, Intent intent) {
-                if (intent != null && ACTION_TRIP_RESET.equals(intent.getAction())) {
+                if (intent == null) return;
+                if (ACTION_TRIP_RESET.equals(intent.getAction())) {
                     resetTripInMemory(intent.getBooleanExtra(EXTRA_ALREADY_FOLDED, false));
+                } else if (ACTION_TRIP_ADD.equals(intent.getAction())) {
+                    float d = intent.getFloatExtra(EXTRA_TRIP_DELTA, 0f);
+                    addTripInMemory(d);
                 }
             }
         };
         IntentFilter f = new IntentFilter(ACTION_TRIP_RESET);
+        f.addAction(ACTION_TRIP_ADD);
         // v1.0.12：统一用 ContextCompat.registerReceiver —— 它在 API 33 以下会自动忽略 flag，
         // 33+ 才真正生效，比手写 if (SDK_INT >= 33) 分支更稳（旧写法在 33+ 的某些机型上会抛
         // IllegalArgumentException: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified）。
@@ -514,6 +519,16 @@ public class BleService extends Service implements HudBle.Listener {
     public static final String EXTRA_ALREADY_FOLDED = "already_folded";
 
     /**
+     * v1.0.56：对表时把差额并进「本次里程」的广播。
+     *
+     * 用户原话："总里程变了、本次里程数量没变，这里要修复一下"。
+     * 对表补的是"仪表比 App 多走的那一段"，它确实发生在这趟里，所以本次里程也该一起补；
+     * 否则总里程是 11476、本次只有 70.3，续航和 %/km 又按 70.3 去算 —— 两头互相矛盾。
+     */
+    public static final String ACTION_TRIP_ADD = "com.hud.delivery.action.TRIP_ADD";
+    public static final String EXTRA_TRIP_DELTA = "trip_delta_km";
+
+    /**
      * v0.9.9 修的一个真 bug：以前"长按清零"只写了 SharedPreferences 和 HudState，
      * 而正在跑的服务手里还攥着旧的 TripIntegrator（19.1km），下一秒 tick 就把
      * HudState.tripKm 又写回 19.1 —— 界面上表现为"清零后立刻弹回"。
@@ -566,6 +581,53 @@ public class BleService extends Service implements HudBle.Listener {
      * 就会再折一次，总里程凭空多出一整趟（几公里）。现在由界面明确告知"我折过了"，
      * 服务只负责把内存/落盘清干净，不重复累加。
      */
+    /**
+     * v1.0.56：对表补进来的差额，并进「本次里程」。
+     *
+     * 服务里那份 TripIntegrator 才是"本次里程"的真身，界面改 HudState 会在下一秒被覆盖，
+     * 所以必须走广播。顺带把电量锚点平移同样的距离 —— 否则里程突然 +7km，
+     * `predict` 立刻把电量往下拽十几点，屏幕上又是一次"跳电"。
+     */
+    private void addTripInMemory(float deltaKm) {
+        if (Float.isNaN(deltaKm) || Math.abs(deltaKm) < 0.02f) return;
+        long now = System.currentTimeMillis();
+        // 扣得太狠（负数比当前里程还大）就只扣到 0
+        if (deltaKm < 0f && trip != null) deltaKm = Math.max(deltaKm, -trip.km());
+        if (trip != null) trip.addKm(deltaKm, now);
+        HudState.tripKm = trip != null ? trip.km() : Math.max(0f, HudState.tripKm + deltaKm);
+        prefs.setTripKm(HudState.tripKm);
+        if (socTracker != null) socTracker.shiftAnchorKm(deltaKm);
+        HudState.touch();
+        RawLog.sys(now, String.format(Locale.US,
+                "trip += %.2fkm (odometer align, now %.2f)", deltaKm, HudState.tripKm));
+    }
+
+    /**
+     * v1.0.56：控制器断电保护的那一刻，正好是"这箱电的真实可用里程"最硬的一次标定。
+     *
+     * 11-20/21 实测：满电 11399 → 断电 11476，77km；而设置的满电续航是 87.6（早前学歪了），
+     * 于是底部还剩 8~19km 的假余量。这里把 estRange 直接改成"本箱电实际跑了多少"，
+     * 下一箱电的续航从第一天就是准的。
+     *
+     * 只在"这箱电真的是从满电起算"（cycleSoc ≥ 95）且跑了 ≥20km 时才学 —— 半路充一次电不算样本。
+     */
+    private void learnTrueRangeOnCutoff(float kmCharge) {
+        if (Float.isNaN(kmCharge) || kmCharge < 20f) return;
+        float cSoc = prefs.cycleSoc();
+        if (Float.isNaN(cSoc) || cSoc < 95f) return;
+        int er = (int) Math.round(kmCharge);
+        if (er < 40 || er > 250) return;
+        int old = prefs.estRangeKm();
+        prefs.setEstRangeKm(er);
+        if (socTracker != null) {
+            float p = socTracker.relaxPerKm(0.9f, 100f / er);
+            if (!Float.isNaN(p)) prefs.setPerKmPct(p);
+        }
+        RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
+                "est_range learned from cutout: %d -> %d km (rode %.1f km from %.0f%%)",
+                old, er, kmCharge, cSoc));
+    }
+
     private void resetTripInMemory(boolean alreadyFolded) {
         long now = System.currentTimeMillis();
         // v1.0.22：清零前先写一条 SUM，把这一趟的表现留在日志里（折叠与统计归零都在 helper 里）
@@ -1070,6 +1132,11 @@ public class BleService extends Service implements HudBle.Listener {
 
     /** 满电锚点：电量/续航/本箱电都从这里重新起算（原 maybeAnchorFull 的后半段） */
     private void applyFullAnchor(long now, float v) {
+        // v1.0.56：真充满 → 解除"已没电"锁定（下一箱电从 100% 重新算）
+        if (HudState.emptyLatch) {
+            HudState.emptyLatch = false;
+            RawLog.sys(now, "EMPTY LATCH cleared (full charge)");
+        }
         // v1.0.7：本箱电单独记一本账，只在这里（真正充满）建立，长按清零不会把它抹掉。
         // 坐标用整车累计（odoKm），本次里程清零后这本账依然连续。
         prefs.setChargeAnchor(100f, HudState.odoKm);
@@ -1805,6 +1872,18 @@ public class BleService extends Service implements HudBle.Listener {
             HudState.anchorSoc = prefs.cycleSoc();
 
             hudSrcLast = src;
+            // v1.0.56：**上屏之前先过两道护栏**。
+            //  ① 空电锁：控制器已断电保护 → 电量最多 3%、续航 0（不管账本怎么算）
+            //  ② 续航硬顶：剩余 = min(电量口径, 满电续航 − 本箱电已跑)。两个口径取小的那个，
+            //     这样"学歪的 %/km"最多让你少看几公里，不会让你多跑十几公里后推车。
+            if (HudState.emptyLatch) {
+                socVal = Math.min(Float.isNaN(socVal) ? 2f : socVal, 3f);
+                HudState.rangeKm = 0f;
+            } else if (!Float.isNaN(HudState.rangeKm)) {
+                float capKm = prefs.estRangeKm() > 10f ? prefs.estRangeKm() : 80f;
+                if (!Float.isNaN(kmCharge)) capKm = Math.max(0f, capKm - kmCharge);
+                HudState.rangeKm = Math.min(HudState.rangeKm, capKm);
+            }
             HudState.setPower(disp, socVal, src);
 
             // v1.0.44：**欠压提示**。实车"没动力、拧油门不走"往往就是这一条：
@@ -1822,8 +1901,24 @@ public class BleService extends Service implements HudBle.Listener {
                 if (lowVoltSinceMs == 0L) lowVoltSinceMs = now;
                 boolean stuck = (Float.isNaN(speedKmh) || speedKmh < 12f);
                 if (stuck && now - lowVoltSinceMs >= 8_000L) {
-                    HudState.lowVoltWarn = String.format(Locale.US,
-                            "电压低于 %.0fV · 控制器低压保护（拧油门不走）", prefs.vEmpty());
+                    HudState.lowVoltWarn = "没电了 · 控制器已断电保护（拧油门不走），请充电";
+                    // v1.0.56：**空电硬着陆**。
+                    //
+                    // 11-21 18:14 的现场：带载 59.8V、车已经拧不动，屏幕还写 21% / 还能跑 19km，
+                    // 结果又推了几公里。原因是骑行口径的电量走"里程账本"，账本在中段被纠偏预算
+                    // 卡住后一直偏乐观，到底部再也纠不回来。
+                    // 控制器都断电保护了，账本说什么都不算数：立刻锁 3%、续航 0，并解除
+                    // "里程账本还能回升"的可能（emptyLatch），直到真充满才解。
+                    if (!HudState.emptyLatch) {
+                        HudState.emptyLatch = true;
+                        if (socTracker != null) socTracker.hardLand(now, HudState.tripKm, 3f);
+                        socVal = 3f;
+                        HudState.rangeKm = 0f;
+                        learnTrueRangeOnCutoff(kmCharge);
+                        RawLog.sys(now, String.format(Locale.US,
+                                "EMPTY LATCH: controller cutout at v=%.1f, kmCharge=%s -> soc=3% range=0",
+                                disp, Float.isNaN(kmCharge) ? "-" : String.format(Locale.US, "%.1f", kmCharge)));
+                    }
                 } else {
                     HudState.lowVoltWarn = "";
                 }

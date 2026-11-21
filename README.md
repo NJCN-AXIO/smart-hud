@@ -1738,3 +1738,29 @@ v1.0.53 换了电量两端基准（76.5/63.0 → 78.6/63.8）、压降模型和�
 
 因此 v1.0.55 的"首次直接采用实测比例"是对症的：等他跑够 8km 对两次表（第一次立基线、第二次学比例），
 `odoScale` 会一步锁到 ≈1.30，之后不用再手动对。
+
+## 4.85 v1.0.56：底部电量不再虚报、本次里程跟着对表走
+
+**病：** 11-20 14:14 满电 → 11-21 18:24 骑不动，仪表 11399→11476（77 km），而 App 在 18:14
+（69.6km）显示 **21% / `~19km`**、18:24 显示 9% / 8km，按屏幕还能骑 → 又推车几公里。
+
+**根因三条：** ① `perKm` 学成 1.14%/km（折合 87.6km），真实 1.30%（77km），底部误差被 `soc/perKm` 放大；
+② 17:38 那条 `nudge+0 socV=15 socKm=32` 差 17 点 > `maxAnchorJumpPct`(12)，而本箱 12 点预算中段已花光，
+静置校准一路 `skipped: no settled voltage`；③ trip 少记 6km（69.6 vs 75.5）又放大 7 点。
+
+**改法：**
+
+1. **空电硬着陆**：`lowVoltWarn`（带载 <60.5V + speed<12 持续 8s）一触发就 `HudState.emptyLatch=true`
+   ＋ `socTracker.hardLand(now, km, 3f)` ＋ `socVal=3 / rangeKm=0`，底部文案「没电了 · 控制器已断电保护
+   （拧油门不走），请充电」。锁住后滑行几米也不会跳回 21%，只有 `applyFullAnchor` 能解锁。
+2. **续航三重护栏**：`setPower` 前 `emptyLatch → soc≤3/0km`；否则 `rangeKm = min(rangeKm, estRange − kmCharge)`；
+   `learnTrueRangeOnCutoff` 在断电点把 `estRange` 改成实测（本轮 77），`perKm` 拉回 100/77。
+3. **本次里程并账**：`alignOdoTo` 先 `delta = 仪表 − 旧值`、`trip += delta`，再 `accum = target − base − trip`，
+   并广播 `ACTION_TRIP_ADD` → `BleService.addTripInMemory` + `socTracker.shiftAnchorKm(delta)`。
+   总里程仍正好等于你填的数，但本次里程不再"装死"。
+4. **回滚一条被单测否掉的规则**：曾想"静置 ≤25% 就由电压接管"，会退回"0% 还能骑十公里"
+   （11-17 26.8km 静置仅 66.2V≈4% 就是这种塌陷），`anchorRestGuarded` 里的该分支已删，
+   `BOTTOM_TRUST_SOC` 仅保留常量。真正的空电判据只有控制器断电。
+
+**副产品：** 对表弹窗/设置页文案改为"对表差额会并进本次里程"；里程系数行写明"还没学过时直接采用实测，
+之后每次最多调 12%"。细节见 `analysis/60_v1.0.56_满电到断电与本轮里程.md`。
