@@ -150,8 +150,8 @@ public final class HudState {
      * 界面拿它算颜色时按"带载起点 = vEmpty − 4"来分档（见 HudScreen.voltageColor）。
      */
     public static volatile float vEmpty = 63.8f;
-    /** 超速提醒阈值（km/h，0 = 关闭）。界面拿它决定时速颜色，别再写死 25/35 */
-    public static volatile int speedLimitKmh = 30;
+    /** 超速提醒阈值（km/h，0 = 关闭）。界面拿它决定时速颜色，别再写死 25/35；v1.0.61 起默认 0 */
+    public static volatile int speedLimitKmh = 0;
     /**
      * v1.0.53：当前这个电量百分比是按哪种口径算出来的 —— true = 停稳查电压（准），
      * false = 骑行中按里程账本推。界面上必须写出来，否则骑手看到"停车 65%、骑起来 71%"

@@ -1018,7 +1018,7 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
         ui.checkRow(uiCard, cbMirror, "整体上下翻转，反射到挡风玻璃上就是正的；白天别开。");
 
         EditText etSpeedLimit = ui.input(String.valueOf(prefs.speedLimit()), false);
-        ui.row(uiCard, "超速提醒 (km/h)", "超过就变红并语音报一次；0 = 关闭", etSpeedLimit);
+        ui.row(uiCard, "超速提醒 (km/h)", "超过语音报一次并变红；0 = 关闭", etSpeedLimit);
 
         final int[] themeNow = {prefs.themeIdx() % 4};
         ui.row(uiCard, "配色", "双击屏幕顶部也能切亮度", null);

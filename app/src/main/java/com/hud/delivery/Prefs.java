@@ -38,6 +38,7 @@ public final class Prefs {
         }
         migrateVFull786();
         migrateCaliber153();
+        migrateSpeedOff();
     }
 
     /**
@@ -81,6 +82,18 @@ public final class Prefs {
         sp.edit().putBoolean("mig_vfull_786", true).apply();
     }
 
+    /**
+     * v1.0.61：超速提醒默认关闭。旧默认 30 是国标电动自行车的线，这台 72V 电摩实测能上 50，
+     * 30 的阈值一骑就报；用户选择关闭提醒。只迁移还是旧默认 30 的设备，自己改过的值不动。
+     */
+    private void migrateSpeedOff() {
+        if (sp.getBoolean("mig_speed_off", false)) return;
+        if (sp.getInt("speed_limit_kmh", 30) == 30) {
+            sp.edit().putInt("speed_limit_kmh", 0).apply();
+        }
+        sp.edit().putBoolean("mig_speed_off", true).apply();
+    }
+
     // ---------- 车辆 / 蓝牙 ----------
     public String mac() { return sp.getString("mac", ""); }
     public void setMac(String v) {
@@ -103,8 +116,8 @@ public final class Prefs {
     public boolean mirror() { return sp.getBoolean("mirror_mode", false); }
     public void setMirror(boolean v) { sp.edit().putBoolean("mirror_mode", v).apply(); }
 
-    /** v1.0.33：超速提醒阈值（km/h），0 = 关闭 */
-    public int speedLimit() { return sp.getInt("speed_limit_kmh", 30); }
+    /** v1.0.33：超速提醒阈值（km/h），0 = 关闭；v1.0.61 起默认关闭 */
+    public int speedLimit() { return sp.getInt("speed_limit_kmh", 0); }
     public void setSpeedLimit(int v) { sp.edit().putInt("speed_limit_kmh", v).apply(); }
 
     // ---------- v1.0.38：断开后要冻结的"最后一次真电量" ----------

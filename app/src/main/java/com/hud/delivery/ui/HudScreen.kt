@@ -150,16 +150,13 @@ private fun freezeAgeText(): String {
  *
  * v1.0.53 修正：原来写死 25 黄 / 35 红 —— 那是电动自行车的国标线，
  * 而这台 72V 电摩实测能上 50，设置里也可以把阈值改到 50，两边早就对不上。
- * 现在：超过阈值红；到阈值的 85% 黄；阈值为 0（关掉提醒）时退回 25/35。
+ * 现在：超过阈值红；到阈值的 85% 黄。
+ * v1.0.61：阈值为 0（提醒关闭）时不再按 25/35 变色，时速一律用主题色，不做超速提示。
  */
 private fun speedColor(kmh: Float): Color {
     if (kmh.isNaN()) return DIM
     val lim = HudState.speedLimitKmh
-    if (lim <= 0) return when {
-        kmh > 35f -> RED
-        kmh >= 25f -> AMBER
-        else -> accent()
-    }
+    if (lim <= 0) return accent()
     return when {
         kmh > lim.toFloat() -> RED
         kmh >= lim * 0.85f -> AMBER
