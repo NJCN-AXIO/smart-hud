@@ -398,11 +398,15 @@ public class BleService extends Service implements HudBle.Listener {
                 } else if (ACTION_TRIP_ADD.equals(intent.getAction())) {
                     float d = intent.getFloatExtra(EXTRA_TRIP_DELTA, 0f);
                     addTripInMemory(d);
+                } else if (ACTION_TRIP_SET.equals(intent.getAction())) {
+                    float km = intent.getFloatExtra(EXTRA_TRIP_KM, 0f);
+                    setTripInMemory(km);
                 }
             }
         };
         IntentFilter f = new IntentFilter(ACTION_TRIP_RESET);
         f.addAction(ACTION_TRIP_ADD);
+        f.addAction(ACTION_TRIP_SET);
         // v1.0.12：统一用 ContextCompat.registerReceiver —— 它在 API 33 以下会自动忽略 flag，
         // 33+ 才真正生效，比手写 if (SDK_INT >= 33) 分支更稳（旧写法在 33+ 的某些机型上会抛
         // IllegalArgumentException: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified）。
@@ -544,6 +548,18 @@ public class BleService extends Service implements HudBle.Listener {
     public static final String EXTRA_TRIP_DELTA = "trip_delta_km";
 
     /**
+     * v1.0.59：对表时把「本次里程」直接覆盖到目标值的广播。
+     *
+     * 旧版对表走 TRIP_ADD（加差额）：界面内存副本和服务端积分器是两份副本，5 秒落盘
+     * 节奏下两者已经差出几公里，各自扣各自的，重启回读服务端副本后对表减掉的里程又
+     * 弹回总里程（11-24 07:55 对齐 −4.00，07:58 重启总里程回到 11604.1）。
+     * 改成 SET：界面按持久账本算出目标本次里程，服务端直接覆盖积分器并立即落盘，
+     * 锚点里程按"目标 − 当前"的差平移。
+     */
+    public static final String ACTION_TRIP_SET = "com.hud.delivery.action.TRIP_SET";
+    public static final String EXTRA_TRIP_KM = "trip_km";
+
+    /**
      * v0.9.9 修的一个真 bug：以前"长按清零"只写了 SharedPreferences 和 HudState，
      * 而正在跑的服务手里还攥着旧的 TripIntegrator（19.1km），下一秒 tick 就把
      * HudState.tripKm 又写回 19.1 —— 界面上表现为"清零后立刻弹回"。
@@ -615,6 +631,28 @@ public class BleService extends Service implements HudBle.Listener {
         HudState.touch();
         RawLog.sys(now, String.format(Locale.US,
                 "trip += %.2fkm (odometer align, now %.2f)", deltaKm, HudState.tripKm));
+    }
+
+    /**
+     * v1.0.59：把本次里程直接覆盖到目标值（对表专用）。
+     *
+     * 与 {@link #addTripInMemory} 的区别：这里不依赖服务端当前副本加差额，而是直接
+     * 覆盖积分器并立刻落盘；锚点里程按"目标 − 当前"平移，避免两份副本各扣各的。
+     */
+    private void setTripInMemory(float targetKm) {
+        if (Float.isNaN(targetKm)) return;
+        targetKm = Math.max(0f, targetKm);
+        long now = System.currentTimeMillis();
+        float before = trip != null ? trip.km() : HudState.tripKm;
+        float shift = targetKm - before;
+        if (trip != null) trip.setKm(targetKm);
+        HudState.tripKm = targetKm;
+        prefs.setTripKm(targetKm);
+        if (socTracker != null && Math.abs(shift) >= 0.02f) socTracker.shiftAnchorKm(shift);
+        HudState.touch();
+        RawLog.sys(now, String.format(Locale.US,
+                "trip set %.2fkm <- %.2fkm (odometer align; anchor shift %+.2f)",
+                targetKm, before, shift));
     }
 
     /**

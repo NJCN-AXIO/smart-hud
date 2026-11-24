@@ -644,24 +644,20 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                 }
             }
         }
-        float trip = Float.isNaN(HudState.tripKm) ? 0f : HudState.tripKm;
+        // v1.0.59：本次里程以持久账本（prefs.tripKm）为唯一基准，不用界面内存副本 ——
+        // 旧版内存副本和服务端积分器两份不一致，广播加差额后各扣各的，重启回读服务端
+        // 副本，对表减掉的里程又弹回总里程（见 analysis/63）。这里算好目标本次里程，
+        // 广播 SET 让服务端直接覆盖并立即落盘。
+        float tripSource = prefs.tripKm();
+        if (Float.isNaN(tripSource)) tripSource = 0f;
         float old = HudState.odoKm;
         float delta = Float.isNaN(old) ? 0f : (target - old);
-        // v1.0.56：**差额并进「本次里程」**。
-        // 用户反馈："总里程变了、本次里程数量没变，这里要修复一下" —— 对表补的正是
-        // "仪表比 App 多走的那一段"，它发生在这趟里；不并进去，总里程 11476 而本次只有 70.3，
-        // 续航与 %/km 又拿 70.3 去算，屏幕上两个数互相打脸。
-        // 并法：本次 += delta，App 累计 -= delta，总里程不变（还是正好等于你填的数）。
-        if (Math.abs(delta) > 0.02f) {
-            float newTrip = Math.max(0f, trip + delta);
-            delta = newTrip - trip;          // 真并进去多少（负数扣到 0 时会变）
-            trip = newTrip;
-            HudState.tripKm = trip;
-            Intent add = new Intent(BleService.ACTION_TRIP_ADD);
-            add.setPackage(getPackageName());
-            add.putExtra(BleService.EXTRA_TRIP_DELTA, delta);
-            sendBroadcast(add);              // 服务里那份 TripIntegrator 才是真身
-        }
+        float trip = Math.max(0f, tripSource + delta);
+        HudState.tripKm = trip;
+        Intent setTrip = new Intent(BleService.ACTION_TRIP_SET);
+        setTrip.setPackage(getPackageName());
+        setTrip.putExtra(BleService.EXTRA_TRIP_KM, trip);
+        sendBroadcast(setTrip);
         int base = prefs.odoBaseKm();
         float accum = target - base - trip;
         if (accum < 0f) {
