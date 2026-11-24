@@ -97,6 +97,44 @@
   .panel-d .seg-row { flex: 1; }
   .panel-d .seg { height: 10px; }
 
+  /* ---------- E：手机电池样式（数字在内 + 壳内进度填充）—— 当前采用 ---------- */
+  .panel-e { display: flex; justify-content: center; }
+  .panel-e .batt-e {
+    position: relative;
+    border: 2px solid var(--c);
+    border-radius: 12px;
+    padding: 6px;
+    height: 56px;
+    width: 100%;
+    max-width: 230px;
+  }
+  .panel-e .batt-e::after {
+    content: "";
+    position: absolute;
+    right: -7px; top: 50%;
+    translate: 0 -50%;
+    width: 4px; height: 22px;
+    background: var(--c);
+    border-radius: 0 3px 3px 0;
+  }
+  .panel-e .track {
+    position: absolute;
+    inset: 6px;
+    border-radius: 8px;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .panel-e .fill { height: 100%; background: var(--c); }
+  .panel-e .pct-in {
+    position: relative;
+    text-align: center;
+    line-height: 42px;
+    color: var(--text);
+    font-family: Consolas, Menlo, monospace;
+    font-weight: 900;
+    font-size: 24px;
+  }
+
   /* ---------- 实时预览 ---------- */
   .preview {
     background: var(--card);
@@ -133,10 +171,10 @@
 </head>
 <body>
 
-<h1>电量面板样板 v1 · 圆角矩形 + 分段格子 + 百分比</h1>
+<h1>电量面板样板 v2 · 手机电池样式（数字在内 + 进度填充）</h1>
 <p class="sub">
-  沿用 App 现有深色主题与颜色阈值：≤20% 红、≤40% 黄、其余绿；10 段格子，已充段随电量变色。
-  下面 A–D 四套方案各跑 82% / 33% / 12% 三档；底部有可拖动的实时预览。这是静态样板，确认后再写进 Compose。
+  沿用 App 现有深色主题与颜色阈值：≤20% 红、≤40% 黄、其余绿。
+  E 为当前采用方案：电池壳内左起进度填充，百分比居中叠在壳上；A–D 保留作对照。底部滑块可拖任意电量看效果。
 </p>
 
 <h2>方案对照（三档状态）</h2>
@@ -170,16 +208,24 @@
     <div class="state-row" id="variant-d"></div>
   </div>
 
+  <!-- E -->
+  <div class="variant" style="border-color: var(--green);">
+    <h3>E · 手机电池：数字在内 + 壳内进度条（当前采用）</h3>
+    <p class="desc">圆角电池壳内一条左起进度填充，百分比居中叠在壳上；不再又细又长，数字不外放。</p>
+    <div class="state-row" id="variant-e"></div>
+  </div>
+
 </div>
 
 <h2>实时预览</h2>
 <div class="preview">
   <div class="preview-stage" id="stage"></div>
   <div class="controls">
-    <button class="seg-btn active" data-v="a">A 外框分格</button>
+    <button class="seg-btn" data-v="a">A 外框分格</button>
     <button class="seg-btn" data-v="b">B 上下结构</button>
     <button class="seg-btn" data-v="c">C 图标+数字</button>
     <button class="seg-btn" data-v="d">D 紧凑条</button>
+    <button class="seg-btn active" data-v="e">E 手机电池</button>
     <label>电量 <span id="pct-label">33</span>%</label>
     <input type="range" id="slider" min="0" max="100" value="33">
     <span class="state-tag" id="state-tag"></span>
@@ -235,18 +281,23 @@
       '<div class="pct">' + pct + '<small>%</small></div>' +
       segRow(pct) + '</div>';
   }
+  function panelE(pct, note) {
+    return '<div class="panel-e" style="--c:' + colorOf(pct) + '">' +
+      '<div class="batt-e"><div class="track"><div class="fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="pct-in">' + pct + '%</div></div></div>';
+  }
 
-  const builders = { a: panelA, b: panelB, c: panelC, d: panelD };
-  const notes = { a: '', b: '', c: '停稳 · 按电压', d: '' };
+  const builders = { a: panelA, b: panelB, c: panelC, d: panelD, e: panelE };
+  const notes = { a: '', b: '', c: '停稳 · 按电压', d: '', e: '' };
 
   // 静态三档对照
-  ['a', 'b', 'c', 'd'].forEach(v => {
+  ['a', 'b', 'c', 'd', 'e'].forEach(v => {
     const box = document.getElementById('variant-' + v);
     box.innerHTML = states.map(p => builders[v](p, notes[v])).join('');
   });
 
   // 实时预览
-  let current = 'a';
+  let current = 'e';
   const stage = document.getElementById('stage');
   const slider = document.getElementById('slider');
   const label = document.getElementById('pct-label');

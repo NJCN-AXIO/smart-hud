@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -659,58 +658,49 @@ private fun SocPanelCell(
     subColor: Color
 ) {
     val color = socColor(pct)
-    val segments = 10
-    val filled = if (pct.isNaN()) 0
-    else kotlin.math.ceil(pct / 100f * segments).toInt().coerceIn(0, segments)
+    val frac = if (pct.isNaN()) 0f else (pct / 100f).coerceIn(0f, 1f)
     BoxWithConstraints(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        val vSp = (maxHeight.value * 0.42f).coerceIn(44f, 80f)
-        val uSp = (vSp * 0.33f).coerceIn(16f, 26f)
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // 电池外框 + 正极小凸起
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
+                // 电池壳：里面装一条横向进度填充，百分比数字居中叠在上面（手机电池样式）
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp)
+                        .border(2.dp, color, RoundedCornerShape(12.dp))
+                        .padding(6.dp)
                 ) {
+                    // 空槽底 + 左起填充条
                     Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(26.dp)
-                            .border(2.dp, color, RoundedCornerShape(10.dp))
-                            .padding(4.dp)
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(BAR)
                     ) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                            repeat(segments) { i ->
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clip(RoundedCornerShape(3.dp))
-                                        .background(if (i < filled) color else DIM.copy(alpha = 0.30f))
-                                )
-                            }
-                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(frac)
+                                .background(color)
+                        )
                     }
-                    Box(
-                        modifier = Modifier
-                            .width(4.dp)
-                            .height(16.dp)
-                            .background(color, RoundedCornerShape(0.dp, 3.dp, 3.dp, 0.dp))
+                    BasicText(
+                        text = if (pct.isNaN()) "--" else String.format(Locale.US, "%.0f%%", pct),
+                        modifier = Modifier.align(Alignment.Center),
+                        style = TextStyle(
+                            color = TEXT,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Black,
+                            fontFamily = FontFamily.Monospace
+                        )
                     )
                 }
-                Spacer(Modifier.width(10.dp))
-                BasicText(
-                    text = if (pct.isNaN()) "--" else String.format(Locale.US, "%.0f", pct),
-                    style = TextStyle(
-                        color = color,
-                        fontSize = vSp.sp,
-                        fontWeight = FontWeight.Black,
-                        fontFamily = FontFamily.Monospace
-                    )
-                )
-                BasicText(
-                    text = "%",
-                    modifier = Modifier.padding(start = 4.dp, bottom = (uSp * 0.38f).dp),
-                    style = TextStyle(color = color, fontSize = uSp.sp, fontWeight = FontWeight.Bold)
+                // 正极小凸起
+                Box(
+                    modifier = Modifier
+                        .width(4.dp)
+                        .height(22.dp)
+                        .background(color, RoundedCornerShape(0.dp, 3.dp, 3.dp, 0.dp))
                 )
             }
             Spacer(Modifier.height(6.dp))
