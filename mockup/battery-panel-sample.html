@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电量面板样板 v1 · HUD</title>
+<style>
+  :root {
+    --bg: #07090C;
+    --card: #141A21;
+    --line: #2A3440;
+    --text: #EDF1F5;
+    --muted: #9FB3C8;
+    --dim: #6B7480;
+    --green: #35E07A;
+    --amber: #FFC24B;
+    --red: #FF5A5A;
+    --seg-off: rgba(237, 241, 245, 0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    padding: 28px 20px 60px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+  h2 { font-size: 15px; font-weight: 600; margin: 30px 0 14px; color: var(--text); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .variant {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+  }
+  .variant h3 { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .variant .desc { font-size: 12px; color: var(--dim); margin-bottom: 16px; line-height: 1.6; }
+  .state-row { display: flex; flex-direction: column; gap: 14px; }
+
+  /* ---------- 通用分段条 ---------- */
+  .seg-row { display: flex; gap: 3px; }
+  .seg { flex: 1 1 0; border-radius: 3px; background: var(--seg-off); }
+  .seg.on { background: var(--c); }
+
+  /* ---------- A：电池外框 + 内部分格 + 右侧百分比 ---------- */
+  .panel-a { display: flex; align-items: center; gap: 14px; }
+  .batt-shell {
+    position: relative;
+    border: 2px solid var(--c);
+    border-radius: 10px;
+    padding: 5px;
+    width: 118px;
+    flex: none;
+  }
+  .batt-shell::after {
+    content: "";
+    position: absolute;
+    right: -7px; top: 50%;
+    translate: 0 -50%;
+    width: 4px; height: 16px;
+    background: var(--c);
+    border-radius: 0 3px 3px 0;
+  }
+  .batt-shell .seg { height: 26px; }
+  .panel-a .pct { font-family: "Consolas", "Menlo", monospace; font-weight: 900; font-size: 30px; color: var(--c); }
+  .panel-a .pct small { font-size: 14px; font-weight: 700; }
+
+  /* ---------- B：面板上下结构（大百分比在上，分段条在下） ---------- */
+  .panel-b {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    background: #0D1117;
+  }
+  .panel-b .top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+  .panel-b .pct { font-family: "Consolas", "Menlo", monospace; font-weight: 900; font-size: 34px; color: var(--c); }
+  .panel-b .pct small { font-size: 15px; font-weight: 700; }
+  .panel-b .label { font-size: 12px; color: var(--muted); }
+  .panel-b .seg { height: 12px; }
+
+  /* ---------- C：左图标右数字 + 口径副标题 ---------- */
+  .panel-c { display: flex; align-items: center; gap: 14px; }
+  .panel-c .batt-shell { width: 92px; }
+  .panel-c .batt-shell .seg { height: 18px; }
+  .panel-c .right { display: flex; flex-direction: column; }
+  .panel-c .pct { font-family: "Consolas", "Menlo", monospace; font-weight: 900; font-size: 28px; color: var(--c); }
+  .panel-c .pct small { font-size: 13px; }
+  .panel-c .note { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+  /* ---------- D：同行紧凑条（极简模式） ---------- */
+  .panel-d { display: flex; align-items: center; gap: 10px; }
+  .panel-d .pct { font-family: "Consolas", "Menlo", monospace; font-weight: 900; font-size: 22px; color: var(--c); min-width: 52px; }
+  .panel-d .pct small { font-size: 12px; }
+  .panel-d .seg-row { flex: 1; }
+  .panel-d .seg { height: 10px; }
+
+  /* ---------- 实时预览 ---------- */
+  .preview {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    margin-top: 16px;
+  }
+  .preview-stage {
+    background: #0D1117;
+    border-radius: 14px;
+    padding: 34px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+  }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 18px; }
+  .controls label { font-size: 13px; color: var(--muted); }
+  input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--green); }
+  .seg-btn {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .seg-btn.active { border-color: var(--green); color: var(--green); }
+  .state-tag { font-size: 12px; color: var(--dim); }
+  .footnote { margin-top: 22px; font-size: 12px; color: var(--dim); line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<h1>电量面板样板 v1 · 圆角矩形 + 分段格子 + 百分比</h1>
+<p class="sub">
+  沿用 App 现有深色主题与颜色阈值：≤20% 红、≤40% 黄、其余绿；10 段格子，已充段随电量变色。
+  下面 A–D 四套方案各跑 82% / 33% / 12% 三档；底部有可拖动的实时预览。这是静态样板，确认后再写进 Compose。
+</p>
+
+<h2>方案对照（三档状态）</h2>
+<div class="grid">
+
+  <!-- A -->
+  <div class="variant">
+    <h3>A · 电池外框 + 内部分格 + 右侧百分比</h3>
+    <p class="desc">最像成熟电摩仪表：电池轮廓本身就是电量框，右侧大数字读百分比。</p>
+    <div class="state-row" id="variant-a"></div>
+  </div>
+
+  <!-- B -->
+  <div class="variant">
+    <h3>B · 面板上下结构</h3>
+    <p class="desc">圆角矩形面板内：上面大百分比，下面一条分段横格；信息分层最清楚。</p>
+    <div class="state-row" id="variant-b"></div>
+  </div>
+
+  <!-- C -->
+  <div class="variant">
+    <h3>C · 左图标右数字 + 口径副标题</h3>
+    <p class="desc">紧凑电池图标在左，百分比与「停稳/骑行」口径在右，适合主面板。</p>
+    <div class="state-row" id="variant-c"></div>
+  </div>
+
+  <!-- D -->
+  <div class="variant">
+    <h3>D · 同行紧凑条（极简模式）</h3>
+    <p class="desc">百分比和细格条同一行，占高最小，适合左右滑动后的极简页。</p>
+    <div class="state-row" id="variant-d"></div>
+  </div>
+
+</div>
+
+<h2>实时预览</h2>
+<div class="preview">
+  <div class="preview-stage" id="stage"></div>
+  <div class="controls">
+    <button class="seg-btn active" data-v="a">A 外框分格</button>
+    <button class="seg-btn" data-v="b">B 上下结构</button>
+    <button class="seg-btn" data-v="c">C 图标+数字</button>
+    <button class="seg-btn" data-v="d">D 紧凑条</button>
+    <label>电量 <span id="pct-label">33</span>%</label>
+    <input type="range" id="slider" min="0" max="100" value="33">
+    <span class="state-tag" id="state-tag"></span>
+  </div>
+</div>
+
+<p class="footnote">
+  说明：格子数量暂定 10 段（也可改 8 段）；颜色阈值与 App 当前一致。样板未接真实数据，电压/里程口径文案仅示意。
+  选定方案后，我再按对应结构改造 HudScreen 的电量格（普通页 + 极简页）。
+</p>
+
+<script>
+  const SEGS = 10;
+  const states = [82, 33, 12];
+
+  function colorOf(pct) {
+    if (pct <= 20) return getComputedStyle(document.documentElement).getPropertyValue('--red').trim();
+    if (pct <= 40) return getComputedStyle(document.documentElement).getPropertyValue('--amber').trim();
+    return getComputedStyle(document.documentElement).getPropertyValue('--green').trim();
+  }
+  function filled(pct) { return Math.ceil(pct / 100 * SEGS); }
+
+  function segRow(pct) {
+    const on = filled(pct);
+    let html = '<div class="seg-row" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '">';
+    for (let i = 0; i < SEGS; i++) {
+      html += '<div class="seg' + (i < on ? ' on' : '') + '"></div>';
+    }
+    return html + '</div>';
+  }
+
+  // 各方案模板；note 仅示意口径
+  function panelA(pct, note) {
+    return '<div class="panel-a" style="--c:' + colorOf(pct) + '">' +
+      '<div class="batt-shell">' + segRow(pct) + '</div>' +
+      '<div class="pct">' + pct + '<small>%</small></div>' +
+      '</div>';
+  }
+  function panelB(pct, note) {
+    return '<div class="panel-b" style="--c:' + colorOf(pct) + '">' +
+      '<div class="top"><span class="pct">' + pct + '<small>%</small></span>' +
+      '<span class="label">剩余电量</span></div>' +
+      segRow(pct) + '</div>';
+  }
+  function panelC(pct, note) {
+    return '<div class="panel-c" style="--c:' + colorOf(pct) + '">' +
+      '<div class="batt-shell">' + segRow(pct) + '</div>' +
+      '<div class="right"><div class="pct">' + pct + '<small>%</small></div>' +
+      '<div class="note">' + note + '</div></div></div>';
+  }
+  function panelD(pct, note) {
+    return '<div class="panel-d" style="--c:' + colorOf(pct) + '">' +
+      '<div class="pct">' + pct + '<small>%</small></div>' +
+      segRow(pct) + '</div>';
+  }
+
+  const builders = { a: panelA, b: panelB, c: panelC, d: panelD };
+  const notes = { a: '', b: '', c: '停稳 · 按电压', d: '' };
+
+  // 静态三档对照
+  ['a', 'b', 'c', 'd'].forEach(v => {
+    const box = document.getElementById('variant-' + v);
+    box.innerHTML = states.map(p => builders[v](p, notes[v])).join('');
+  });
+
+  // 实时预览
+  let current = 'a';
+  const stage = document.getElementById('stage');
+  const slider = document.getElementById('slider');
+  const label = document.getElementById('pct-label');
+  const tag = document.getElementById('state-tag');
+
+  function render() {
+    const p = Number(slider.value);
+    label.textContent = p;
+    tag.textContent = p <= 20 ? '低电 · 红' : p <= 40 ? '中等 · 黄' : '充足 · 绿';
+    stage.innerHTML = builders[current](p, notes[current]);
+  }
+  slider.addEventListener('input', render);
+  document.querySelectorAll('.seg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      current = btn.dataset.v;
+      render();
+    });
+  });
+  render();
+</script>
+</body>
+</html>

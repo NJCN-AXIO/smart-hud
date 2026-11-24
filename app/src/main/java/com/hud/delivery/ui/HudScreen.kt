@@ -1,6 +1,7 @@
 package com.hud.delivery.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -363,11 +364,9 @@ fun HudScreen(
                 sub = "GPS 时速 · 左右滑动切回",
                 subColor = DIM
             )
-            MetricCell(
+            SocPanelCell(
                 modifier = Modifier.weight(cellWeight),
-                value = pct(soc),
-                unit = "%",
-                color = socColor(soc),
+                pct = soc,
                 sub = when {
                     // v1.0.53：同上 —— 骑行中电量走里程账本，不是电压直读
                     src == HudState.SRC_BLE && HudState.socAtRest -> "停稳 · 按电压"
@@ -378,8 +377,7 @@ fun HudScreen(
                     src == HudState.SRC_EST || src == HudState.SRC_MANUAL -> "按里程推算"
                     else -> "等待电压"
                 },
-                subColor = DIM,
-                barPct = soc
+                subColor = DIM
             )
         } else {
 
@@ -398,11 +396,9 @@ fun HudScreen(
             subColor = DIM
         )
 
-        MetricCell(
+        SocPanelCell(
             modifier = Modifier.weight(cellWeight),
-            value = pct(soc),
-            unit = "%",
-            color = socColor(soc),
+            pct = soc,
             // 电量口径必须写清楚，但别写出和上面数字打架的话
             // v1.0.30：连上就是控制器电压直读（和小程序同一口径）；断开只冻结、不再按里程往下猜。
             sub = when {
@@ -415,8 +411,7 @@ fun HudScreen(
                 src == HudState.SRC_EST || src == HudState.SRC_MANUAL -> "已断开 · 按里程推算"
                 else -> "等待电压"
             },
-            subColor = DIM,
-            barPct = soc
+            subColor = DIM
         )
 
         MetricCell(
@@ -653,26 +648,82 @@ fun HudScreen(
  * 副标题固定 18dp 槽位：没有内容也不塌陷，三个数字才不会一个高一个低。
  */
 /**
- * v1.0.63：仪表盘式电量格子条（10 段）。已充段跟着电量颜色走，空段暗灰；
- * 百分比仍是大数字，格子条只负责"一眼看出还剩几格"，对标成熟电摩仪表的电量显示。
+ * v1.0.64：A 方案电量格 —— 电池外框（带正极凸起）+ 内部 10 段格子 + 右侧大百分比。
+ * 样板见 mockup/battery-panel-sample.html（用户选定 A）。已充段与外框同色，空段暗灰。
  */
 @Composable
-private fun BatteryBar(pct: Float, color: Color) {
+private fun SocPanelCell(
+    modifier: Modifier,
+    pct: Float,
+    sub: String,
+    subColor: Color
+) {
+    val color = socColor(pct)
     val segments = 10
     val filled = if (pct.isNaN()) 0
-    else kotlin.math.ceil(pct / 10f).toInt().coerceIn(0, segments)
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        repeat(segments) { i ->
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(9.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(if (i < filled) color else DIM.copy(alpha = 0.30f))
-            )
+    else kotlin.math.ceil(pct / 100f * segments).toInt().coerceIn(0, segments)
+    BoxWithConstraints(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        val vSp = (maxHeight.value * 0.42f).coerceIn(44f, 80f)
+        val uSp = (vSp * 0.33f).coerceIn(16f, 26f)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // 电池外框 + 正极小凸起
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(26.dp)
+                            .border(2.dp, color, RoundedCornerShape(10.dp))
+                            .padding(4.dp)
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                            repeat(segments) { i ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(3.dp))
+                                        .background(if (i < filled) color else DIM.copy(alpha = 0.30f))
+                                )
+                            }
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .width(4.dp)
+                            .height(16.dp)
+                            .background(color, RoundedCornerShape(0.dp, 3.dp, 3.dp, 0.dp))
+                    )
+                }
+                Spacer(Modifier.width(10.dp))
+                BasicText(
+                    text = if (pct.isNaN()) "--" else String.format(Locale.US, "%.0f", pct),
+                    style = TextStyle(
+                        color = color,
+                        fontSize = vSp.sp,
+                        fontWeight = FontWeight.Black,
+                        fontFamily = FontFamily.Monospace
+                    )
+                )
+                BasicText(
+                    text = "%",
+                    modifier = Modifier.padding(start = 4.dp, bottom = (uSp * 0.38f).dp),
+                    style = TextStyle(color = color, fontSize = uSp.sp, fontWeight = FontWeight.Bold)
+                )
+            }
+            Spacer(Modifier.height(6.dp))
+            Box(Modifier.fillMaxWidth().height(18.dp), contentAlignment = Alignment.Center) {
+                if (sub.isNotEmpty()) {
+                    BasicText(
+                        text = sub,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(color = subColor, fontSize = 12.sp)
+                    )
+                }
+            }
         }
     }
 }
@@ -684,9 +735,7 @@ private fun MetricCell(
     unit: String,
     color: Color,
     sub: String,
-    subColor: Color,
-    /** v1.0.63：传入电量%时在数字下方画一段格子条；NaN = 不画 */
-    barPct: Float = Float.NaN
+    subColor: Color
 ) {
     BoxWithConstraints(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         // v1.0.3：字号跟着格子高度走，不再死写 80sp。
@@ -710,10 +759,6 @@ private fun MetricCell(
                     modifier = Modifier.padding(start = 4.dp, bottom = (uSp * 0.38f).dp),
                     style = TextStyle(color = color, fontSize = uSp.sp, fontWeight = FontWeight.Bold)
                 )
-            }
-            if (!barPct.isNaN()) {
-                Spacer(Modifier.height(6.dp))
-                BatteryBar(barPct, color)
             }
             Spacer(Modifier.height(6.dp))
             Box(Modifier.fillMaxWidth().height(18.dp), contentAlignment = Alignment.Center) {
