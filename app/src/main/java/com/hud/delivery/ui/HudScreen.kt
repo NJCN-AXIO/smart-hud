@@ -663,12 +663,14 @@ private fun SocPanelCell(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // 电池壳：里面装一条横向进度填充，百分比数字居中叠在上面（手机电池样式）
+                // v1.0.66：去掉 weight(1f) 满宽拉伸，改成固定紧凑宽度，和左右电压/里程大数字块对齐，
+                // 不再把格子整条撑满。
                 Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp)
+                        .width(96.dp)
+                        .height(48.dp)
                         .border(2.dp, color, RoundedCornerShape(12.dp))
-                        .padding(6.dp)
+                        .padding(5.dp)
                 ) {
                     // 空槽底 + 左起填充条
                     Box(
@@ -689,17 +691,18 @@ private fun SocPanelCell(
                         modifier = Modifier.align(Alignment.Center),
                         style = TextStyle(
                             color = TEXT,
-                            fontSize = 24.sp,
+                            fontSize = 22.sp,
                             fontWeight = FontWeight.Black,
                             fontFamily = FontFamily.Monospace
                         )
                     )
                 }
                 // 正极小凸起
+                Spacer(Modifier.width(3.dp))
                 Box(
                     modifier = Modifier
                         .width(4.dp)
-                        .height(22.dp)
+                        .height(18.dp)
                         .background(color, RoundedCornerShape(0.dp, 3.dp, 3.dp, 0.dp))
                 )
             }
