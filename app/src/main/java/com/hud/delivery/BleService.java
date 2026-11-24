@@ -278,6 +278,18 @@ public class BleService extends Service implements HudBle.Listener {
             prefs.clearSocAnchor();
             RawLog.sys(System.currentTimeMillis(), "soc anchor older than 18h, cleared");
         }
+        // v1.0.58：**空电硬着陆锚点只认 30 分钟。**
+        // 11-22 现场：前一箱末端空电锁在 3%，车搁了 73 分钟（铅酸回弹/可能补过电，
+        // 静置端电压已 72.7–73.6V ≈ 50%），开机却还按 3% 锚点推算，全天显示 4%、
+        // 每 5 分钟低电告警一次。30 分钟以上的底部锚点默认已经回弹，清掉让第一帧
+        // 静置电压重新起锚；30 分钟内同一段骑行续上的空电状态仍然保留。
+        if (prefs.socAnchorSoc() <= 5f && anchorTs > 0
+                && System.currentTimeMillis() - anchorTs > 30L * 60_000L) {
+            RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
+                    "bottom anchor %.0f%% aged %d min, cleared (battery likely rebounded/recharged)",
+                    prefs.socAnchorSoc(), (System.currentTimeMillis() - anchorTs) / 60_000L));
+            prefs.clearSocAnchor();
+        }
         float seedPerKm = prefs.perKmPct();
         if (Float.isNaN(seedPerKm) && prefs.socPerKm() > 0.05f) seedPerKm = prefs.socPerKm();
         // v1.0.37：清掉历史遗留的"毒样本"。
@@ -1744,9 +1756,18 @@ public class BleService extends Service implements HudBle.Listener {
                 //   站着（停稳 20 秒 + 没油门）→ 电压可信，查表（这是"量血压"）
                 //   跑着 → 电压不可信，按里程账本推（这是"数步子"）
                 // 旧版两种情况都拿电压查表，所以永远在"多估"和"少估"之间抽。
-                boolean atRest = stationarySince > 0L && now - stationarySince >= 20_000L
-                        && (Float.isNaN(speedKmh) || speedKmh <= 2f)
+                // v1.0.58：P 档（驻车锁）+ 油门怠速 + GPS 速度 ≤2km/h 也算静置。
+                // 11-24 07:58 现场：车在 P 档、转把 0.8、速度 '--'，界面却标"骑行·按里程推算"，
+                // 原因是开机瞬间 GPS 给过一次 21km/h，stationarySince 被清零、20 秒没攒够。
+                // parkedMode（停稳 60 秒）同样直接算静置。
+                boolean pGearIdle = HudState.faultsText != null
+                        && HudState.faultsText.contains("P档")
                         && (Float.isNaN(thrV) || thrV < 1.5f);
+                boolean slowEnough = Float.isNaN(speedKmh) || speedKmh <= 2f;
+                boolean atRest = parkedMode
+                        || (stationarySince > 0L && now - stationarySince >= 20_000L
+                                && slowEnough && (Float.isNaN(thrV) || thrV < 1.5f))
+                        || (pGearIdle && slowEnough);
                 // v1.0.53：把口径摆给界面（“停稳·按电压” / “骑行·按里程”）
                 HudState.socAtRest = atRest;
                 // 查表电压优先用"逐帧配平的 OCV 候选"（这个值里已经含了每一帧自己的压降），
@@ -1766,11 +1787,16 @@ public class BleService extends Service implements HudBle.Listener {
                 // 等 45 秒窗里样本够了再按新数据走；真换过电瓶/刚充满，差 ≥20 分照样走直跳确认。
                 boolean freshWindow = Float.isNaN(vMap);
                 if (freshWindow) {
-                    socVal = Float.isNaN(lastLiveSoc) ? soc.soc(disp + sag) : lastLiveSoc;
+                    // v1.0.58：窗口没攒够样本时，先问里程账本；账本有锚点就按它推算，
+                    // 别再死攥着上次落盘的旧电量（11-22 全天冻在 4% 的另一条支路）。
+                    float predHold = socTracker == null ? Float.NaN
+                            : socTracker.predict(HudState.tripKm);
+                    if (!Float.isNaN(predHold)) socVal = predHold;
+                    else socVal = Float.isNaN(lastLiveSoc) ? soc.soc(disp + sag) : lastLiveSoc;
                     if (now - lastFreshHoldLogMs > 30_000L) {
                         lastFreshHoldLogMs = now;
                         RawLog.sys(now, String.format(Locale.US,
-                                "soc: window fresh, hold last=%.0f (samples=%d)",
+                                "soc: window fresh, hold %.0f (samples=%d)",
                                 socVal, ocvCand == null ? 0 : ocvCand.samplesIn(now)));
                     }
                 } else {
@@ -2589,6 +2615,17 @@ public class BleService extends Service implements HudBle.Listener {
                         impliedRange, prefs.estRangeKm(),
                         Math.abs(impliedRange - prefs.estRangeKm()) > 8f
                                 ? "  <- differs a lot, consider changing est_range" : ""));
+                // v1.0.58：锚点正常学出来的斜率也同步满电续航（与 learnPerKmFromRest 同口径），
+                // 否则 er 一直停在用户手填的 80，续航上限不随实际耗电收紧。
+                int erAnchor = Math.round(impliedRange);
+                if (erAnchor >= 40 && erAnchor <= 250
+                        && Math.abs(erAnchor - prefs.estRangeKm()) >= 3) {
+                    int oldEr = prefs.estRangeKm();
+                    prefs.setEstRangeKm(erAnchor);
+                    RawLog.sys(now, String.format(Locale.US,
+                            "per-km %.2f (anchor sample) -> est_range %d -> %d km",
+                            learned, oldEr, erAnchor));
+                }
             }
         } else if (socTracker.getRejects() > 0) {
             // 电压口径和里程口径差得太多：只小幅纠偏，别让电量被一路按到底

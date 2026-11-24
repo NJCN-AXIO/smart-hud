@@ -607,6 +607,15 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
             float dApp = oldApp - prevApp;
             if (dDash >= 5f && dApp >= 5f) {
                 float ratio = dDash / dApp;
+                // v1.0.58：样本合理性硬闸。实测 11-22 12:31 出现过 ratio 3.7586
+                // （启动 GPS 空档、App 只记到 6.65km，仪表却走了 25km），旧逻辑直接
+                // 夹到上限 1.350 并当成"已学"，系数被这一颗垃圾样本顶死，后面两趟连降两次。
+                // 这台车仪表/App 真实比例长期落在 0.9–1.4，超出 0.70–1.70 一律不采。
+                if (ratio < 0.70f || ratio > 1.70f) {
+                    RawLog.sys(System.currentTimeMillis(), String.format(Locale.US,
+                            "ODO_SCALE sample rejected: dash +%.2f vs app +%.2f -> ratio %.4f implausible (scale stays %.4f)",
+                            dDash, dApp, ratio, prefs.odoScale()));
+                } else {
                 float oldScale = prefs.odoScale();
                 float newScale = oldScale * ratio;
                 // v1.0.53：区间 0.75~1.35，单次最多 4%。
@@ -632,6 +641,7 @@ public class MainActivity extends ComponentActivity implements HudView.Listener,
                         "ODO_SCALE learn: dash +%.2f vs app +%.2f -> ratio %.4f, scale %.4f -> %.4f (%s)",
                         dDash, dApp, ratio, oldScale, newScale,
                         (hi - lo) > 0.2f ? "first-fit" : "step12"));
+                }
             }
         }
         float trip = Float.isNaN(HudState.tripKm) ? 0f : HudState.tripKm;
