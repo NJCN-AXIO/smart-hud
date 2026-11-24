@@ -328,6 +328,11 @@ class SocTracker(
         divergeSinceMs = 0L
     }
 
+    /** v1.0.67：新一箱电同时清掉离群拒绝计数（否则上一箱的 reject 残留会把本次静置校准一直挡在拒绝通道） */
+    fun clearRejects() {
+        rejects = 0
+    }
+
     /**
      * v1.0.56：**空电硬着陆**。
      *

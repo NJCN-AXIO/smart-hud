@@ -1020,6 +1020,9 @@ public class BleService extends Service implements HudBle.Listener {
     private long bootMs = 0L;
     /** v1.0.46：开机满电只处理一次 —— 把上次残留的本次里程折走 */
     private boolean bootFullPending = true;
+    /** v1.0.67：开机高电压串（连续 ≥6 帧、持续 ≥8s 才算真满电，挡启动尖峰） */
+    private long bootHighMs = 0L;
+    private int bootHighFrames = 0;
     /** v1.0.46：断档提示的出现时刻（挂 15 分钟后自动撤掉） */
     private long gapWarnMs = 0L;
 
@@ -1178,7 +1181,19 @@ public class BleService extends Service implements HudBle.Listener {
             bootFullPending = false;
             return;
         }
-        if (!live || Float.isNaN(v) || v < prefs.vFull() - 0.4f) return;
+        if (!live || Float.isNaN(v)) return;
+        // v1.0.67：满电门槛从 vFull−0.4 收紧到 vFull−0.2，并且必须"持续"。
+        // 11-24 半电出门：启动瞬时报过 78.46V 一两个尖峰，旧门槛（78.2）当场误判满电，
+        // 里程被折走清零、电量锚点焊成 100%；静置后真实 OCV 只有 75.3V（≈85%）。
+        // 现在连续 ≥6 帧、持续 ≥8 秒都在门槛上方才认；中间掉一次就重新数。
+        if (v < prefs.vFull() - 0.2f) {
+            bootHighMs = 0L;
+            bootHighFrames = 0;
+            return;
+        }
+        if (bootHighMs == 0L) bootHighMs = now;
+        bootHighFrames++;
+        if (bootHighFrames < 6 || now - bootHighMs < 8_000L) return;
         // v1.0.50：**这一箱电刚起算就别再清一次。**
         // 旧版这条开机路径没有 30 分钟去重：充满电出门跑了两公里、顺手退出 App 再打开，
         // 静置电压还在 76V 上方 → 又触发一次"满电清零"，把刚跑的两公里折走、本次里程归零，
@@ -1208,6 +1223,7 @@ public class BleService extends Service implements HudBle.Listener {
             socTracker.anchorRest(now, 100f, HudState.tripKm);
             socTracker.resetNudgeBudget();      // v1.0.3：新的一箱电，纠偏预算归零
             socTracker.resetRecoverBudget();    // v1.0.20：回升预算同样归零
+            socTracker.clearRejects();          // v1.0.67：离群计数也随新箱电清零
             // v1.0.18：满电时把学到的耗电率往默认值回摆 35%（不重学、不清零）。
             // v1.0.19：只在"学到 ≥2.4%/km（折算满电 <42km）"时才回摆 —— 正常 80km 的车（1.25%/km）
             // 不该被满电动作无谓地拽一次。这样它只处理"明显跑不到"的样本，不碰正常车。

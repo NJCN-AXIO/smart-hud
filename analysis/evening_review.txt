@@ -1,0 +1,2719 @@
+================================================================================================
+合并日志: REC=9826 SYS=4718 CONNECT=93 DISC=79
+总跨度: 14:25:35 -> 21:18:04  (412.5 min)
+
+-- 轨迹采样（每 5 分钟一条）--
+  14:25:35 v=     - soc= 33 sra=  - spd=   21 km= 21.26 gkm=     - odo=11621.3 sc=1.213 src=4 whc=1010
+  15:30:34 v=     - soc= 33 sra=  - spd=    - km= 22.11 gkm=     - odo=11622.1 sc=1.213 src=4 whc=1010
+  15:35:35 v=     - soc= 33 sra=  - spd=    - km= 22.11 gkm=     - odo=11622.1 sc=1.213 src=4 whc=1010
+  15:45:39 v=     - soc= 33 sra=  - spd=    - km=  0.00 gkm=     - odo=11622.1 sc=1.213 src=4 whc=1010
+  15:50:40 v=     - soc= 33 sra=  - spd=    - km=  0.00 gkm=     - odo=11622.1 sc=1.213 src=4 whc=1010
+  15:55:40 v=     - soc= 33 sra=  - spd=    - km=  0.09 gkm=     - odo=11622.2 sc=1.213 src=4 whc=1010
+  16:01:36 v=     - soc= 33 sra=  - spd=    - km=  0.09 gkm=     - odo=11622.2 sc=1.213 src=4 whc=1010
+  16:14:23 v=     - soc= 33 sra=  - spd=    - km=  0.09 gkm=     - odo=11622.2 sc=1.213 src=4 whc=1010
+  16:19:24 v= 72.45 soc= 85 sra= 60 spd=   34 km=  2.45 gkm=  1.42 odo=11624.7 sc=1.213 src=1 whc=221
+  16:24:25 v=     - soc= 85 sra=  - spd=    - km=  2.80 gkm=  1.72 odo=11625.0 sc=1.213 src=4 whc=221
+  16:29:27 v= 70.58 soc= 83 sra= 23 spd=   21 km=  3.40 gkm=  2.22 odo=11625.6 sc=1.213 src=1 whc=251
+  16:34:28 v= 75.20 soc= 79 sra= 81 spd=    0 km=  4.98 gkm=  3.53 odo=11627.2 sc=1.213 src=1 whc=312
+  16:39:29 v=     - soc= 81 sra=  - spd=    - km=  4.98 gkm=  3.53 odo=11627.2 sc=1.213 src=4 whc=282
+  16:44:30 v= 75.28 soc= 82 sra= 81 spd=    0 km=  4.98 gkm=  3.53 odo=11627.2 sc=1.213 src=1 whc=274
+  16:49:31 v= 75.31 soc= 82 sra= 82 spd=    0 km=  4.98 gkm=  3.53 odo=11627.2 sc=1.213 src=1 whc=274
+  16:54:33 v= 74.39 soc= 82 sra= 74 spd=   10 km=  5.24 gkm=  3.74 odo=11627.5 sc=1.213 src=1 whc=274
+  16:59:34 v= 71.64 soc= 82 sra= 72 spd=    - km=  6.44 gkm=  4.63 odo=11628.7 sc=1.213 src=1 whc=274
+  17:04:35 v= 74.94 soc= 80 sra= 78 spd=    - km=  7.12 gkm=  4.77 odo=11629.3 sc=1.213 src=1 whc=305
+  17:09:36 v= 70.77 soc= 79 sra= 47 spd=   17 km=  8.90 gkm=  6.33 odo=11631.1 sc=1.213 src=1 whc=320
+  17:14:37 v= 71.22 soc= 76 sra= 34 spd=   10 km= 10.89 gkm=  7.97 odo=11633.1 sc=1.213 src=1 whc=365
+  17:19:38 v= 70.50 soc= 76 sra= 28 spd=   20 km= 13.57 gkm= 10.21 odo=11635.8 sc=1.213 src=1 whc=365
+  17:24:40 v=     - soc= 76 sra=  - spd=    - km= 14.98 gkm= 11.00 odo=11637.2 sc=1.213 src=4 whc=365
+  17:29:41 v= 72.05 soc= 71 sra= 51 spd=    9 km= 16.50 gkm= 11.80 odo=11638.7 sc=1.213 src=1 whc=442
+  17:34:42 v= 72.68 soc= 69 sra= 53 spd=   12 km= 18.06 gkm= 13.11 odo=11640.3 sc=1.213 src=1 whc=473
+  17:39:43 v= 70.82 soc= 68 sra= 44 spd=   28 km= 19.09 gkm= 13.95 odo=11641.3 sc=1.213 src=1 whc=489
+  17:44:44 v= 72.08 soc= 68 sra= 42 spd=   37 km= 21.70 gkm= 16.11 odo=11643.9 sc=1.213 src=1 whc=489
+  17:49:46 v= 68.99 soc= 68 sra= 23 spd=    - km= 23.88 gkm= 17.86 odo=11646.1 sc=1.213 src=1 whc=489
+  17:54:47 v= 72.26 soc= 61 sra= 44 spd=    - km= 24.87 gkm= 17.86 odo=11647.1 sc=1.213 src=1 whc=595
+  17:59:48 v=     - soc= 62 sra=  - spd=    - km= 25.58 gkm= 18.03 odo=11647.8 sc=1.213 src=4 whc=580
+  18:04:49 v= 72.13 soc= 60 sra= 42 spd=    0 km= 26.06 gkm= 18.43 odo=11648.3 sc=1.213 src=1 whc=611
+  18:09:50 v= 72.03 soc= 59 sra= 40 spd=    0 km= 26.69 gkm= 18.95 odo=11648.9 sc=1.213 src=1 whc=626
+  18:14:52 v= 67.06 soc= 60 sra= 18 spd=   21 km= 28.02 gkm= 20.05 odo=11650.2 sc=1.213 src=1 whc=611
+  18:19:53 v= 68.55 soc= 58 sra= 22 spd=   15 km= 28.84 gkm= 20.73 odo=11651.1 sc=1.213 src=1 whc=641
+  18:24:54 v= 66.11 soc= 58 sra= 16 spd=   26 km= 30.48 gkm= 22.09 odo=11652.7 sc=1.213 src=1 whc=641
+  18:29:55 v=     - soc= 56 sra=  - spd=    - km= 30.81 gkm= 22.36 odo=11653.0 sc=1.213 src=4 whc=671
+  18:34:56 v= 68.60 soc= 53 sra= 22 spd=    0 km= 31.81 gkm= 23.19 odo=11654.0 sc=1.213 src=1 whc=704
+  18:39:57 v= 65.20 soc= 55 sra= 25 spd=   31 km= 33.91 gkm= 24.95 odo=11656.1 sc=1.213 src=1 whc=674
+  18:44:58 v=     - soc= 55 sra=  - spd=    - km= 34.97 gkm= 25.82 odo=11657.2 sc=1.213 src=4 whc=674
+  18:49:59 v= 67.43 soc= 52 sra= 18 spd=   17 km= 35.37 gkm= 26.16 odo=11657.6 sc=1.213 src=1 whc=720
+  18:55:01 v= 69.93 soc= 51 sra= 26 spd=   25 km= 37.13 gkm= 27.64 odo=11659.3 sc=1.213 src=1 whc=735
+  19:00:02 v= 67.22 soc= 49 sra= 18 spd=   20 km= 38.59 gkm= 28.84 odo=11660.8 sc=1.213 src=1 whc=765
+  19:05:03 v= 69.69 soc= 49 sra= 25 spd=    0 km= 40.22 gkm= 30.20 odo=11662.4 sc=1.213 src=1 whc=765
+  19:10:04 v= 69.35 soc= 46 sra= 24 spd=    0 km= 41.76 gkm= 31.48 odo=11664.0 sc=1.213 src=1 whc=810
+  19:15:05 v= 69.77 soc= 44 sra= 25 spd=    0 km= 41.76 gkm= 31.48 odo=11664.0 sc=1.213 src=1 whc=841
+  19:20:06 v= 69.95 soc= 44 sra= 26 spd=    0 km= 41.77 gkm= 31.48 odo=11664.0 sc=1.213 src=1 whc=841
+  19:25:07 v= 67.30 soc= 46 sra= 20 spd=   15 km= 42.24 gkm= 31.87 odo=11664.5 sc=1.213 src=1 whc=810
+  19:30:09 v= 64.05 soc= 45 sra=  0 spd=   31 km= 44.00 gkm= 33.34 odo=11666.2 sc=1.213 src=1 whc=826
+  19:35:10 v= 66.08 soc= 43 sra= 14 spd=   19 km= 45.05 gkm= 34.21 odo=11667.3 sc=1.213 src=1 whc=857
+  19:40:11 v= 60.06 soc= 41 sra=  0 spd=   25 km= 46.80 gkm= 34.71 odo=11669.0 sc=1.213 src=1 whc=887
+  19:45:12 v=     - soc= 41 sra=  - spd=    - km= 47.59 gkm= 35.37 odo=11669.8 sc=1.213 src=4 whc=887
+  19:50:13 v= 62.65 soc= 41 sra=  0 spd=   31 km= 48.23 gkm= 35.89 odo=11670.4 sc=1.213 src=1 whc=887
+  19:55:14 v= 67.01 soc= 39 sra= 18 spd=   28 km= 49.36 gkm= 36.81 odo=11671.6 sc=1.213 src=1 whc=918
+  20:00:15 v=     - soc= 39 sra=  - spd=    - km= 50.65 gkm= 37.88 odo=11672.9 sc=1.213 src=4 whc=918
+  20:05:17 v= 62.76 soc=  3 sra=  0 spd=    0 km= 51.74 gkm= 38.78 odo=11674.0 sc=1.213 src=1 whc=1467
+  20:10:18 v=     - soc=  3 sra=  - spd=    - km= 52.22 gkm= 39.18 odo=11674.4 sc=1.213 src=4 whc=1467
+  20:15:19 v=     - soc=  3 sra=  - spd=    - km= 52.22 gkm= 39.18 odo=11674.4 sc=1.213 src=4 whc=1467
+  20:20:20 v=     - soc=  3 sra=  - spd=    - km= 52.22 gkm= 39.18 odo=11674.4 sc=1.213 src=4 whc=1467
+  20:25:21 v= 67.59 soc=  3 sra= 19 spd=    0 km= 52.22 gkm= 39.18 odo=11674.4 sc=1.213 src=1 whc=1467
+  20:30:22 v= 61.30 soc=  3 sra=  0 spd=   25 km= 53.81 gkm= 40.49 odo=11676.0 sc=1.213 src=1 whc=1467
+  20:35:23 v= 59.66 soc=  3 sra=  0 spd=   20 km= 55.53 gkm= 41.91 odo=11677.7 sc=1.213 src=1 whc=1467
+  20:40:24 v= 61.55 soc=  3 sra=  0 spd=    5 km= 56.46 gkm= 42.68 odo=11678.7 sc=1.213 src=1 whc=1467
+  20:45:25 v= 59.74 soc=  3 sra=  0 spd=    5 km= 57.07 gkm= 43.18 odo=11679.3 sc=1.213 src=1 whc=1467
+  20:50:26 v= 59.98 soc=  3 sra=  0 spd=    9 km= 57.60 gkm= 43.62 odo=11679.8 sc=1.213 src=1 whc=1467
+  20:55:27 v= 60.13 soc=  3 sra=  0 spd=   11 km= 58.82 gkm= 44.63 odo=11681.0 sc=1.213 src=1 whc=1467
+  21:00:29 v= 61.74 soc=  3 sra=  0 spd=    0 km= 60.07 gkm= 45.67 odo=11682.3 sc=1.213 src=1 whc=1467
+  21:05:30 v= 61.76 soc=  3 sra=  0 spd=    5 km= 60.45 gkm= 46.00 odo=11682.7 sc=1.213 src=1 whc=1467
+  21:10:31 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 sc=1.092 src=4 whc=1467
+  21:15:33 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 sc=1.092 src=4 whc=1467
+
+-- 静置 episode（spd≤2, thr≤1.5, sag≤0.6, v 有效）--
+  16:17:50~16:17:56 n=  4 v=75.57(med) soc=85 sra=84 km=2.21->2.21 odo=11624.4 gkm=1.22
+  16:18:00~16:18:04 n=  3 v=75.65(med) soc=85 sra=85 km=2.22->2.22 odo=11624.4 gkm=1.22
+  16:18:14~16:18:20 n=  4 v=75.74(med) soc=85 sra=86 km=2.23->2.23 odo=11624.4 gkm=1.23
+  16:18:26~16:18:32 n=  4 v=75.78(med) soc=85 sra=86 km=2.23->2.23 odo=11624.4 gkm=1.23
+  16:18:36~16:18:46 n=  6 v=75.83(med) soc=85 sra=86 km=2.23->2.23 odo=11624.4 gkm=1.24
+  16:20:14~16:20:35 n= 11 v=75.54(med) soc=85 sra=84 km=2.74->2.74 odo=11625.0 gkm=1.66
+  16:20:43~16:21:01 n= 10 v=75.46(med) soc=85 sra=83 km=2.75->2.75 odo=11625.0 gkm=1.67
+  16:21:25~16:21:47 n= 12 v=75.53(med) soc=85 sra=84 km=2.79->2.79 odo=11625.0 gkm=1.71
+  16:21:51~16:22:05 n=  8 v=75.65(med) soc=85 sra=85 km=2.80->2.80 odo=11625.0 gkm=1.72
+  16:22:09~16:22:15 n=  4 v=75.67(med) soc=85 sra=85 km=2.80->2.80 odo=11625.0 gkm=1.72
+  16:25:02~16:25:24 n= 12 v=75.75(med) soc=85 sra=86 km=2.80->2.80 odo=11625.0 gkm=1.72
+  16:26:20~16:27:44 n= 43 v=75.52(med) soc=83 sra=84 km=2.93->2.93 odo=11625.1 gkm=1.82
+  16:33:47~16:38:31 n=142 v=75.31(med) soc=81 sra=82 km=4.98->4.98 odo=11627.2 gkm=3.53
+  16:44:30~16:53:30 n=270 v=75.31(med) soc=82 sra=82 km=4.98->4.98 odo=11627.2 gkm=3.53
+  16:56:45~16:56:49 n=  3 v=74.52(med) soc=82 sra=75 km=5.88->5.88 odo=11628.1 gkm=4.27
+  17:05:43~17:05:49 n=  4 v=72.94(med) soc=79 sra=72 km=7.26->7.26 odo=11629.5 gkm=4.94
+  17:12:55~17:13:57 n= 32 v=74.26(med) soc=75 sra=72 km=10.63->10.63 odo=11632.8 gkm=7.76
+  17:21:15~17:21:23 n=  5 v=73.00(med) soc=76 sra=58 km=14.29->14.29 odo=11636.5 gkm=10.81
+  17:21:57~17:22:01 n=  3 v=72.97(med) soc=76 sra=57 km=14.43->14.43 odo=11636.6 gkm=10.93
+  17:29:53~17:30:07 n=  8 v=73.13(med) soc=71 sra=60 km=16.58->16.58 odo=11638.8 gkm=11.88
+  17:32:11~17:33:42 n= 46 v=73.09(med) soc=67 sra=59 km=17.62->17.62 odo=11639.8 gkm=12.74
+  17:36:16~17:36:22 n=  4 v=72.83(med) soc=69 sra=54 km=18.61->18.61 odo=11640.8 gkm=13.56
+  17:36:26~17:36:31 n=  3 v=72.89(med) soc=69 sra=56 km=18.61->18.61 odo=11640.8 gkm=13.56
+  17:36:37~17:37:05 n= 15 v=72.97(med) soc=68 sra=57 km=18.62->18.63 odo=11640.8 gkm=13.58
+  17:37:09~17:38:11 n= 32 v=73.08(med) soc=66 sra=59 km=18.63->18.64 odo=11640.9 gkm=13.59
+  17:38:59~17:39:13 n=  8 v=72.83(med) soc=68 sra=54 km=18.87->18.87 odo=11641.1 gkm=13.77
+  17:39:57~17:40:01 n=  3 v=72.68(med) soc=68 sra=52 km=19.15->19.15 odo=11641.4 gkm=14.00
+  17:58:16~17:58:20 n=  3 v=71.89(med) soc=62 sra=40 km=25.55->25.55 odo=11647.8 gkm=18.01
+  18:00:48~18:01:16 n= 15 v=72.26(med) soc=59 sra=44 km=25.58->25.58 odo=11647.8 gkm=18.04
+  18:02:03~18:02:23 n= 11 v=72.21(med) soc=60 sra=44 km=25.58->25.58 odo=11647.8 gkm=18.04
+  18:03:51~18:05:27 n= 49 v=72.13(med) soc=60 sra=42 km=26.06->26.06 odo=11648.3 gkm=18.43
+  18:07:12~18:11:35 n=132 v=72.03(med) soc=59 sra=40 km=26.69->26.69 odo=11648.9 gkm=18.95
+  18:16:18~18:17:06 n= 25 v=68.78(med) soc=58 sra=22 km=28.60->28.60 odo=11650.8 gkm=20.53
+  18:17:14~18:17:28 n=  8 v=68.84(med) soc=59 sra=23 km=28.60->28.60 odo=11650.8 gkm=20.53
+  18:18:00~18:18:20 n= 11 v=68.76(med) soc=59 sra=22 km=28.65->28.65 odo=11650.9 gkm=20.57
+  18:18:53~18:19:01 n=  5 v=68.63(med) soc=58 sra=22 km=28.74->28.74 odo=11651.0 gkm=20.65
+  18:19:29~18:19:37 n=  5 v=68.76(med) soc=58 sra=22 km=28.79->28.79 odo=11651.0 gkm=20.69
+  18:20:39~18:20:59 n= 11 v=68.84(med) soc=58 sra=23 km=29.11->29.11 odo=11651.3 gkm=20.95
+  18:23:07~18:23:13 n=  4 v=68.78(med) soc=58 sra=22 km=30.11->30.11 odo=11652.3 gkm=21.78
+  18:25:54~18:26:12 n= 10 v=68.57(med) soc=58 sra=22 km=30.69->30.69 odo=11652.9 gkm=22.25
+  18:26:20~18:26:24 n=  3 v=68.65(med) soc=56 sra=22 km=30.70->30.70 odo=11652.9 gkm=22.26
+  18:30:15~18:30:19 n=  3 v=68.86(med) soc=58 sra=23 km=30.83->30.83 odo=11653.0 gkm=22.37
+  18:30:29~18:30:35 n=  4 v=68.86(med) soc=54 sra=23 km=30.83->30.83 odo=11653.0 gkm=22.37
+  18:33:24~18:35:26 n= 62 v=68.60(med) soc=53 sra=22 km=31.81->31.81 odo=11654.0 gkm=23.19
+  18:42:20~18:42:36 n=  9 v=70.03(med) soc=55 sra=26 km=34.88->34.88 odo=11657.1 gkm=25.75
+  18:45:14~18:45:23 n=  5 v=70.45(med) soc=51 sra=28 km=34.98->34.99 odo=11657.2 gkm=25.85
+  18:45:37~18:45:45 n=  5 v=70.27(med) soc=52 sra=27 km=35.02->35.02 odo=11657.2 gkm=25.87
+  18:48:37~18:48:43 n=  4 v=70.61(med) soc=50 sra=28 km=35.06->35.06 odo=11657.3 gkm=25.90
+  18:53:34~18:54:16 n= 22 v=70.24(med) soc=51 sra=27 km=36.82->36.82 odo=11659.0 gkm=27.36
+  18:57:07~18:58:37 n= 46 v=70.12(med) soc=47 sra=27 km=38.08->38.08 odo=11660.3 gkm=28.42
+  19:00:56~19:01:44 n= 25 v=69.90(med) soc=47 sra=26 km=39.02->39.02 odo=11661.2 gkm=29.20
+  19:04:49~19:05:39 n= 26 v=69.72(med) soc=45 sra=25 km=40.22->40.22 odo=11662.4 gkm=30.20
+  19:07:37~19:08:18 n= 21 v=69.48(med) soc=45 sra=25 km=41.34->41.34 odo=11663.6 gkm=31.13
+  19:08:38~19:08:42 n=  3 v=69.45(med) soc=46 sra=25 km=41.39->41.39 odo=11663.6 gkm=31.17
+  19:10:00~19:18:08 n=244 v=69.72(med) soc=44 sra=25 km=41.76->41.76 odo=11664.0 gkm=31.48
+  19:18:14~19:23:41 n=164 v=69.95(med) soc=44 sra=26 km=41.77->41.77 odo=11664.0 gkm=31.48
+  19:23:47~19:24:03 n=  9 v=70.00(med) soc=44 sra=26 km=41.77->41.77 odo=11664.0 gkm=31.48
+  19:25:25~19:26:00 n= 18 v=69.47(med) soc=46 sra=25 km=42.30->42.31 odo=11664.5 gkm=31.93
+  19:26:10~19:26:24 n=  8 v=69.58(med) soc=43 sra=25 km=42.32->42.32 odo=11664.5 gkm=31.94
+  19:26:30~19:26:40 n=  6 v=69.61(med) soc=43 sra=25 km=42.34->42.34 odo=11664.6 gkm=31.95
+  19:31:37~19:31:49 n=  7 v=68.17(med) soc=45 sra=21 km=44.70->44.70 odo=11666.9 gkm=33.91
+  19:32:21~19:33:25 n= 33 v=68.32(med) soc=41 sra=21 km=44.86->44.86 odo=11667.1 gkm=34.05
+  19:33:59~19:34:25 n= 14 v=68.33(med) soc=43 sra=21 km=44.96->44.96 odo=11667.2 gkm=34.14
+  19:34:33~19:34:40 n=  4 v=65.97(med) soc=41 sra=13 km=44.96->44.96 odo=11667.2 gkm=34.14
+  19:38:46~19:38:52 n=  4 v=66.37(med) soc=43 sra=15 km=46.31->46.31 odo=11668.5 gkm=34.31
+  19:42:01~19:42:05 n=  3 v=67.43(med) soc=41 sra=19 km=47.52->47.52 odo=11669.7 gkm=35.30
+  19:42:21~19:42:33 n=  7 v=67.51(med) soc=41 sra=19 km=47.55->47.55 odo=11669.8 gkm=35.33
+  19:51:55~19:51:59 n=  3 v=67.46(med) soc=41 sra=19 km=48.91->48.92 odo=11671.1 gkm=36.46
+  19:52:24~19:52:28 n=  3 v=67.56(med) soc=41 sra=19 km=48.98->48.98 odo=11671.2 gkm=36.52
+  19:54:16~19:54:20 n=  3 v=67.98(med) soc=37 sra=20 km=49.12->49.12 odo=11671.3 gkm=36.61
+  19:57:15~19:57:19 n=  3 v=63.93(med) soc=39 sra=1 km=50.28->50.28 odo=11672.5 gkm=37.56
+  19:58:43~19:58:55 n=  7 v=63.61(med) soc=39 sra=0 km=50.64->50.64 odo=11672.9 gkm=37.86
+  20:01:07~20:01:11 n=  3 v=67.06(med) soc=39 sra=17 km=50.65->50.65 odo=11672.9 gkm=37.88
+  20:05:17~20:05:25 n=  5 v=61.07(med) soc=3 sra=0 km=51.74->51.74 odo=11674.0 gkm=38.78
+  20:05:37~20:05:51 n=  8 v=61.25(med) soc=3 sra=0 km=51.75->51.75 odo=11674.0 gkm=38.79
+  20:08:51~20:08:55 n=  3 v=62.65(med) soc=3 sra=0 km=52.18->52.18 odo=11674.4 gkm=39.14
+  20:08:59~20:09:05 n=  4 v=63.14(med) soc=3 sra=0 km=52.18->52.18 odo=11674.4 gkm=39.14
+  20:25:17~20:26:27 n= 36 v=67.59(med) soc=3 sra=19 km=52.22->52.22 odo=11674.4 gkm=39.18
+  20:32:46~20:33:15 n= 15 v=65.10(med) soc=3 sra=8 km=54.89->54.89 odo=11677.1 gkm=41.38
+  21:00:25~21:01:11 n= 24 v=62.16(med) soc=3 sra=0 km=60.07->60.07 odo=11682.3 gkm=45.67
+  21:02:03~21:02:07 n=  3 v=62.52(med) soc=3 sra=0 km=60.13->60.13 odo=11682.3 gkm=45.72
+
+-- 骑行 episode（spd≥2）--
+  14:25:35~14:27:26 n=  56 spd峰=34 v=63.7~73.0(med 70.0) soc=33->31 km=21.26->22.09 gkm=0.71
+  15:46:21~15:46:21 n=   1 spd峰=38 v=nan~nan(med nan) soc=33->33 km=0.00->0.00 gkm=nan
+  15:54:57~15:55:03 n=   4 spd峰=9 v=nan~nan(med nan) soc=33->33 km=0.00->0.01 gkm=nan
+  15:56:12~15:56:14 n=   2 spd峰=16 v=nan~nan(med nan) soc=33->33 km=0.09->0.09 gkm=nan
+  16:01:54~16:01:56 n=   2 spd峰=15 v=nan~nan(med nan) soc=33->33 km=0.09->0.09 gkm=0.01
+  16:02:06~16:02:06 n=   1 spd峰=13 v=nan~nan(med nan) soc=33->33 km=0.09->0.09 gkm=0.02
+  16:15:13~16:17:48 n=  78 spd峰=41 v=66.5~76.2(med 73.8) soc=85->85 km=0.78->2.21 gkm=1.22
+  16:17:56~16:17:58 n=   2 spd峰=3 v=75.6~75.6(med 75.6) soc=85->85 km=2.21->2.22 gkm=1.22
+  16:18:06~16:18:12 n=   4 spd峰=4 v=75.7~75.7(med 75.7) soc=85->85 km=2.22->2.23 gkm=1.23
+  16:18:22~16:18:24 n=   2 spd峰=3 v=75.8~75.8(med 75.8) soc=85->85 km=2.23->2.23 gkm=1.23
+  16:18:34~16:18:36 n=   2 spd峰=3 v=75.8~75.8(med 75.8) soc=85->85 km=2.23->2.23 gkm=1.24
+  16:18:54~16:20:12 n=  40 spd峰=35 v=66.5~75.5(med 74.7) soc=85->85 km=2.24->2.74 gkm=1.66
+  16:20:37~16:20:43 n=   4 spd峰=7 v=74.7~75.4(med 75.0) soc=85->85 km=2.74->2.75 gkm=1.67
+  16:21:05~16:21:09 n=   3 spd峰=7 v=71.6~75.4(med 75.2) soc=85->85 km=2.75->2.76 gkm=1.68
+  16:21:13~16:21:23 n=   6 spd峰=9 v=74.4~75.3(med 74.8) soc=85->85 km=2.76->2.79 gkm=1.71
+  16:21:49~16:21:49 n=   1 spd峰=3 v=75.6~75.6(med 75.6) soc=85->85 km=2.80->2.80 gkm=1.72
+  16:22:07~16:22:07 n=   1 spd峰=6 v=75.7~75.7(med 75.7) soc=85->85 km=2.80->2.80 gkm=1.72
+  16:25:08~16:25:12 n=   3 spd峰=2 v=75.8~75.8(med 75.8) soc=85->85 km=2.80->2.80 gkm=1.72
+  16:25:24~16:25:42 n=  10 spd峰=11 v=74.4~75.4(med 74.6) soc=85->85 km=2.80->2.84 gkm=1.75
+  16:25:48~16:25:54 n=   4 spd峰=12 v=69.7~75.4(med 73.5) soc=85->85 km=2.84->2.86 gkm=1.77
+  16:25:58~16:26:20 n=  12 spd峰=12 v=70.5~75.1(med 73.1) soc=85->85 km=2.86->2.93 gkm=1.82
+  16:27:48~16:33:45 n= 179 spd峰=33 v=66.5~75.2(med 73.4) soc=83->83 km=2.93->4.98 gkm=3.53
+  16:38:09~16:38:09 n=   1 spd峰=2 v=75.3~75.3(med 75.3) soc=81->81 km=4.98->4.98 gkm=3.53
+  16:38:33~16:38:33 n=   1 spd峰=3 v=75.3~75.3(med 75.3) soc=81->81 km=4.98->4.98 gkm=3.53
+  16:53:36~16:54:53 n=  39 spd峰=22 v=68.3~74.8(med 74.3) soc=82->82 km=4.98->5.28 gkm=3.77
+  16:54:57~16:56:43 n=  54 spd峰=26 v=68.8~74.8(med 73.1) soc=82->82 km=5.28->5.88 gkm=4.27
+  16:56:51~16:57:47 n=  29 spd峰=23 v=68.7~73.1(med 71.4) soc=82->82 km=5.88->6.19 gkm=4.52
+  16:57:55~16:58:44 n=  25 spd峰=20 v=71.1~74.5(med 71.7) soc=82->82 km=6.19->6.32 gkm=4.63
+  17:02:20~17:02:26 n=   4 spd峰=10 v=nan~nan(med nan) soc=78->78 km=6.71->6.72 gkm=4.77
+  17:02:30~17:02:36 n=   4 spd峰=10 v=nan~nan(med nan) soc=78->78 km=6.72->6.73 gkm=4.77
+  17:05:23~17:05:23 n=   1 spd峰=2 v=71.9~71.9(med 71.9) soc=80->80 km=7.26->7.26 gkm=4.89
+  17:06:11~17:12:53 n= 201 spd峰=40 v=67.5~74.7(med 71.5) soc=79->79 km=7.26->10.63 gkm=7.76
+  17:14:01~17:21:13 n= 216 spd峰=43 v=63.5~73.4(med 69.9) soc=76->76 km=10.63->14.29 gkm=10.81
+  17:21:25~17:21:55 n=  16 spd峰=16 v=68.9~72.9(med 72.2) soc=76->76 km=14.29->14.43 gkm=10.93
+  17:22:07~17:22:41 n=  18 spd峰=13 v=69.4~73.0(med 71.9) soc=76->76 km=14.43->14.54 gkm=11.00
+  17:27:18~17:29:51 n=  77 spd峰=36 v=66.2~73.2(med 72.8) soc=71->71 km=15.57->16.58 gkm=11.88
+  17:30:09~17:32:11 n=  62 spd峰=35 v=66.0~73.1(med 72.6) soc=71->71 km=16.58->17.62 gkm=12.74
+  17:33:44~17:36:14 n=  76 spd峰=36 v=63.8~72.9(med 72.2) soc=67->69 km=17.62->18.61 gkm=13.56
+  17:36:24~17:36:24 n=   1 spd峰=3 v=72.9~72.9(med 72.9) soc=69->69 km=18.61->18.61 gkm=13.56
+  17:36:31~17:36:35 n=   3 spd峰=3 v=72.9~72.9(med 72.9) soc=69->69 km=18.61->18.62 gkm=13.56
+  17:36:39~17:36:39 n=   1 spd峰=2 v=72.9~72.9(med 72.9) soc=69->69 km=18.62->18.62 gkm=13.56
+  17:37:01~17:37:03 n=   2 spd峰=2 v=73.0~73.0(med 73.0) soc=68->68 km=18.63->18.63 gkm=13.58
+  17:37:07~17:37:07 n=   1 spd峰=4 v=73.0~73.0(med 73.0) soc=68->68 km=18.63->18.63 gkm=13.58
+  17:38:15~17:38:57 n=  22 spd峰=25 v=66.3~72.8(med 72.4) soc=68->68 km=18.65->18.87 gkm=13.77
+  17:39:17~17:39:55 n=  20 spd峰=33 v=65.8~72.6(med 70.5) soc=68->68 km=18.87->19.15 gkm=14.00
+  17:40:05~17:41:36 n=  46 spd峰=33 v=63.9~72.2(med 68.1) soc=68->68 km=19.16->19.90 gkm=14.63
+  17:41:40~17:41:46 n=   4 spd峰=9 v=70.8~72.2(med 71.4) soc=68->68 km=19.91->19.92 gkm=14.64
+  17:41:52~17:49:26 n= 227 spd峰=43 v=63.9~72.6(med 69.2) soc=68->68 km=19.93->23.82 gkm=17.86
+  17:57:33~17:58:14 n=  21 spd峰=13 v=68.5~72.0(med 71.8) soc=62->62 km=25.41->25.55 gkm=18.01
+  17:58:18~17:58:28 n=   6 spd峰=7 v=71.9~72.0(med 72.0) soc=62->62 km=25.55->25.57 gkm=18.02
+  17:58:32~17:58:38 n=   4 spd峰=7 v=72.0~72.0(med 72.0) soc=62->62 km=25.57->25.58 gkm=18.03
+  18:00:36~18:00:46 n=   6 spd峰=4 v=72.3~72.3(med 72.3) soc=62->61 km=25.58->25.58 gkm=18.04
+  18:00:58~18:00:58 n=   1 spd峰=2 v=72.3~72.3(med 72.3) soc=59->59 km=25.58->25.58 gkm=18.04
+  18:02:27~18:03:49 n=  42 spd峰=27 v=68.5~72.1(med 70.9) soc=61->62 km=25.58->26.06 gkm=18.43
+  18:05:29~18:06:58 n=  45 spd峰=26 v=65.1~72.2(med 68.9) soc=61->61 km=26.06->26.66 gkm=18.93
+  18:07:02~18:07:10 n=   5 spd峰=10 v=68.7~70.1(med 69.7) soc=61->61 km=26.67->26.69 gkm=18.95
+  18:11:39~18:12:07 n=  15 spd峰=12 v=66.3~71.9(med 69.1) soc=59->60 km=26.69->26.77 gkm=19.02
+  18:12:13~18:16:18 n= 123 spd峰=29 v=63.6~70.9(med 67.6) soc=60->60 km=26.78->28.60 gkm=20.53
+  18:17:10~18:17:12 n=   2 spd峰=4 v=68.7~68.8(med 68.8) soc=59->59 km=28.60->28.60 gkm=20.53
+  18:17:30~18:17:34 n=   3 spd峰=7 v=68.7~69.7(med 69.2) soc=59->59 km=28.61->28.62 gkm=20.54
+  18:17:38~18:17:38 n=   1 spd峰=4 v=68.7~68.7(med 68.7) soc=59->59 km=28.62->28.62 gkm=20.54
+  18:17:42~18:17:48 n=   4 spd峰=13 v=68.0~68.7(med 68.5) soc=59->59 km=28.63->28.64 gkm=20.56
+  18:17:54~18:17:54 n=   1 spd峰=3 v=68.6~68.6(med 68.6) soc=59->59 km=28.65->28.65 gkm=20.57
+  18:18:22~18:18:32 n=   6 spd峰=17 v=68.1~69.7(med 68.6) soc=58->58 km=28.65->28.69 gkm=20.60
+  18:18:36~18:18:51 n=   8 spd峰=17 v=67.7~70.9(med 68.6) soc=58->58 km=28.69->28.74 gkm=20.65
+  18:18:59~18:19:27 n=  15 spd峰=11 v=68.5~68.7(med 68.7) soc=58->58 km=28.74->28.79 gkm=20.68
+  18:19:41~18:20:37 n=  29 spd峰=27 v=68.1~69.5(med 68.7) soc=58->58 km=28.80->29.11 gkm=20.95
+  18:21:03~18:23:05 n=  62 spd峰=35 v=63.4~71.0(med 68.7) soc=58->58 km=29.11->30.11 gkm=21.78
+  18:23:17~18:24:04 n=  24 spd峰=19 v=67.6~71.0(med 68.7) soc=58->58 km=30.11->30.26 gkm=21.90
+  18:24:08~18:24:12 n=   3 spd峰=3 v=68.6~70.4(med 70.0) soc=58->58 km=30.26->30.26 gkm=21.90
+  18:24:18~18:25:10 n=  27 spd峰=33 v=63.8~71.0(med 67.8) soc=58->58 km=30.27->30.62 gkm=22.20
+  18:25:16~18:25:16 n=   1 spd峰=2 v=70.7~70.7(med 70.7) soc=58->58 km=30.62->30.62 gkm=22.20
+  18:25:20~18:25:52 n=  17 spd峰=10 v=70.2~71.0(med 70.7) soc=58->58 km=30.63->30.69 gkm=22.25
+  18:26:14~18:26:22 n=   5 spd峰=5 v=68.6~68.7(med 68.6) soc=56->56 km=30.69->30.70 gkm=22.26
+  18:26:46~18:26:46 n=   1 spd峰=35 v=nan~nan(med nan) soc=56->56 km=30.71->30.71 gkm=22.27
+  18:29:59~18:29:59 n=   1 spd峰=16 v=nan~nan(med nan) soc=56->56 km=30.82->30.82 gkm=22.37
+  18:30:21~18:30:27 n=   4 spd峰=4 v=68.8~68.9(med 68.9) soc=55->54 km=30.83->30.83 gkm=22.37
+  18:30:39~18:31:13 n=  18 spd峰=20 v=64.0~71.0(med 68.7) soc=55->55 km=30.83->30.93 gkm=22.45
+  18:31:17~18:33:22 n=  63 spd峰=35 v=61.3~71.0(med 69.5) soc=55->55 km=30.93->31.81 gkm=23.19
+  18:35:30~18:42:04 n= 197 spd峰=34 v=61.3~70.7(med 66.8) soc=55->55 km=31.82->34.84 gkm=25.72
+  18:42:08~18:42:18 n=   6 spd峰=12 v=66.6~69.8(med 68.6) soc=55->55 km=34.85->34.88 gkm=25.75
+  18:42:28~18:42:28 n=   1 spd峰=2 v=70.0~70.0(med 70.0) soc=55->55 km=34.88->34.88 gkm=25.75
+  18:42:32~18:42:32 n=   1 spd峰=2 v=70.1~70.1(med 70.1) soc=55->55 km=34.88->34.88 gkm=25.75
+  18:42:38~18:42:40 n=   2 spd峰=3 v=70.1~70.1(med 70.1) soc=55->55 km=34.88->34.89 gkm=25.75
+  18:42:44~18:42:58 n=   8 spd峰=4 v=70.2~70.2(med 70.2) soc=55->55 km=34.89->34.91 gkm=25.77
+  18:43:34~18:43:36 n=   2 spd峰=20 v=nan~nan(med nan) soc=55->55 km=34.92->34.95 gkm=25.80
+  18:43:54~18:43:58 n=   3 spd峰=10 v=nan~nan(med nan) soc=55->55 km=34.96->34.96 gkm=25.82
+  18:45:02~18:45:02 n=   1 spd峰=2 v=70.5~70.5(med 70.5) soc=55->55 km=34.97->34.97 gkm=25.82
+  18:45:06~18:45:12 n=   4 spd峰=4 v=70.5~70.5(med 70.5) soc=53->53 km=34.98->34.98 gkm=25.84
+  18:45:19~18:45:19 n=   1 spd峰=2 v=70.5~70.5(med 70.5) soc=50->50 km=34.99->34.99 gkm=25.85
+  18:45:27~18:45:35 n=   5 spd峰=14 v=66.3~70.1(med 67.0) soc=52->52 km=34.99->35.02 gkm=25.87
+  18:45:47~18:46:07 n=  11 spd峰=8 v=70.3~70.4(med 70.4) soc=52->52 km=35.02->35.05 gkm=25.90
+  18:48:27~18:48:35 n=   5 spd峰=5 v=70.6~70.6(med 70.6) soc=52->52 km=35.05->35.06 gkm=25.90
+  18:48:45~18:48:51 n=   4 spd峰=3 v=70.6~70.6(med 70.6) soc=52->52 km=35.06->35.07 gkm=25.91
+  18:48:59~18:53:32 n= 137 spd峰=27 v=63.8~70.5(med 69.5) soc=52->52 km=35.07->36.82 gkm=27.36
+  18:54:18~18:57:05 n=  84 spd峰=31 v=63.7~70.2(med 69.5) soc=51->51 km=36.82->38.08 gkm=28.42
+  18:58:41~18:59:46 n=  33 spd峰=28 v=64.8~69.9(med 68.0) soc=47->49 km=38.08->38.53 gkm=28.79
+  18:59:52~19:00:54 n=  32 spd峰=29 v=63.8~69.7(med 67.3) soc=49->49 km=38.53->39.02 gkm=29.19
+  19:01:46~19:04:47 n=  91 spd峰=34 v=61.6~69.7(med 67.5) soc=49->49 km=39.02->40.22 gkm=30.20
+  19:05:41~19:07:35 n=  58 spd峰=35 v=61.4~69.3(med 65.6) soc=47->47 km=40.22->41.34 gkm=31.13
+  19:08:20~19:08:36 n=   9 spd峰=11 v=67.6~69.3(med 68.4) soc=46->46 km=41.34->41.39 gkm=31.17
+  19:08:44~19:10:00 n=  39 spd峰=25 v=58.5~69.3(med 66.4) soc=46->46 km=41.39->41.76 gkm=31.48
+  19:11:04~19:11:06 n=   2 spd峰=2 v=69.5~69.5(med 69.5) soc=44->44 km=41.76->41.76 gkm=31.48
+  19:11:22~19:11:24 n=   2 spd峰=2 v=69.6~69.6(med 69.6) soc=44->44 km=41.76->41.76 gkm=31.48
+  19:18:10~19:18:14 n=   3 spd峰=5 v=69.9~69.9(med 69.9) soc=45->44 km=41.76->41.77 gkm=31.48
+  19:23:31~19:23:33 n=   2 spd峰=2 v=70.0~70.0(med 70.0) soc=44->44 km=41.77->41.77 gkm=31.48
+  19:23:43~19:23:45 n=   2 spd峰=6 v=70.0~70.0(med 70.0) soc=45->46 km=41.77->41.77 gkm=31.48
+  19:24:05~19:25:23 n=  40 spd峰=29 v=61.0~69.3(med 66.4) soc=46->46 km=41.78->42.30 gkm=31.92
+  19:25:35~19:25:35 n=   1 spd峰=2 v=69.4~69.4(med 69.4) soc=46->46 km=42.31->42.31 gkm=31.93
+  19:25:48~19:25:48 n=   1 spd峰=2 v=69.5~69.5(med 69.5) soc=45->45 km=42.31->42.31 gkm=31.93
+  19:26:02~19:26:08 n=   4 spd峰=6 v=69.6~69.6(med 69.6) soc=45->45 km=42.31->42.32 gkm=31.94
+  19:26:24~19:26:28 n=   3 spd峰=3 v=69.6~69.6(med 69.6) soc=43->45 km=42.32->42.33 gkm=31.95
+  19:26:40~19:31:35 n= 148 spd峰=35 v=58.4~69.6(med 64.2) soc=45->45 km=42.34->44.70 gkm=33.91
+  19:31:51~19:32:19 n=  15 spd峰=25 v=60.5~68.1(med 66.8) soc=45->45 km=44.70->44.86 gkm=34.05
+  19:33:27~19:33:59 n=  17 spd峰=17 v=63.4~68.2(med 67.3) soc=42->43 km=44.86->44.96 gkm=34.14
+  19:34:11~19:34:13 n=   2 spd峰=2 v=68.4~68.4(med 68.4) soc=43->43 km=44.96->44.96 gkm=34.14
+  19:34:40~19:34:54 n=   8 spd峰=6 v=66.0~66.0(med 66.0) soc=41->43 km=44.96->44.98 gkm=34.15
+  19:34:58~19:35:38 n=  21 spd峰=27 v=66.0~66.1(med 66.1) soc=43->43 km=44.98->45.15 gkm=34.27
+  19:38:42~19:38:42 n=   1 spd峰=8 v=nan~nan(med nan) soc=43->43 km=46.31->46.31 gkm=34.31
+  19:38:54~19:41:53 n=  90 spd峰=30 v=58.5~68.4(med 62.0) soc=41->41 km=46.31->47.51 gkm=35.30
+  19:41:59~19:41:59 n=   1 spd峰=4 v=65.5~65.5(med 65.5) soc=41->41 km=47.52->47.52 gkm=35.30
+  19:42:05~19:42:21 n=   9 spd峰=10 v=63.0~67.5(med 67.1) soc=41->41 km=47.52->47.55 gkm=35.33
+  19:42:33~19:42:39 n=   4 spd峰=6 v=67.6~67.6(med 67.6) soc=41->41 km=47.55->47.56 gkm=35.34
+  19:42:43~19:42:55 n=   7 spd峰=8 v=67.7~67.7(med 67.7) soc=41->41 km=47.57->47.59 gkm=35.37
+  19:48:05~19:48:07 n=   2 spd峰=13 v=nan~nan(med nan) soc=41->41 km=47.60->47.60 gkm=35.38
+  19:48:11~19:48:11 n=   1 spd峰=13 v=nan~nan(med nan) soc=41->41 km=47.62->47.62 gkm=35.39
+  19:48:17~19:48:19 n=   2 spd峰=13 v=nan~nan(med nan) soc=41->41 km=47.62->47.63 gkm=35.40
+  19:48:51~19:51:53 n=  92 spd峰=35 v=58.6~68.1(med 66.0) soc=41->41 km=47.64->48.91 gkm=36.46
+  19:51:59~19:52:22 n=  12 spd峰=12 v=61.3~67.6(med 67.3) soc=41->41 km=48.92->48.98 gkm=36.52
+  19:52:30~19:52:44 n=   8 spd峰=5 v=67.6~67.7(med 67.7) soc=41->41 km=48.98->48.99 gkm=36.52
+  19:52:50~19:52:56 n=   4 spd峰=24 v=nan~nan(med nan) soc=41->41 km=49.02->49.04 gkm=36.55
+  19:53:02~19:53:08 n=   4 spd峰=8 v=nan~nan(med nan) soc=41->41 km=49.07->49.08 gkm=36.58
+  19:53:12~19:53:12 n=   1 spd峰=12 v=nan~nan(med nan) soc=41->41 km=49.09->49.09 gkm=36.59
+  19:53:16~19:53:16 n=   1 spd峰=10 v=nan~nan(med nan) soc=41->41 km=49.09->49.09 gkm=36.59
+  19:53:24~19:53:32 n=   5 spd峰=20 v=nan~nan(med nan) soc=41->41 km=49.09->49.11 gkm=36.60
+  19:54:14~19:54:16 n=   2 spd峰=4 v=68.0~68.0(med 68.0) soc=41->39 km=49.12->49.12 gkm=36.61
+  19:54:24~19:54:24 n=   1 spd峰=3 v=67.6~67.6(med 67.6) soc=39->39 km=49.12->49.12 gkm=36.61
+  19:54:28~19:57:15 n=  84 spd峰=34 v=58.4~67.8(med 62.7) soc=39->39 km=49.13->50.28 gkm=37.56
+  19:57:21~19:58:05 n=  23 spd峰=27 v=59.5~65.8(med 59.8) soc=39->39 km=50.28->50.54 gkm=37.78
+  19:58:11~19:58:17 n=   4 spd峰=13 v=59.8~65.2(med 59.9) soc=39->39 km=50.54->50.56 gkm=37.80
+  19:58:23~19:58:41 n=  10 spd峰=12 v=58.6~65.8(med 63.3) soc=39->39 km=50.58->50.64 gkm=37.86
+  19:58:57~19:59:13 n=   9 spd峰=11 v=63.7~63.8(med 63.8) soc=39->39 km=50.64->50.65 gkm=37.88
+  20:01:07~20:01:07 n=   1 spd峰=2 v=67.0~67.0(med 67.0) soc=39->39 km=50.65->50.65 gkm=37.88
+  20:01:15~20:05:15 n= 120 spd峰=26 v=59.4~66.6(med 59.8) soc=37->3 km=50.67->51.74 gkm=38.78
+  20:05:29~20:05:35 n=   4 spd峰=4 v=59.7~59.8(med 59.8) soc=3->3 km=51.75->51.75 gkm=38.79
+  20:05:51~20:05:51 n=   1 spd峰=2 v=64.0~64.0(med 64.0) soc=3->3 km=51.75->51.75 gkm=38.79
+  20:05:55~20:06:31 n=  19 spd峰=19 v=59.6~61.2(med 59.8) soc=3->3 km=51.75->51.91 gkm=38.92
+  20:06:37~20:08:51 n=  68 spd峰=13 v=59.7~62.2(med 59.8) soc=3->3 km=51.92->52.18 gkm=39.14
+  20:08:55~20:08:57 n=   2 spd峰=4 v=62.8~62.9(med 62.9) soc=3->3 km=52.18->52.18 gkm=39.14
+  20:09:01~20:09:01 n=   1 spd峰=2 v=63.1~63.1(med 63.1) soc=3->3 km=52.18->52.18 gkm=39.14
+  20:09:05~20:09:29 n=  13 spd峰=6 v=60.8~63.3(med 61.0) soc=3->3 km=52.18->52.22 gkm=39.18
+  20:09:37~20:09:37 n=   1 spd峰=8 v=nan~nan(med nan) soc=3->3 km=52.22->52.22 gkm=39.18
+  20:26:23~20:32:44 n= 191 spd峰=27 v=58.7~67.6(med 64.0) soc=3->3 km=52.22->54.89 gkm=41.38
+  20:33:17~21:00:23 n= 811 spd峰=25 v=58.3~63.3(med 59.8) soc=3->3 km=54.89->60.06 gkm=45.67
+  21:01:15~21:02:01 n=  24 spd峰=5 v=58.7~62.4(med 61.6) soc=3->3 km=60.07->60.13 gkm=45.72
+  21:02:09~21:08:08 n= 180 spd峰=10 v=58.4~62.8(med 60.6) soc=3->3 km=60.13->60.71 gkm=46.21
+  21:08:12~21:08:32 n=  11 spd峰=6 v=59.7~61.5(med 59.8) soc=3->3 km=60.72->60.74 gkm=46.23
+
+-- 关键 SYS 事件 --
+  [14:25:36] soc: window fresh; hold 31 (samples=1)
+  [14:27:40] link lost: freeze soc=31 (last live)
+  [15:31:41] gps parked: interval 1000ms -> 3000ms
+  [15:31:41] trip summary kept (segment 0.86km < 3km; not a new trip)
+  [15:31:41] trip summary: km=22.11 dur=48min avg=27.8kmh max=48.5 v=- soc=33 wh=1010
+  [15:32:40] rest cal #1 @120s parked
+  [15:32:40] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:35:40] rest cal #2 @300s parked
+  [15:35:40] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:38:41] rest cal #3 @481s parked
+  [15:38:41] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:39:10] trip reset by user
+  [15:39:10] trip reset by user (folded by ui; no double count)
+  [15:39:10] trip reset by user (service): counters cleared
+  [15:47:23] gps parked: interval 1000ms -> 3000ms
+  [15:48:22] rest cal #1 @120s parked
+  [15:48:22] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:51:23] rest cal #2 @301s parked
+  [15:51:23] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:54:23] rest cal #3 @481s parked
+  [15:54:23] soc calibrate skipped: no settled voltage (waiting first stop)
+  [15:54:57] gps moving: interval -> 1000ms
+  [15:57:17] gps parked: interval 1000ms -> 3000ms
+  [15:57:17] trip summary kept (segment 0.09km < 3km; not a new trip)
+  [15:57:17] trip summary: km=0.09 dur=18min avg=0.3kmh max=9.3 v=- soc=33 wh=1010
+  [16:03:09] gps parked: interval 1000ms -> 3000ms
+  [16:03:09] trip summary kept (segment 0.09km < 3km; not a new trip)
+  [16:03:09] trip summary: km=0.09 dur=24min avg=0.2kmh max=9.3 v=- soc=33 wh=1010
+  [16:14:28] soc: window fresh; hold 52 (samples=2)
+  [16:14:28] low power skip: rest ocv=76.8V >=70; soc=43
+  [16:14:29] low power skip: rest ocv=76.8V >=70; soc=45
+  [16:14:30] low power skip: rest ocv=76.8V >=70; soc=47
+  [16:14:31] low power skip: rest ocv=76.8V >=70; soc=49
+  [16:14:32] low power skip: rest ocv=76.8V >=70; soc=51
+  [16:14:33] low power skip: rest ocv=76.8V >=70; soc=53
+  [16:14:34] boot full charge: trip reset (0.09 km folded into odo accum 405.22)
+  [16:14:34] full anchor @ 78.5V / 0.0km
+  [16:14:34] low power skip: rest ocv=76.8V >=70; soc=55
+  [16:14:35] low power skip: rest ocv=76.8V >=70; soc=57
+  [16:14:36] low power skip: rest ocv=76.8V >=70; soc=59
+  [16:14:37] low power skip: rest ocv=78.3V >=70; soc=61
+  [16:14:38] low power skip: rest ocv=78.2V >=70; soc=63
+  [16:14:39] low power skip: rest ocv=78.2V >=70; soc=65
+  [16:14:40] low power skip: rest ocv=78.2V >=70; soc=67
+  [16:14:41] low power skip: rest ocv=78.2V >=70; soc=69
+  [16:14:42] low power skip: rest ocv=78.2V >=70; soc=71
+  [16:14:43] low power skip: rest ocv=78.2V >=70; soc=73
+  [16:14:44] low power skip: rest ocv=78.2V >=70; soc=75
+  [16:14:45] low power skip: rest ocv=78.2V >=70; soc=77
+  [16:14:46] link lost: freeze soc=77 (last live)
+  [16:14:47] low power skip: rest ocv=77.8V >=70; soc=81
+  [16:14:48] low power skip: rest ocv=77.8V >=70; soc=83
+  [16:14:55] trip set 0.78km <- 0.00km (odometer align; anchor shift +0.78)
+  [16:18:25] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:26] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:27] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:28] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:29] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:30] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:31] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:32] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:36] low power skip: rest ocv=75.7V >=70; soc=85
+  [16:18:37] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:38] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:39] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:40] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:41] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:42] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:43] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:44] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:45] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:46] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:47] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:49] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:50] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:18:51] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:20:34] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:20:35] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:21:44] low power skip: rest ocv=75.4V >=70; soc=85
+  [16:21:45] low power skip: rest ocv=75.4V >=70; soc=85
+  [16:21:46] low power skip: rest ocv=75.4V >=70; soc=85
+  [16:21:47] low power skip: rest ocv=75.4V >=70; soc=85
+  [16:21:59] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:22:00] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:22:01] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:22:02] low power skip: rest ocv=75.5V >=70; soc=85
+  [16:22:03] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:04] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:05] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:06] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:09] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:10] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:11] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:12] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:13] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:14] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:15] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:16] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:17] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:18] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:19] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:20] low power skip: rest ocv=75.6V >=70; soc=85
+  [16:22:21] link lost: freeze soc=85 (last live)
+  [16:23:09] gps parked: interval 1000ms -> 3000ms
+  [16:23:09] trip summary kept (segment 2.80km < 3km; not a new trip)
+  [16:23:09] trip summary: km=2.80 dur=4min avg=37.8kmh max=41.4 v=- soc=85 wh=221
+  [16:24:08] rest cal #1 @120s parked
+  [16:24:08] soc anchor nudge+0 v=75.6 socV=84 socKm=86 km=2.80 rejects=10
+  [16:24:58] soc: link back after 2 min; snap confirm window open
+  [16:24:58] soc: window fresh; hold 86 (samples=1)
+  [16:24:58] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:00] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:01] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:02] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:03] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:04] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:05] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:06] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:07] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:08] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:09] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:10] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:11] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:12] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:13] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:14] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:15] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:16] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:17] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:18] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:19] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:20] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:21] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:22] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:23] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:24] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:25] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:26] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:27] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:28] low power skip: rest ocv=75.8V >=70; soc=85
+  [16:25:29] gps moving: interval -> 1000ms
+  [16:26:40] low power skip: rest ocv=75.0V >=70; soc=83
+  [16:26:41] low power skip: rest ocv=75.1V >=70; soc=83
+  [16:26:42] low power skip: rest ocv=75.1V >=70; soc=83
+  [16:26:43] low power skip: rest ocv=75.1V >=70; soc=83
+  [16:26:44] low power skip: rest ocv=75.2V >=70; soc=83
+  [16:26:45] low power skip: rest ocv=75.2V >=70; soc=83
+  [16:26:46] low power skip: rest ocv=75.2V >=70; soc=83
+  [16:26:47] low power skip: rest ocv=75.3V >=70; soc=83
+  [16:26:48] low power skip: rest ocv=75.3V >=70; soc=83
+  [16:26:49] low power skip: rest ocv=75.3V >=70; soc=83
+  [16:26:50] low power skip: rest ocv=75.3V >=70; soc=83
+  [16:26:51] low power skip: rest ocv=75.3V >=70; soc=83
+  [16:26:52] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:53] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:54] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:55] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:56] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:57] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:58] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:26:59] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:00] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:01] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:02] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:03] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:04] low power skip: rest ocv=75.4V >=70; soc=83
+  [16:27:05] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:06] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:07] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:08] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:09] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:10] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:11] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:12] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:13] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:14] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:15] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:16] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:17] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:18] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:19] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:20] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:21] gps parked: interval 1000ms -> 3000ms
+  [16:27:21] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:22] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:23] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:24] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:25] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:26] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:27] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:28] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:29] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:30] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:31] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:32] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:33] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:34] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:35] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:36] low power skip: rest ocv=75.5V >=70; soc=83
+  [16:27:37] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:38] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:39] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:40] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:41] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:42] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:43] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:44] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:45] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:46] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:47] low power skip: rest ocv=75.6V >=70; soc=83
+  [16:27:48] gps moving: interval -> 1000ms
+  [16:34:06] low power skip: rest ocv=74.9V >=70; soc=81
+  [16:34:07] low power skip: rest ocv=74.9V >=70; soc=79
+  [16:34:09] low power skip: rest ocv=74.9V >=70; soc=79
+  [16:34:10] low power skip: rest ocv=74.9V >=70; soc=79
+  [16:34:11] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:12] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:13] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:14] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:15] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:16] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:17] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:18] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:19] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:20] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:21] low power skip: rest ocv=75.0V >=70; soc=79
+  [16:34:22] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:23] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:24] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:25] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:26] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:27] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:28] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:29] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:30] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:31] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:32] low power skip: rest ocv=75.1V >=70; soc=79
+  [16:34:33] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:34] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:35] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:36] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:37] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:38] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:39] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:40] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:41] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:42] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:43] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:44] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:45] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:46] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:47] gps parked: interval 1000ms -> 3000ms
+  [16:34:47] trip summary: km=4.98 dur=11min avg=26.9kmh max=41.4 v=75.2 soc=79 wh=312
+  [16:34:47] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:48] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:49] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:50] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:51] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:52] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:53] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:54] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:55] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:56] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:57] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:58] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:34:59] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:00] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:01] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:02] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:03] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:04] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:05] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:06] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:07] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:08] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:09] low power skip: rest ocv=75.2V >=70; soc=79
+  [16:35:10] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:11] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:12] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:13] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:14] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:15] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:16] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:17] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:18] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:19] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:20] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:21] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:22] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:23] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:24] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:25] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:26] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:27] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:28] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:29] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:30] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:31] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:32] low power skip: rest ocv=75.3V >=70; soc=79
+  [16:35:33] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:34] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:35] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:36] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:37] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:38] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:39] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:40] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:41] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:42] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:43] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:44] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:45] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:46] rest cal #1 @120s parked
+  [16:35:46] soc anchor nudge+0 v=75.3 socV=81 socKm=84 km=4.98 rejects=10
+  [16:35:46] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:47] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:48] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:49] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:50] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:51] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:52] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:53] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:54] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:55] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:56] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:57] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:58] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:35:59] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:00] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:01] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:02] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:03] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:04] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:05] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:06] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:07] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:08] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:09] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:10] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:11] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:12] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:13] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:14] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:15] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:16] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:17] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:18] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:19] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:20] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:21] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:22] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:23] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:24] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:25] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:26] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:27] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:28] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:29] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:30] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:31] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:32] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:33] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:34] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:35] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:36] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:37] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:38] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:39] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:40] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:41] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:42] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:43] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:44] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:45] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:46] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:47] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:48] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:49] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:50] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:51] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:52] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:53] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:54] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:55] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:56] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:57] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:58] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:36:59] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:00] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:01] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:02] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:03] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:04] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:05] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:06] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:07] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:08] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:09] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:10] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:11] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:12] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:13] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:14] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:15] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:16] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:17] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:18] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:19] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:20] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:21] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:22] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:23] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:24] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:25] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:26] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:27] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:28] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:29] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:30] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:31] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:32] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:33] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:34] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:35] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:36] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:37] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:38] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:39] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:40] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:41] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:42] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:43] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:44] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:45] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:46] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:47] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:48] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:49] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:50] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:51] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:52] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:53] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:54] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:55] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:56] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:57] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:58] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:37:59] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:01] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:02] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:03] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:04] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:05] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:06] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:07] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:08] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:09] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:10] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:11] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:12] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:13] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:14] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:15] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:16] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:17] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:18] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:19] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:20] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:21] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:22] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:23] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:24] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:25] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:26] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:27] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:28] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:29] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:30] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:31] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:32] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:33] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:34] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:35] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:36] low power skip: rest ocv=75.3V >=70; soc=81
+  [16:38:37] link lost: freeze soc=81 (last live)
+  [16:38:46] alarm armed @25.81071;113.02198 (parked 300s; ble=2)
+  [16:38:47] rest cal #2 @301s parked
+  [16:38:47] soc anchor nudge+0 v=75.3 socV=82 socKm=84 km=4.98 rejects=10
+  [16:41:47] rest cal #3 @481s parked
+  [16:41:47] soc anchor nudge+0 v=75.3 socV=82 socKm=84 km=4.98 rejects=10
+  [16:44:27] soc: link back after 5 min; snap confirm window open
+  [16:44:27] soc: window fresh; hold 84 (samples=2)
+  [16:44:27] low power skip: rest ocv=75.3V >=70; soc=84
+  [16:44:28] low power skip: rest ocv=75.3V >=70; soc=84
+  [16:44:29] low power skip: rest ocv=75.3V >=70; soc=84
+  [16:44:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:44:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:45:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:46:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:47:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:48:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:49:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:50:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:51:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:35] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:36] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:37] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:38] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:39] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:40] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:41] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:42] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:43] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:44] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:45] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:46] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:47] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:48] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:49] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:50] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:51] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:52] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:53] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:54] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:55] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:56] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:57] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:58] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:52:59] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:00] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:01] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:02] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:03] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:04] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:05] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:06] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:07] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:08] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:09] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:10] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:11] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:12] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:13] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:14] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:15] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:16] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:17] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:18] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:19] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:20] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:21] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:22] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:23] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:24] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:25] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:26] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:27] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:28] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:29] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:30] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:31] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:32] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:33] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:34] low power skip: rest ocv=75.3V >=70; soc=82
+  [16:53:35] gps moving: interval -> 1000ms
+  [17:00:40] low power skip: rest ocv=74.6V >=70; soc=80
+  [17:00:41] low power skip: rest ocv=74.6V >=70; soc=78
+  [17:00:42] low power skip: rest ocv=74.6V >=70; soc=78
+  [17:00:43] low power skip: rest ocv=74.6V >=70; soc=78
+  [17:00:44] low power skip: rest ocv=74.6V >=70; soc=78
+  [17:00:45] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:46] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:47] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:48] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:49] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:50] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:51] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:52] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:53] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:54] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:55] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:56] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:57] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:58] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:00:59] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:00] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:01] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:02] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:03] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:04] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:05] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:06] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:07] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:08] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:09] low power skip: rest ocv=74.7V >=70; soc=78
+  [17:01:10] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:11] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:12] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:13] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:14] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:15] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:16] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:17] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:18] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:19] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:20] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:21] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:22] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:23] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:24] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:25] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:26] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:27] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:28] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:29] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:30] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:31] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:32] low power skip: rest ocv=74.8V >=70; soc=78
+  [17:01:33] link lost: freeze soc=78 (last live)
+  [17:04:06] soc: link back after 2 min; snap confirm window open
+  [17:04:06] soc: window fresh; hold 82 (samples=1)
+  [17:04:06] low power skip: rest ocv=74.9V >=70; soc=82
+  [17:04:07] low power skip: rest ocv=74.9V >=70; soc=82
+  [17:04:08] low power skip: rest ocv=74.9V >=70; soc=82
+  [17:04:09] low power skip: rest ocv=74.9V >=70; soc=82
+  [17:04:10] low power skip: rest ocv=74.9V >=70; soc=82
+  [17:04:11] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:12] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:13] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:14] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:15] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:16] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:17] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:18] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:19] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:20] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:21] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:22] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:23] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:24] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:25] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:26] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:27] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:28] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:29] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:30] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:31] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:32] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:33] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:34] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:35] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:36] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:37] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:38] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:39] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:40] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:41] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:42] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:43] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:44] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:45] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:46] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:47] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:48] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:49] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:50] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:51] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:52] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:04:53] low power skip: rest ocv=74.9V >=70; soc=80
+  [17:05:43] low power skip: rest ocv=73.2V >=70; soc=78
+  [17:13:14] low power skip: rest ocv=71.6V >=70; soc=77
+  [17:13:15] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:16] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:17] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:18] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:19] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:20] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:21] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:22] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:23] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:24] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:25] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:26] low power skip: rest ocv=71.6V >=70; soc=75
+  [17:13:27] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:28] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:29] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:30] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:31] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:32] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:33] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:34] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:35] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:36] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:37] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:38] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:39] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:40] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:41] low power skip: rest ocv=71.7V >=70; soc=75
+  [17:13:42] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:43] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:44] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:45] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:46] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:47] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:48] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:49] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:50] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:51] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:52] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:53] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:54] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:55] gps parked: interval 1000ms -> 3000ms
+  [17:13:55] trip summary: km=10.63 dur=28min avg=22.6kmh max=41.4 v=74.3 soc=75 wh=380
+  [17:13:55] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:56] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:57] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:58] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:13:59] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:14:00] low power skip: rest ocv=74.3V >=70; soc=75
+  [17:14:01] gps moving: interval -> 1000ms
+  [17:23:10] link lost: freeze soc=76 (last live)
+  [17:25:58] soc: link back after 2 min; snap confirm window open
+  [17:25:58] soc: window fresh; hold 74 (samples=1)
+  [17:25:58] low power skip: rest ocv=73.4V >=70; soc=74
+  [17:25:59] low power skip: rest ocv=73.4V >=70; soc=74
+  [17:26:00] low power skip: rest ocv=73.4V >=70; soc=74
+  [17:26:01] low power skip: rest ocv=73.4V >=70; soc=74
+  [17:26:02] low power skip: rest ocv=73.4V >=70; soc=74
+  [17:26:03] low power skip: rest ocv=73.4V >=70; soc=72
+  [17:26:04] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:05] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:06] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:07] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:08] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:09] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:10] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:11] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:12] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:13] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:14] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:15] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:16] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:17] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:18] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:19] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:20] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:21] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:22] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:23] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:24] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:25] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:26] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:27] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:28] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:29] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:30] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:31] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:32] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:33] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:34] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:35] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:36] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:37] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:38] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:39] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:40] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:41] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:42] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:43] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:44] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:45] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:46] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:47] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:48] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:49] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:50] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:51] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:52] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:53] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:54] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:55] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:56] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:26:57] low power skip: rest ocv=73.4V >=70; soc=70
+  [17:32:32] low power skip: rest ocv=72.8V >=70; soc=69
+  [17:32:33] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:34] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:35] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:36] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:37] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:38] low power skip: rest ocv=72.8V >=70; soc=67
+  [17:32:39] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:40] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:41] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:42] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:43] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:44] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:45] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:46] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:47] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:32:48] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:49] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:50] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:51] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:52] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:53] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:54] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:55] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:56] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:57] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:58] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:32:59] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:33:00] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:33:01] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:33:02] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:33:03] low power skip: rest ocv=73.0V >=70; soc=67
+  [17:33:04] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:05] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:06] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:07] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:08] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:09] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:10] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:11] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:12] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:13] gps parked: interval 1000ms -> 3000ms
+  [17:33:13] trip summary: km=17.62 dur=46min avg=23.1kmh max=42.6 v=73.1 soc=67 wh=503
+  [17:33:13] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:14] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:15] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:16] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:17] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:18] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:19] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:20] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:21] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:22] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:23] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:24] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:25] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:26] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:27] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:28] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:29] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:30] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:31] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:32] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:33] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:34] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:35] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:36] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:37] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:38] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:39] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:40] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:41] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:42] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:43] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:44] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:45] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:33:46] gps moving: interval -> 1000ms
+  [17:36:50] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:51] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:52] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:53] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:54] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:55] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:56] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:57] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:58] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:36:59] low power skip: rest ocv=72.9V >=70; soc=67
+  [17:37:04] low power skip: rest ocv=72.9V >=70; soc=66
+  [17:37:05] low power skip: rest ocv=72.9V >=70; soc=66
+  [17:37:09] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:10] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:11] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:12] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:13] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:14] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:15] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:16] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:17] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:18] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:19] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:20] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:21] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:22] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:23] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:24] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:25] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:26] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:27] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:28] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:29] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:30] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:31] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:32] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:33] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:34] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:35] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:36] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:37] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:38] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:39] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:40] low power skip: rest ocv=73.0V >=70; soc=66
+  [17:37:41] low power skip: rest ocv=73.1V >=70; soc=66
+  [17:37:42] low power skip: rest ocv=73.1V >=70; soc=66
+  [17:37:43] low power skip: rest ocv=73.1V >=70; soc=66
+  [17:37:44] low power skip: rest ocv=73.1V >=70; soc=66
+  [17:37:45] low power skip: rest ocv=73.1V >=70; soc=66
+  [17:37:47] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:48] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:49] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:50] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:51] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:52] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:53] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:54] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:55] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:56] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:57] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:58] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:37:59] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:00] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:01] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:02] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:03] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:04] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:05] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:06] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:07] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:08] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:09] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:10] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:11] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:38:12] low power skip: rest ocv=73.1V >=70; soc=67
+  [17:51:18] link lost: freeze soc=68 (last live)
+  [17:52:48] soc: link back after 1 min; snap confirm window open
+  [17:52:48] soc: window fresh; hold 65 (samples=1)
+  [17:52:48] low power skip: rest ocv=72.2V >=70; soc=65
+  [17:52:49] low power skip: rest ocv=72.2V >=70; soc=65
+  [17:52:50] low power skip: rest ocv=72.2V >=70; soc=65
+  [17:52:51] low power skip: rest ocv=72.2V >=70; soc=63
+  [17:52:52] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:53] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:54] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:55] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:56] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:57] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:58] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:52:59] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:00] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:01] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:02] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:03] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:04] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:05] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:06] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:07] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:08] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:09] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:10] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:11] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:12] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:13] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:14] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:15] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:16] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:17] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:18] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:19] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:20] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:21] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:22] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:23] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:24] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:25] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:26] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:27] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:28] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:29] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:30] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:31] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:32] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:33] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:34] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:35] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:36] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:37] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:38] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:39] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:40] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:41] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:42] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:43] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:44] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:45] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:46] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:48] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:49] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:50] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:51] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:52] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:53] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:54] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:55] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:56] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:57] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:58] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:53:59] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:00] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:01] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:02] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:03] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:04] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:05] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:06] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:07] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:08] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:09] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:10] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:11] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:12] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:13] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:14] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:15] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:16] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:17] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:18] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:19] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:20] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:21] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:22] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:23] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:24] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:25] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:26] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:27] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:28] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:29] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:30] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:31] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:32] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:33] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:34] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:35] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:36] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:37] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:38] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:39] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:40] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:41] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:42] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:43] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:44] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:45] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:46] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:47] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:48] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:49] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:50] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:51] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:52] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:53] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:54] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:55] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:56] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:57] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:58] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:54:59] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:00] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:01] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:02] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:03] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:04] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:05] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:06] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:07] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:08] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:09] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:10] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:11] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:12] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:13] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:14] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:15] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:16] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:17] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:18] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:19] low power skip: rest ocv=72.2V >=70; soc=61
+  [17:55:20] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:21] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:22] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:23] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:24] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:25] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:26] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:27] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:28] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:29] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:30] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:31] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:32] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:33] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:34] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:35] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:36] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:37] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:38] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:39] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:40] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:41] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:42] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:43] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:44] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:45] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:46] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:47] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:48] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:49] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:50] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:51] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:52] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:53] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:54] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:55] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:56] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:57] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:58] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:55:59] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:00] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:01] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:02] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:03] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:04] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:05] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:06] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:07] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:08] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:09] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:10] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:11] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:12] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:13] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:14] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:15] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:16] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:17] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:18] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:19] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:20] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:21] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:22] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:56:23] low power skip: rest ocv=72.3V >=70; soc=61
+  [17:58:39] link lost: freeze soc=62 (last live)
+  [17:59:40] gps parked: interval 1000ms -> 3000ms
+  [17:59:40] trip summary: km=25.58 dur=68min avg=22.5kmh max=43.2 v=- soc=62 wh=580
+  [18:00:34] soc: link back after 1 min; snap confirm window open
+  [18:00:34] soc: window fresh; hold 64 (samples=2)
+  [18:00:34] low power skip: rest ocv=72.3V >=70; soc=62
+  [18:00:35] low power skip: rest ocv=72.3V >=70; soc=62
+  [18:00:36] low power skip: rest ocv=72.3V >=70; soc=62
+  [18:00:37] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:38] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:39] rest cal #1 @120s parked
+  [18:00:39] soc anchor nudge+0 v=72.3 socV=44 socKm=64 km=25.58 rejects=1
+  [18:00:39] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:40] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:41] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:42] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:43] low power skip: rest ocv=72.3V >=70; soc=60
+  [18:00:44] gps moving: interval -> 1000ms
+  [18:00:47] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:48] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:49] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:50] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:51] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:52] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:53] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:54] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:55] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:56] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:57] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:58] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:00:59] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:00] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:01] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:02] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:03] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:04] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:05] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:06] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:07] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:08] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:09] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:10] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:11] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:12] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:13] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:14] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:15] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:16] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:17] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:18] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:19] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:20] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:22] low power skip: rest ocv=72.3V >=70; soc=59
+  [18:01:23] link lost: freeze soc=59 (last live)
+  [18:01:48] gps parked: interval 1000ms -> 3000ms
+  [18:02:01] soc: window fresh; hold 64 (samples=1)
+  [18:02:01] low power skip: rest ocv=72.2V >=70; soc=64
+  [18:02:02] low power skip: rest ocv=72.2V >=70; soc=64
+  [18:02:03] low power skip: rest ocv=72.2V >=70; soc=64
+  [18:02:04] low power skip: rest ocv=72.2V >=70; soc=64
+  [18:02:05] low power skip: rest ocv=72.2V >=70; soc=64
+  [18:02:06] low power skip: rest ocv=72.2V >=70; soc=62
+  [18:02:07] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:08] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:09] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:10] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:11] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:12] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:13] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:14] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:15] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:16] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:17] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:18] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:19] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:20] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:21] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:22] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:23] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:24] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:25] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:26] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:02:27] gps moving: interval -> 1000ms
+  [18:04:10] low power skip: rest ocv=71.9V >=70; soc=60
+  [18:04:11] low power skip: rest ocv=71.9V >=70; soc=60
+  [18:04:12] low power skip: rest ocv=71.9V >=70; soc=60
+  [18:04:13] low power skip: rest ocv=71.9V >=70; soc=60
+  [18:04:14] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:15] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:16] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:17] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:18] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:19] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:20] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:21] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:22] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:23] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:24] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:25] low power skip: rest ocv=72.0V >=70; soc=60
+  [18:04:26] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:27] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:28] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:29] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:30] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:31] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:32] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:33] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:34] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:35] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:36] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:37] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:38] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:39] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:40] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:41] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:42] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:43] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:44] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:45] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:46] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:47] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:48] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:49] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:50] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:51] gps parked: interval 1000ms -> 3000ms
+  [18:04:51] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:52] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:53] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:54] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:55] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:56] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:57] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:58] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:04:59] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:00] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:01] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:02] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:03] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:04] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:05] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:06] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:07] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:08] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:09] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:10] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:11] low power skip: rest ocv=72.1V >=70; soc=60
+  [18:05:12] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:13] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:14] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:15] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:16] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:17] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:18] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:19] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:20] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:21] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:22] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:23] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:24] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:25] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:26] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:27] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:28] low power skip: rest ocv=72.2V >=70; soc=60
+  [18:05:30] gps moving: interval -> 1000ms
+  [18:07:30] low power skip: rest ocv=70.2V >=70; soc=59
+  [18:07:31] low power skip: rest ocv=70.3V >=70; soc=59
+  [18:07:32] low power skip: rest ocv=70.9V >=70; soc=59
+  [18:07:33] low power skip: rest ocv=70.9V >=70; soc=59
+  [18:07:34] low power skip: rest ocv=70.9V >=70; soc=59
+  [18:07:35] low power skip: rest ocv=70.9V >=70; soc=59
+  [18:07:36] low power skip: rest ocv=70.9V >=70; soc=59
+  [18:07:37] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:38] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:39] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:40] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:41] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:42] low power skip: rest ocv=71.7V >=70; soc=59
+  [18:07:43] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:44] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:45] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:46] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:47] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:48] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:49] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:50] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:51] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:52] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:53] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:54] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:55] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:56] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:57] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:58] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:07:59] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:00] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:01] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:02] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:03] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:04] low power skip: rest ocv=71.8V >=70; soc=59
+  [18:08:05] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:06] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:07] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:08] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:09] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:10] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:11] gps parked: interval 1000ms -> 3000ms
+  [18:08:11] trip summary kept (segment 1.11km < 3km; not a new trip)
+  [18:08:11] trip summary: km=26.69 dur=71min avg=22.5kmh max=43.2 v=71.9 soc=59 wh=626
+  [18:08:11] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:12] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:13] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:14] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:15] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:16] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:17] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:18] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:19] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:20] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:21] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:22] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:23] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:24] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:25] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:26] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:27] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:28] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:29] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:30] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:31] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:32] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:33] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:34] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:35] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:36] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:37] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:38] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:39] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:40] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:41] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:42] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:43] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:44] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:45] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:46] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:47] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:48] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:49] low power skip: rest ocv=71.9V >=70; soc=59
+  [18:08:50] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:51] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:52] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:53] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:54] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:55] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:56] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:57] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:58] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:08:59] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:00] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:01] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:02] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:03] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:04] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:05] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:06] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:07] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:08] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:09] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:10] rest cal #1 @120s parked
+  [18:09:10] volt high vs energy: socV=40 energy=13 (keep voltage)
+  [18:09:10] soc anchor nudge+0 v=72.0 socV=28 socKm=63 km=26.69 rejects=1
+  [18:09:10] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:11] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:12] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:13] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:14] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:15] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:16] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:17] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:18] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:19] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:20] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:21] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:22] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:23] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:24] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:25] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:26] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:27] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:28] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:29] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:30] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:31] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:32] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:33] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:34] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:35] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:36] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:37] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:38] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:39] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:40] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:41] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:42] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:43] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:44] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:45] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:46] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:47] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:48] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:49] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:50] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:52] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:53] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:54] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:55] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:56] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:57] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:58] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:09:59] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:00] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:01] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:02] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:03] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:04] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:05] low power skip: rest ocv=72.0V >=70; soc=59
+  [18:10:06] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:07] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:08] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:09] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:10] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:11] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:12] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:13] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:14] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:15] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:16] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:17] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:18] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:19] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:20] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:21] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:22] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:23] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:24] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:25] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:26] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:27] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:28] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:29] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:30] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:31] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:32] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:33] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:34] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:35] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:36] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:37] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:38] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:39] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:40] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:41] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:42] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:43] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:44] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:45] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:46] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:47] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:48] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:49] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:50] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:51] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:52] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:53] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:54] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:55] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:56] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:57] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:58] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:10:59] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:00] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:01] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:02] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:03] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:04] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:05] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:06] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:07] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:08] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:09] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:10] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:11] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:12] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:13] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:14] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:15] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:16] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:17] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:18] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:19] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:20] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:21] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:22] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:23] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:24] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:25] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:26] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:27] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:28] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:29] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:30] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:31] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:32] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:33] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:34] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:35] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:36] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:37] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:38] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:39] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:40] low power skip: rest ocv=72.1V >=70; soc=59
+  [18:11:41] gps moving: interval -> 1000ms
+  [18:26:13] low power skip: rest ocv=70.0V >=70; soc=56
+  [18:26:31] link lost: freeze soc=56 (last live)
+  [18:30:13] soc: link back after 3 min; snap confirm window open
+  [18:30:13] soc: window fresh; hold 58 (samples=1)
+  [18:33:42] low power skip: rest ocv=70.8V >=70; soc=53
+  [18:33:43] low power skip: rest ocv=70.8V >=70; soc=53
+  [18:33:44] low power skip: rest ocv=70.8V >=70; soc=53
+  [18:33:45] low power skip: rest ocv=70.8V >=70; soc=53
+  [18:33:46] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:47] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:48] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:49] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:50] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:51] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:52] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:53] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:54] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:55] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:56] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:57] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:58] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:33:59] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:00] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:01] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:02] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:03] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:04] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:05] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:06] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:07] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:08] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:09] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:10] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:11] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:12] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:13] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:14] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:15] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:16] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:17] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:18] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:19] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:20] low power skip: rest ocv=70.9V >=70; soc=53
+  [18:34:23] gps parked: interval 1000ms -> 3000ms
+  [18:34:23] trip summary: km=31.81 dur=85min avg=22.4kmh max=43.2 v=68.6 soc=53 wh=704
+  [18:35:22] rest cal #1 @120s parked
+  [18:35:22] soc anchor nudge+0 v=68.6 socV=22 socKm=57 km=31.81 rejects=1
+  [18:35:29] gps moving: interval -> 1000ms
+  [18:42:58] link lost: freeze soc=55 (last live)
+  [18:45:01] soc: link back after 2 min; snap confirm window open
+  [18:45:01] soc: window fresh; hold 54 (samples=3)
+  [18:45:03] low power skip: rest ocv=70.4V >=70; soc=55
+  [18:45:04] low power skip: rest ocv=70.4V >=70; soc=53
+  [18:45:13] low power skip: rest ocv=70.4V >=70; soc=51
+  [18:45:14] low power skip: rest ocv=70.4V >=70; soc=51
+  [18:45:17] low power skip: rest ocv=70.4V >=70; soc=52
+  [18:45:19] low power skip: rest ocv=70.4V >=70; soc=50
+  [18:45:20] low power skip: rest ocv=70.4V >=70; soc=50
+  [18:45:21] low power skip: rest ocv=70.4V >=70; soc=50
+  [18:45:22] low power skip: rest ocv=70.4V >=70; soc=50
+  [18:46:08] link lost: freeze soc=52 (last live)
+  [18:48:27] soc: link back after 2 min; snap confirm window open
+  [18:48:27] soc: window fresh; hold 55 (samples=1)
+  [18:48:30] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:36] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:37] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:38] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:39] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:40] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:41] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:42] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:43] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:52] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:53] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:48:54] low power skip: rest ocv=70.6V >=70; soc=50
+  [18:53:54] low power skip: rest ocv=70.2V >=70; soc=52
+  [18:53:55] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:53:56] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:53:57] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:53:58] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:53:59] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:00] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:01] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:02] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:03] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:04] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:05] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:06] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:07] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:08] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:09] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:10] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:11] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:12] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:13] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:14] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:15] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:54:16] low power skip: rest ocv=70.2V >=70; soc=50
+  [18:57:37] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:38] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:39] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:40] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:41] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:42] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:43] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:44] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:45] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:46] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:47] low power skip: rest ocv=70.0V >=70; soc=47
+  [18:57:48] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:49] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:50] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:51] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:52] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:53] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:54] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:55] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:56] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:57] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:58] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:57:59] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:00] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:01] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:02] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:03] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:04] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:05] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:06] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:07] gps parked: interval 1000ms -> 3000ms
+  [18:58:07] trip summary: km=38.08 dur=101min avg=22.6kmh max=43.2 v=70.2 soc=47 wh=795
+  [18:58:07] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:08] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:09] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:10] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:11] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:12] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:13] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:14] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:15] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:16] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:17] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:18] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:19] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:20] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:21] low power skip: rest ocv=70.1V >=70; soc=47
+  [18:58:22] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:23] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:24] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:25] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:26] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:27] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:28] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:29] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:30] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:31] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:32] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:33] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:34] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:35] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:36] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:37] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:38] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:39] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:40] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:41] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:42] low power skip: rest ocv=70.2V >=70; soc=47
+  [18:58:43] gps moving: interval -> 1000ms
+  [19:11:01] gps parked: interval 1000ms -> 3000ms
+  [19:11:01] trip summary: km=41.76 dur=110min avg=22.9kmh max=43.2 v=69.5 soc=44 wh=841
+  [19:12:00] rest cal #1 @120s parked
+  [19:12:00] volt high vs energy: socV=25 energy=0 (keep voltage)
+  [19:12:00] soc anchor nudge+0 v=69.6 socV=15 socKm=49 km=41.76 rejects=1
+  [19:15:01] rest cal #2 @301s parked
+  [19:15:01] volt high vs energy: socV=25 energy=0 (keep voltage)
+  [19:15:01] soc anchor nudge+0 v=69.7 socV=15 socKm=49 km=41.76 rejects=2
+  [19:18:02] rest cal #3 @482s parked
+  [19:18:02] volt high vs energy: socV=26 energy=0 (keep voltage)
+  [19:18:02] soc anchor nudge+0 v=69.8 socV=15 socKm=49 km=41.76 rejects=3
+  [19:18:10] gps moving: interval -> 1000ms
+  [19:19:13] gps parked: interval 1000ms -> 3000ms
+  [19:20:12] rest cal #1 @120s parked
+  [19:20:12] soc anchor nudge+0 v=69.9 socV=26 socKm=49 km=41.77 rejects=4
+  [19:23:09] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:10] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:11] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:12] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:13] rest cal #2 @301s parked
+  [19:23:13] soc anchor nudge+0 v=70.0 socV=26 socKm=49 km=41.77 rejects=5
+  [19:23:13] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:14] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:15] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:16] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:17] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:18] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:19] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:20] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:21] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:22] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:23] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:24] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:25] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:26] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:27] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:28] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:29] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:30] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:31] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:32] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:33] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:34] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:35] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:36] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:37] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:38] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:39] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:40] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:41] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:42] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:43] gps moving: interval -> 1000ms
+  [19:23:46] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:47] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:48] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:49] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:50] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:51] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:52] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:53] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:54] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:55] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:56] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:57] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:58] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:23:59] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:24:00] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:24:01] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:24:02] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:24:03] low power skip: rest ocv=70.0V >=70; soc=44
+  [19:33:21] gps parked: interval 1000ms -> 3000ms
+  [19:33:21] trip summary: km=44.86 dur=116min avg=23.1kmh max=43.2 v=65.9 soc=41 wh=887
+  [19:33:27] gps moving: interval -> 1000ms
+  [19:35:33] link lost: freeze soc=43 (last live)
+  [19:38:46] soc: link back after 3 min; snap confirm window open
+  [19:38:46] soc: window fresh; hold 44 (samples=1)
+  [19:42:56] link lost: freeze soc=41 (last live)
+  [19:43:59] gps parked: interval 1000ms -> 3000ms
+  [19:43:59] trip summary kept (segment 2.74km < 3km; not a new trip)
+  [19:43:59] trip summary: km=47.59 dur=125min avg=22.9kmh max=43.2 v=- soc=41 wh=887
+  [19:44:58] rest cal #1 @120s parked
+  [19:44:58] soc anchor nudge+0 v=67.6 socV=19 socKm=43 km=47.59 rejects=6
+  [19:47:58] alarm armed @25.76703;113.01555 (parked 300s; ble=2)
+  [19:47:59] rest cal #2 @301s parked
+  [19:47:59] soc anchor nudge+0 v=67.6 socV=19 socKm=43 km=47.59 rejects=7
+  [19:48:03] gps moving: interval -> 1000ms
+  [19:48:50] soc: link back after 5 min; snap confirm window open
+  [19:48:50] soc: window fresh; hold 43 (samples=2)
+  [19:52:47] link lost: freeze soc=41 (last live)
+  [19:54:12] soc: link back after 1 min; snap confirm window open
+  [19:54:12] soc: window fresh; hold 42 (samples=2)
+  [19:59:16] link lost: freeze soc=39 (last live)
+  [20:00:15] gps parked: interval 1000ms -> 3000ms
+  [20:00:15] trip summary: km=50.65 dur=134min avg=22.8kmh max=43.2 v=- soc=39 wh=918
+  [20:01:05] soc: link back after 1 min; snap confirm window open
+  [20:01:05] soc: window fresh; hold 40 (samples=1)
+  [20:01:06] gps moving: interval -> 1000ms
+  [20:04:03] EMPTY LATCH: controller cutout at v=59.8; kmCharge=51.5 -> soc=3% range=0
+  [20:04:03] low power alert: soc=3 v=59.8
+  [20:09:03] low power alert: soc=3 v=63.2
+  [20:09:29] link lost: freeze soc=5 (last live)
+  [20:10:43] gps parked: interval 1000ms -> 3000ms
+  [20:10:43] trip summary kept (segment 1.57km < 3km; not a new trip)
+  [20:10:43] trip summary: km=52.22 dur=141min avg=22.2kmh max=43.2 v=- soc=3 wh=1467
+  [20:11:42] rest cal #1 @120s parked
+  [20:14:42] alarm armed @25.77643;112.99651 (parked 300s; ble=2)
+  [20:14:43] rest cal #2 @301s parked
+  [20:14:55] alarm armed @25.77662;112.99650 (parked 313s; ble=0)
+  [20:15:10] alarm armed @25.77668;112.99631 (parked 328s; ble=2)
+  [20:15:28] alarm armed @25.77654;112.99618 (parked 346s; ble=2)
+  [20:15:43] alarm armed @25.77634;112.99626 (parked 361s; ble=2)
+  [20:15:58] alarm armed @25.77618;112.99638 (parked 376s; ble=2)
+  [20:16:13] alarm armed @25.77601;112.99647 (parked 391s; ble=2)
+  [20:16:28] alarm armed @25.77583;112.99653 (parked 406s; ble=2)
+  [20:16:43] alarm armed @25.77564;112.99656 (parked 421s; ble=0)
+  [20:16:58] alarm armed @25.77545;112.99658 (parked 436s; ble=2)
+  [20:17:13] alarm armed @25.77526;112.99653 (parked 451s; ble=2)
+  [20:17:28] alarm armed @25.77518;112.99634 (parked 466s; ble=2)
+  [20:17:43] rest cal #3 @481s parked
+  [20:17:43] alarm armed @25.77522;112.99614 (parked 481s; ble=2)
+  [20:17:58] alarm armed @25.77541;112.99620 (parked 496s; ble=2)
+  [20:18:31] alarm armed @25.77524;112.99633 (parked 529s; ble=0)
+  [20:18:55] alarm armed @25.77543;112.99632 (parked 553s; ble=2)
+  [20:22:08] gps moving: interval -> 1000ms
+  [20:23:10] gps parked: interval 1000ms -> 3000ms
+  [20:24:09] rest cal #1 @120s parked
+  [20:25:15] soc: link back after 15 min; snap confirm window open
+  [20:25:15] soc: window fresh; hold 2 (samples=2)
+  [20:25:15] low power alert: soc=2 v=67.6
+  [20:26:28] gps moving: interval -> 1000ms
+  [20:30:15] low power alert: soc=3 v=62.5
+  [20:35:15] low power alert: soc=3 v=59.7
+  [20:40:15] low power alert: soc=3 v=61.8
+  [20:45:15] low power alert: soc=3 v=59.7
+  [20:50:15] low power alert: soc=3 v=63.0
+  [20:55:15] low power alert: soc=3 v=59.8
+  [21:00:16] low power alert: soc=3 v=59.8
+  [21:01:12] gps parked: interval 1000ms -> 3000ms
+  [21:01:12] trip summary: km=60.07 dur=174min avg=20.7kmh max=43.2 v=62.4 soc=3 wh=1467
+  [21:01:21] gps moving: interval -> 1000ms
+  [21:05:16] low power alert: soc=3 v=62.6
+  [21:08:53] link lost: freeze soc=4 (last live)
+  [21:09:49] soc: window fresh; hold 8 (samples=1)
+  [21:09:58] link lost: freeze soc=8 (last live)
+  [21:10:09] ODO_SCALE learn: dash +54.00 vs app +59.97 -> ratio 0.9004; scale 1.2126 -> 1.0918 (first-fit)
+  [21:10:09] trip set 54.78km <- 60.76km (odometer align; anchor shift -5.97)
+  [21:11:26] gps parked: interval 1000ms -> 3000ms
+  [21:12:25] rest cal #1 @120s parked
+  [21:12:29] gps moving: interval -> 1000ms
+  [21:13:31] gps parked: interval 1000ms -> 3000ms
+  [21:13:46] gps moving: interval -> 1000ms
+  [21:14:48] gps parked: interval 1000ms -> 3000ms
+  [21:15:47] rest cal #1 @120s parked
+  [21:16:15] gps moving: interval -> 1000ms
+  [21:17:17] gps parked: interval 1000ms -> 3000ms
+
+-- 末段 30 条快照 --
+  21:16:59 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:01 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:03 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:05 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:07 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:09 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:11 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:13 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:15 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:19 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:22 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:24 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:26 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:29 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:31 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:34 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:38 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:40 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:42 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:44 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:46 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:48 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:50 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:52 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:54 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:56 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:17:58 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:18:00 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:18:02 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
+  21:18:04 v=     - soc=  3 sra=  - spd=    - km= 54.84 gkm= 46.30 odo=11677.1 src=4
