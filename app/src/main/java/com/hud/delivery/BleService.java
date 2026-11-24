@@ -1023,7 +1023,7 @@ public class BleService extends Service implements HudBle.Listener {
     /** v1.0.46：断档提示的出现时刻（挂 15 分钟后自动撤掉） */
     private long gapWarnMs = 0L;
 
-    private void maybeLowPowerAlert(long now, float v, float socVal, int src) {
+    private void maybeLowPowerAlert(long now, float v, float socVal, int src, float ocv, boolean atRest) {
         // 只有"电量真的算出来"才提醒
         if (Float.isNaN(socVal)) return;
         if (src == HudState.SRC_NONE && !HudState.socFromKm) return;
@@ -1031,6 +1031,14 @@ public class BleService extends Service implements HudBle.Listener {
         // 断开后电量是冻结值（很可能是昨晚的 2%），再拿它震一次毫无意义 ——
         // 手机揣兜里走路也会被震，还以为是车出事了。
         if (src != HudState.SRC_BLE) return;
+        // v1.0.62：**静置开路电压 ≥70V 就不算低电**。
+        // 11-24 账本被续航硬顶压到 4%，车停着 OCV 72.2V，仍按 4% 误报了 5 次"电量不足"。
+        // 闸门只在静置口径下生效；骑行中的带载压降仍走下面的 vLowLine 判断，不误放深亏电。
+        if (atRest && !Float.isNaN(ocv) && ocv >= 70f) {
+            RawLog.sys(now, String.format(Locale.US,
+                    "low power skip: rest ocv=%.1fV >=70, soc=%.0f", ocv, socVal));
+            return;
+        }
         // v1.0.53：vEmpty 现在表示**静置**耗尽电压（63.8），而这里拿到的 v 是带载端电压。
         // 直接 +3 会变成 66.8V 就震 —— 那时电池还有 15~20%，一路被震到真没电。
         // 按"带载起点 = vEmpty − 4"来判（63.8 → 59.8，+3 = 62.8）。
@@ -1968,7 +1976,9 @@ public class BleService extends Service implements HudBle.Listener {
             float kmCharge = Float.NaN;
             float cSoc = prefs.chargeSoc();
             float cOdo = prefs.chargeOdoKm();
-            if (!Float.isNaN(cSoc) && !Float.isNaN(cOdo) && !Float.isNaN(HudState.odoKm)) {
+            // v1.0.62：本箱里程锚点必须真是满电（≥95%）才参与硬顶计算；
+            // 半路残留的旧锚点不能拿来扣续航，否则会把上一箱的里程也算进这一箱。
+            if (!Float.isNaN(cSoc) && cSoc >= 95f && !Float.isNaN(cOdo) && !Float.isNaN(HudState.odoKm)) {
                 kmCharge = Math.max(0f, HudState.odoKm - cOdo);
             }
             HudState.kmThisCharge = kmCharge;
@@ -1986,14 +1996,10 @@ public class BleService extends Service implements HudBle.Listener {
                 float capKm = prefs.estRangeKm() > 10f ? prefs.estRangeKm() : 80f;
                 if (!Float.isNaN(kmCharge)) capKm = Math.max(0f, capKm - kmCharge);
                 HudState.rangeKm = Math.min(HudState.rangeKm, capKm);
-                // v1.0.57：**别出现"17% 但续航 0km"这种自相矛盾的屏。**
-                // 满电续航减去本箱已跑已经 ≤1km，说明这一箱电按学到的真实续航算到底了：
-                // 账本还挂着十几个点，只能是"斜率/锚点学歪"残留，直接压到 4% 以下，
-                // 让"电量 / 续航 / 底部提示"三处说同一件事。
-                if (!Float.isNaN(kmCharge) && capKm <= 1f && !Float.isNaN(socVal) && socVal > 4f) {
-                    socVal = 4f;
-                    HudState.rangeKm = 0f;
-                }
+                // v1.0.62：硬顶只压续航 km，不再把 SOC 压到 4%。
+                // 11-24 实测：本箱累计超 estRange 触发 cap，静置 72.2V 锚到 42%、70.6V 锚到 28%，
+                // 却被这里覆盖成 4%，显示与静置电压口径直接打架，还连带误报低电。
+                // SOC 交给里程账本 / 静置锚点；续航保守封顶仍然保留。
             }
             HudState.setPower(disp, socVal, src);
 
@@ -2105,7 +2111,7 @@ public class BleService extends Service implements HudBle.Listener {
                 }
             }
 
-            maybeLowPowerAlert(now, disp, socVal, src);
+            maybeLowPowerAlert(now, disp, socVal, src, HudState.ocvV, HudState.socAtRest);
 
             // 每 5 km 往 CSV 里写一条电量时间线（事后复盘/标定用）
             if (src == HudState.SRC_EST && (lastEstKm < 0f || HudState.tripKm - lastEstKm >= 5f)) {
