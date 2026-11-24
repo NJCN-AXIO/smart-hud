@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -377,7 +378,8 @@ fun HudScreen(
                     src == HudState.SRC_EST || src == HudState.SRC_MANUAL -> "按里程推算"
                     else -> "等待电压"
                 },
-                subColor = DIM
+                subColor = DIM,
+                barPct = soc
             )
         } else {
 
@@ -413,7 +415,8 @@ fun HudScreen(
                 src == HudState.SRC_EST || src == HudState.SRC_MANUAL -> "已断开 · 按里程推算"
                 else -> "等待电压"
             },
-            subColor = DIM
+            subColor = DIM,
+            barPct = soc
         )
 
         MetricCell(
@@ -649,6 +652,31 @@ fun HudScreen(
  * 以及 Google Design for Driving 的排版建议（4dp 网格、只用主/次两档字号）。
  * 副标题固定 18dp 槽位：没有内容也不塌陷，三个数字才不会一个高一个低。
  */
+/**
+ * v1.0.63：仪表盘式电量格子条（10 段）。已充段跟着电量颜色走，空段暗灰；
+ * 百分比仍是大数字，格子条只负责"一眼看出还剩几格"，对标成熟电摩仪表的电量显示。
+ */
+@Composable
+private fun BatteryBar(pct: Float, color: Color) {
+    val segments = 10
+    val filled = if (pct.isNaN()) 0
+    else kotlin.math.ceil(pct / 10f).toInt().coerceIn(0, segments)
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        repeat(segments) { i ->
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(9.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(if (i < filled) color else DIM.copy(alpha = 0.30f))
+            )
+        }
+    }
+}
+
 @Composable
 private fun MetricCell(
     modifier: Modifier,
@@ -656,7 +684,9 @@ private fun MetricCell(
     unit: String,
     color: Color,
     sub: String,
-    subColor: Color
+    subColor: Color,
+    /** v1.0.63：传入电量%时在数字下方画一段格子条；NaN = 不画 */
+    barPct: Float = Float.NaN
 ) {
     BoxWithConstraints(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         // v1.0.3：字号跟着格子高度走，不再死写 80sp。
@@ -680,6 +710,10 @@ private fun MetricCell(
                     modifier = Modifier.padding(start = 4.dp, bottom = (uSp * 0.38f).dp),
                     style = TextStyle(color = color, fontSize = uSp.sp, fontWeight = FontWeight.Bold)
                 )
+            }
+            if (!barPct.isNaN()) {
+                Spacer(Modifier.height(6.dp))
+                BatteryBar(barPct, color)
             }
             Spacer(Modifier.height(6.dp))
             Box(Modifier.fillMaxWidth().height(18.dp), contentAlignment = Alignment.Center) {

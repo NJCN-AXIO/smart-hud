@@ -46,6 +46,14 @@ class SocTracker(
     /** 不可信时每次停车最多朝电压方向挪多少点 */
     var nudgePct: Float = 3f
     /**
+     * v1.0.63：静置电压比账本**高**时，一次停车允许向上抬多少点。
+     *
+     * 向上这一侧和向下不一样：能进静置闸门（停稳 20 秒、无油门、低速）的 OCV 是独立读数，
+     * 旧锚点偏低（半充电后没重锚、长停放回弹）时就该抬上来。向下一侧仍由 [nudgePct] /
+     * [nudgeBudgetPct] / 三次 reject 守着（带载压降、末端塌陷都在那一侧）。
+     */
+    var upStepPct: Float = 10f
+    /**
      * 一箱电里"朝不信电压方向纠偏"的**总预算**（百分点）。
      *
      * 为什么要有预算（v1.0.3）：骑手一天在商场门口停十几次，若每次停车都因为"控制器电压
@@ -94,7 +102,11 @@ class SocTracker(
         const val UP_SUSTAIN_MS = 45_000L
         const val UP_STEP = 1f
         const val UP_MIN_INTERVAL_MS = 5_000L
-        const val UP_BUDGET = 10f
+        /**
+         * v1.0.63：回升预算 10 → 16。半充电/长停放后旧账本偏低，低负载滑行时要能把欠的点还回来；
+         * 门槛（死区/持续时长/间隔/单步）不变，噪声抬不上去。
+         */
+        const val UP_BUDGET = 16f
 
         /**
          * v1.0.56（已废弃，保留常量供后续调整）：
@@ -249,23 +261,38 @@ class SocTracker(
             return anchorRest(nowMs, socRest, km)
         }
         val diff = socRest - pred
-        if (kotlin.math.abs(diff) <= maxAnchorJumpPct) {
-            // 相差不大 = 正常锚定；但**向下**那一边也要限速/限额（v1.0.3）：
+
+        // v1.0.63：向上（静置电压口径比账本高）放宽。
+        // 进静置闸门的 OCV 不依赖里程，旧锚点偏低（半充电后没重锚、长停放回弹）时该抬就抬；
+        // 一次最多 [upStepPct] 点，不参与 %/km 学习。向下一侧（带载压降/末端塌陷）仍走下面的保守通道。
+        if (diff > 0f) {
+            rejects = 0
+            if (diff <= maxAnchorJumpPct) {
+                return anchorRest(nowMs, socRest, km)
+            }
+            val upStep = minOf(diff, upStepPct)
+            anchorRest(nowMs, pred + upStep, km, false)
+            return Float.NaN
+        }
+
+        if (-diff <= maxAnchorJumpPct) {
+            // 差值为 0（电压口径和账本一致）：正常锚定，照常学斜率。
+            if (diff >= 0f) {
+                rejects = 0
+                return anchorRest(nowMs, socRest, km)
+            }
+            // 相差不大但偏低：向下那一边也要限速/限额（v1.0.3）：
             // 每次停车最多往下 4 点、一箱电最多 12 点。控制器电压系统性偏低 1–2V（≈3–6 点），
             // 若每个红绿灯都整段对齐，一天停十几次就能把 60% 拖到 4% —— 这是"26.8km 只剩 4%"的真凶。
-            if (diff < 0f) {
-                val room = nudgeBudgetPct - nudgedTotal
-                val step = minOf(-diff, 4f, if (room > 0f) room else 0f)
-                nudgedTotal += step
-                // v1.0.7：**纠偏这一下不参与 %/km 的学习**（allowLearn = false）。
-                // 旧版这里调 anchorRest(pred - step) 且照常学习：这一步被"往下挪了 4 点"
-                // 也会被记成"这几公里真的耗了这 4 点"，每停一次就把 perKmPct 往上推一点，
-                // 十几次停靠就能把它顶到 3.0 上限 —— 于是出现"26.8km 只剩 4%、还能跑 1km"。
-                // 学习只该学"真实的消耗"，不该学"我们自己的修正量"。
-                return anchorRest(nowMs, pred - step, km, false)
-            }
-            rejects = 0
-            return anchorRest(nowMs, socRest, km)
+            val room = nudgeBudgetPct - nudgedTotal
+            val step = minOf(-diff, 4f, if (room > 0f) room else 0f)
+            nudgedTotal += step
+            // v1.0.7：**纠偏这一下不参与 %/km 的学习**（allowLearn = false）。
+            // 旧版这里调 anchorRest(pred - step) 且照常学习：这一步被"往下挪了 4 点"
+            // 也会被记成"这几公里真的耗了这 4 点"，每停一次就把 perKmPct 往上推一点，
+            // 十几次停靠就能把它顶到 3.0 上限 —— 于是出现"26.8km 只剩 4%、还能跑 1km"。
+            // 学习只该学"真实的消耗"，不该学"我们自己的修正量"。
+            return anchorRest(nowMs, pred - step, km, false)
         }
         rejects++
         // v1.0.56 曾经试过"底部一律信电压"，被单测否掉了（见 `一箱电的纠偏预算用完就不再往下拉`）：
@@ -285,10 +312,9 @@ class SocTracker(
             anchorSoc = pred
             return Float.NaN
         }
-        val dir = if (socRest < pred) -1f else 1f
         val step = if (nudgePct < room) nudgePct else room
         nudgedTotal += step
-        val nudged = (pred + dir * step).coerceIn(0f, 100f)
+        val nudged = (pred - step).coerceIn(0f, 100f)
         anchorSoc = nudged
         anchorKm = km
         shown = nudged

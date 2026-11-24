@@ -994,6 +994,30 @@ class CoreAlgorithmsTest {
     }
 
     @Test
+    fun `静置电压比账本高时向上放宽对齐 一次最多抬10点且不学斜率`() {
+        // v1.0.63：旧锚点偏低（半充电/长停放回弹），静置 OCV 比账本高 25 点。
+        // 向上这一侧不再走"三次 reject 才挪 3 点"，一次抬 10 点封顶，不参与 %/km 学习。
+        val t = SocTracker(1.25f, 100f, 0f)
+        t.update(0L, 0f, 100f)
+        t.update(1000L, 40f, 75f)
+        val learned = t.anchorRestGuarded(2000L, 75f, 40f)
+        assertTrue("向上放宽也不该学习 %/km", learned.isNaN())
+        assertEquals(0, t.rejects)
+        assertEquals(60f, t.anchorSoc, 0.5f)      // pred=50 + upStep 10
+        assertEquals(60f, t.shown, 0.5f)
+    }
+
+    @Test
+    fun `静置电压比账本高且差在死区内时正常锚定并学习`() {
+        val t = SocTracker(1.25f, 100f, 0f)
+        t.update(0L, 0f, 100f)
+        val learned = t.anchorRestGuarded(1000L, 90f, 8f)
+        assertEquals(0, t.rejects)
+        assertEquals(1.25f, learned, 0.1f)
+        assertEquals(90f, t.shown, 0.1f)
+    }
+
+    @Test
     fun `电压锚点在合理范围内时正常锚定并学习`() {
         val t = SocTracker(1.25f, 100f, 0f)
         t.update(0L, 0f, 100f)

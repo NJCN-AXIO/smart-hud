@@ -1860,12 +1860,12 @@ public class BleService extends Service implements HudBle.Listener {
                     float pred = socTracker.predict(HudState.tripKm);
                     if (!Float.isNaN(pred)) socVal = pred;
                 } else if (atRest && socTracker != null) {
-                    // 站着的时候允许"电压纠正"，但**一次最多纠 5 个点**：
-                    // 骑手一天在商场门口停十几次，每次整段对齐会看到数字来回蹦，
-                    // 限幅后既能纠偏又不会晃眼（几次停靠自然收敛）。
+                    // 站着的时候允许"电压纠正"。v1.0.63：向下仍限 5 点（防系统性偏低把电量拖走）；
+                    // 向上放宽到 10 点 —— 静置 OCV 比旧账本高，说明之前估低了（半充电/长停放回弹），
+                    // 该抬就抬；再往上由 SocTracker.upStepPct 封顶，不会一次对齐到满电。
                     float pred = socTracker.predict(HudState.tripKm);
                     if (!Float.isNaN(pred) && !Float.isNaN(socVal)) {
-                        socVal = Math.max(pred - 5f, Math.min(pred + 5f, socVal));
+                        socVal = Math.max(pred - 5f, Math.min(pred + 10f, socVal));
                     }
                 }
                 // v1.0.44：最后再走显示层（死区 + 限速），这才是上屏的那个数
