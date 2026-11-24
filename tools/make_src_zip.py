@@ -6,7 +6,7 @@ import os
 import sys
 import zipfile
 
-EXCLUDE_DIRS = {".gradle", "build", "dist", ".idea", "captures",
+EXCLUDE_DIRS = {".gradle", "build", "dist", ".idea", "captures", ".git",
                 # 育宁小程序的解包产物/明文包是第三方素材，留在 analysis/ 里备查，不进源码包
                 "yuning_plain", "yuning_out", "__pycache__"}
 EXCLUDE_FILES = {"build_out.txt", "build_protocol.txt", "build_engine.txt",
@@ -16,9 +16,13 @@ EXCLUDE_EXT = {".apk", ".zip", ".log"}
 
 
 def _skip(fn: str) -> bool:
-    """根目录的 build_*.txt 是构建日志，一并排掉。"""
+    """根目录的构建/自检临时日志一并排掉（analysis/ 下的历史笔记 .txt 保留）。"""
+    low = fn.lower()
     return fn in EXCLUDE_FILES or os.path.splitext(fn)[1] in EXCLUDE_EXT \
-        or (fn.startswith("build_") and fn.endswith(".txt"))
+        or (fn.startswith("build_") and fn.endswith(".txt")) \
+        or low.startswith("lint_") and low.endswith(".txt") \
+        or low.startswith("test_") and low.endswith(".txt") \
+        or low.startswith("self_check") and low.endswith(".txt")
 
 
 def main() -> int:

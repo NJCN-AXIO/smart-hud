@@ -363,6 +363,7 @@ public final class NordicBleLink implements HudBle.Transport {
         ready = false;
         connecting = false;
         readDone = false;
+        lastDiagReadMs = 0L;
         notifyTargets.clear();
         if (m != null) {
             try {
@@ -644,6 +645,8 @@ public final class NordicBleLink implements HudBle.Transport {
             } else {
                 m.pingRead(keepAliveChar);
             }
+            // v1.0.60：每 15 秒只读重一次 FFF5/FFF7，抓随车速/里程变化的快照
+            diagReadPeriodic();
             h.postDelayed(this, KEEPALIVE_MS);
         }
     };
@@ -679,6 +682,14 @@ public final class NordicBleLink implements HudBle.Transport {
     /** 育宁控制器的工程/型号特征 0xFFF4（只读） */
     private static final UUID UUID_FFF4 =
             UUID.fromString("0000FFF4-0000-1000-8000-00805F9B34FB");
+    /** v1.0.60 只读探索：FFF5（READ/WRITE/NOTIFY）、FFF7（READ/WRITE_NO_RESP） */
+    private static final UUID UUID_FFF5 =
+            UUID.fromString("0000FFF5-0000-1000-8000-00805F9B34FB");
+    private static final UUID UUID_FFF7 =
+            UUID.fromString("0000FFF7-0000-1000-8000-00805F9B34FB");
+    /** 周期性重读只读特征的间隔（毫秒）：抓一次会随车速/里程变化的快照 */
+    private static final long DIAG_READ_PERIOD_MS = 15_000L;
+    private long lastDiagReadMs;
 
     // ---------------- BleManager 子类 ----------------
 
@@ -866,20 +877,44 @@ public final class NordicBleLink implements HudBle.Transport {
         listener.onNotify(BleLink.shortUuid(uuid), value);
     }
 
-    /** 顺手读一次型号/版本：只读 GAP 设备名 + FFF4，不再把每个可读特征都读一遍（v1.0.1） */
+    /**
+     * 连上后把所有带 READ 属性的特征各读一次（纯读，不写特征值）。
+     * v1.0.60：旧版只读 GAP 名 + FFF4；这次把 FFF5/FFF6/FFF7 等可读特征也纳入，
+     * 看控制器有没有在 READ 快照里直接带速度/里程/电量。值全 hex 落 GAT 日志。
+     */
     private void readInfoOnce(ControllerManager m) {
         if (readDone) return;
         readDone = true;
         int n = 0;
         for (BluetoothGattCharacteristic c : allScanned) {
             if ((c.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) == 0) continue;
-            UUID u = c.getUuid();
-            if (!u.equals(UUID_SVC_GAP_NAME) && !u.equals(UUID_FFF4)) continue;
-            // AE01 是只写特征，不碰；只读 READ 属性的
             m.readOnce(c);
             n++;
         }
         listener.onGatt("READ-PLAN", "readable=" + n);
+    }
+
+    /** 周期重读 FFF5/FFF7（只读）：对比两次读值有没有随车速/里程变化 */
+    private void diagReadPeriodic() {
+        ControllerManager m = manager;
+        if (m == null) return;
+        long now = SystemClock.elapsedRealtime();
+        if (now - lastDiagReadMs < DIAG_READ_PERIOD_MS) return;
+        lastDiagReadMs = now;
+        for (UUID u : new UUID[]{UUID_FFF5, UUID_FFF7}) {
+            BluetoothGattCharacteristic c = findReadable(u);
+            if (c != null) m.readOnce(c);
+        }
+    }
+
+    private BluetoothGattCharacteristic findReadable(UUID u) {
+        for (BluetoothGattCharacteristic c : allScanned) {
+            if (c.getUuid().equals(u)
+                    && (c.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
+                return c;
+            }
+        }
+        return null;
     }
 
     /** 服务发现时抓到的全部特征（读 FFF4 用，和「要订阅的」分开存） */

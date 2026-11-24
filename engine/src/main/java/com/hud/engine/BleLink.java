@@ -64,6 +64,8 @@ public final class BleLink implements HudBle.Transport {
     private final HudBle.Listener listener;
     private final Handler h = new Handler(Looper.getMainLooper());
     private final Deque<BluetoothGattCharacteristic> notifyQueue = new ArrayDeque<>();
+    /** v1.0.60：连上后依次只读的可读特征队列（纯 READ，不写特征值） */
+    private final Deque<BluetoothGattCharacteristic> readQueue = new ArrayDeque<>();
 
     private BluetoothGatt gatt;
     private BluetoothLeScanner scanner;
@@ -417,6 +419,7 @@ public final class BleLink implements HudBle.Transport {
                 return;
             }
             notifyQueue.clear();
+            readQueue.clear();
             readDone = false;
             boolean found = false;
 
@@ -425,6 +428,9 @@ public final class BleLink implements HudBle.Transport {
                 for (BluetoothGattCharacteristic c : s.getCharacteristics()) {
                     listener.onGatt("CHR " + shortUuid(c.getUuid()),
                             "props=0x" + Integer.toHexString(c.getProperties()));
+                    if ((c.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
+                        readQueue.add(c);
+                    }
                     boolean notifiable = (c.getProperties() & (BluetoothGattCharacteristic.PROPERTY_NOTIFY
                             | BluetoothGattCharacteristic.PROPERTY_INDICATE)) != 0;
                     if (!notifiable) continue;
@@ -541,21 +547,17 @@ public final class BleLink implements HudBle.Transport {
         return ok;
     }
 
-    /** 顺手读一次 FFF4（通常是型号/版本/序列号），只读、只读一次 */
+    /** v1.0.60：依次只读队列里的可读特征（纯 READ，不写特征值） */
     private void maybeReadOnce() {
         if (readDone || gatt == null) return;
-        readDone = true;
+        BluetoothGattCharacteristic c = readQueue.poll();
+        if (c == null) { readDone = true; return; }
+        readDone = readQueue.isEmpty();
         try {
-            for (BluetoothGattService s : gatt.getServices()) {
-                if (!s.getUuid().equals(SVC_FFF0)) continue;
-                BluetoothGattCharacteristic c = s.getCharacteristic(CHR_FFF4);
-                if (c != null) {
-                    gatt.readCharacteristic(c);
-                    return;
-                }
-            }
+            gatt.readCharacteristic(c);
         } catch (Exception e) {
-            Log.w(TAG, "read fff4", e);
+            Log.w(TAG, "read " + shortUuid(c.getUuid()), e);
+            maybeReadOnce();
         }
     }
 
