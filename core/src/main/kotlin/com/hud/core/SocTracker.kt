@@ -69,6 +69,9 @@ class SocTracker(
     var rejects: Int = 0
         private set
 
+    /** v1.0.68：上一次"大幅偏低"的静置读数（%），用来判断电压是否稳定停在同一处 */
+    private var lastLowSoc: Float = Float.NaN
+
     /** v1.0.57：学习斜率的参考点（上一次被电压确认的锚点），[learnPerKmFromRest] 用 */
     private var learnRefSoc: Float = Float.NaN
     private var learnRefKm: Float = Float.NaN
@@ -263,11 +266,15 @@ class SocTracker(
         val diff = socRest - pred
 
         // v1.0.63：向上（静置电压口径比账本高）放宽。
-        // 进静置闸门的 OCV 不依赖里程，旧锚点偏低（半充电后没重锚、长停放回弹）时该抬就抬；
-        // 一次最多 [upStepPct] 点，不参与 %/km 学习。向下一侧（带载压降/末端塌陷）仍走下面的保守通道。
+        // v1.0.68：**中段小幅整段对齐**。用户的使用方式是"骑一段就回家补电、补一会儿再骑"，
+        // 补电把真实电量顶上去了，账本却还停在补电前的低位 —— 11-26 实测 74.9V 静置（查表 78%）
+        // 账本只有 60%，差 18 点被 upStepPct(10) 截住，屏幕上长期偏低。
+        // 现在：查表值 ≥20%（末端塌陷区之外）且差 ≤20 点 → 整段锚定到电压口径；
+        // 差更大（>20 点，比如半电误判成满电后回弹）仍按 upStepPct 一点一点抬。
         if (diff > 0f) {
             rejects = 0
-            if (diff <= maxAnchorJumpPct) {
+            lastLowSoc = Float.NaN
+            if (diff <= maxAnchorJumpPct || (socRest >= 20f && diff <= 20f)) {
                 return anchorRest(nowMs, socRest, km)
             }
             val upStep = minOf(diff, upStepPct)
@@ -295,6 +302,21 @@ class SocTracker(
             return anchorRest(nowMs, pred - step, km, false)
         }
         rejects++
+        // v1.0.68：**中段账本偏高要能落下来，但必须是"电压两次说到同一处"。**
+        // 11-26 现场：17:25 静置 68.99V（查表 23%），账本写着 60% —— 差 37 点被 12 点死区拒掉，
+        // 结果"以为还有一半电"，骑到 19:05 控制器断电、推车回家，正是用户说的"误导"。
+        // 规则：查表值 ≥20%（避开末端塌陷区，<20% 仍走三次确认 + 3 点慢挪），
+        // 且和**上一次偏低读数**相差 ≤5 点（说明电压稳定停在同一处，不是噪声/带载压降），
+        // 就整段落回电压口径。测试里"每次差 30 点、读数还一路往下走"的场景不满足这条。
+        val stableLow = !lastLowSoc.isNaN() && kotlin.math.abs(socRest - lastLowSoc) <= 5f
+        lastLowSoc = socRest
+        if (socRest >= 20f && stableLow && -diff <= 40f) {
+            rejects = 0
+            lastLowSoc = Float.NaN
+            // 整段落回也算"朝电压方向纠偏"，记进预算（并夹到上限），保证"一箱电纠偏有总额度"这条契约仍成立
+            nudgedTotal = minOf(nudgeBudgetPct, nudgedTotal + (-diff))
+            return anchorRest(nowMs, socRest, km, false)
+        }
         // v1.0.56 曾经试过"底部一律信电压"，被单测否掉了（见 `一箱电的纠偏预算用完就不再往下拉`）：
         // 这台车的末端电压会塌陷（11-17 在 26.8km 时静置只有 66.2V≈4%），若底部无条件信电压，
         // 就会退回"0% 还能骑十公里"。真正的"到底了"只有一个硬证据 —— 控制器断电保护，
@@ -326,6 +348,7 @@ class SocTracker(
     fun resetNudgeBudget() {
         nudgedTotal = 0f
         divergeSinceMs = 0L
+        lastLowSoc = Float.NaN
     }
 
     /** v1.0.67：新一箱电同时清掉离群拒绝计数（否则上一箱的 reject 残留会把本次静置校准一直挡在拒绝通道） */

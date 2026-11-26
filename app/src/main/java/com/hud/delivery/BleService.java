@@ -2009,13 +2009,14 @@ public class BleService extends Service implements HudBle.Listener {
                 socVal = Math.min(Float.isNaN(socVal) ? 2f : socVal, 3f);
                 HudState.rangeKm = 0f;
             } else if (!Float.isNaN(HudState.rangeKm)) {
+                // v1.0.68：**删掉"满电续航 − 本箱电已跑"这道硬顶。**
+                // 11-26 截图现场：74.8V 静置、94%，续航却只有 ~6km。原因是 charge 锚点是
+                // 11-25 08:02 那次半电误判的"满电"，之后两天所有里程都记进"本箱电已跑"（96.8km），
+                // capKm = 80 − 96.8 → 0，把 94% 的续航压成 6km。
+                // 用户的使用方式是"骑一段回家补电、补一会儿再骑"，本箱里程坐标在补电场景根本无效。
+                // 现在续航只跟电量和满电续航走，不再减本箱里程；电量本身由静置电压校准。
                 float capKm = prefs.estRangeKm() > 10f ? prefs.estRangeKm() : 80f;
-                if (!Float.isNaN(kmCharge)) capKm = Math.max(0f, capKm - kmCharge);
                 HudState.rangeKm = Math.min(HudState.rangeKm, capKm);
-                // v1.0.62：硬顶只压续航 km，不再把 SOC 压到 4%。
-                // 11-24 实测：本箱累计超 estRange 触发 cap，静置 72.2V 锚到 42%、70.6V 锚到 28%，
-                // 却被这里覆盖成 4%，显示与静置电压口径直接打架，还连带误报低电。
-                // SOC 交给里程账本 / 静置锚点；续航保守封顶仍然保留。
             }
             HudState.setPower(disp, socVal, src);
 
@@ -2622,7 +2623,12 @@ public class BleService extends Service implements HudBle.Listener {
         try {
             float whKm = energy.whPerKm(prefs.packWh());
             float kmBox = HudState.odoKm - prefs.chargeOdoKm();
-            if (!Float.isNaN(whKm) && whKm > 5f && kmBox > 1f && kmBox < 400f) {
+            // v1.0.68：**本箱里程坐标已经失效时不要做能量体检。**
+            // 11-25 现场：charge 锚点是半电误判出来的"满电"，两天后 kmBox 累计到 96.8km（超过满电续航），
+            // socEnergy 被算成 0，于是 `socRest > socEnergy + 15` 把正确的 84%（75.5V）压成 15%，
+            // 账本越压越离谱。里程坐标在"多次补电"场景本来就不成立，超过满电续航就当作无效。
+            float erKm = prefs.estRangeKm() > 10f ? prefs.estRangeKm() : 80f;
+            if (!Float.isNaN(whKm) && whKm > 5f && kmBox > 1f && kmBox <= erKm * 1.05f) {
                 float packWh = prefs.packWh();
                 if (packWh > 100f) {
                     socEnergy = (100f - (whKm * kmBox) / packWh * 100f);
@@ -2657,6 +2663,15 @@ public class BleService extends Service implements HudBle.Listener {
         }
 
         float learned = socTracker.anchorRestGuarded(now, socRest, HudState.tripKm);
+        // v1.0.68：静置电压比账本高 ≥8 点、且落在中段 → 判定"中途补过电"，
+        // 把本箱里程坐标从这里重新起算。否则"本箱电已跑"会把补电前那趟一直累加下去
+        // （11-26 已累到 96.8km，是续航被压成 6km 的另一半原因）。
+        if (!Float.isNaN(pred) && socRest - pred >= 8f && socRest >= 20f) {
+            prefs.setChargeAnchor(socRest, HudState.odoKm);
+            RawLog.sys(now, String.format(Locale.US,
+                    "charge anchor moved: recharge detected (v=%.1f socV=%.0f ledger %.0f) odo=%.1f",
+                    v, socRest, pred, HudState.odoKm));
+        }
         prefs.setSocAnchorSoc(socTracker.getAnchorSoc());
         prefs.setSocAnchorKm(socTracker.getAnchorKm());
         prefs.setSocAnchorTs(now);
