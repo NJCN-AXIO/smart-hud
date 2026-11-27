@@ -1095,6 +1095,19 @@ class CoreAlgorithmsTest {
 
 
     @Test
+    fun `里程比锚点小的时候电量不会往回涨`() {
+        // 11-26 两次"连上就九十多"的直接来源：对表/重启后 tripKm 变小，锚点里程没跟上。
+        // 45 − 1.25×(0.46−56) = 114 → 夹 100，屏幕就按满电走。
+        val t = SocTracker(1.25f, 45f, 56f)
+        assertEquals("里程倒退不是充电，电量该原样是锚点值", 45f, t.predict(0.46f), 0.1f)
+        assertEquals(45f, t.predict(56f), 0.1f)
+        // 真的往前跑了才掉电
+        assertEquals(42.5f, t.predict(58f), 0.1f)
+    }
+
+    // ---------------- v1.0.10：行驶中按电压纠偏 ----------------
+
+    @Test
     fun `分歧不到 3 分钟不许动（长坡不能当成电量掉了`() {
         val t = SocTracker(1.25f, 100f, 0f)
         t.update(0L, 0f, 100f)

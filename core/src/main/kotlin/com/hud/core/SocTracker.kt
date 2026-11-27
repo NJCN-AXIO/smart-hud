@@ -172,7 +172,16 @@ class SocTracker(
     fun predict(km: Float): Float {
         if (anchorSoc.isNaN() || anchorKm.isNaN() || km.isNaN()) return Float.NaN
         val p = perKmOrDefault(defaultRangeKm)
-        return (anchorSoc - p * (km - anchorKm)).coerceIn(0f, 100f)
+        // v1.0.69：**里程比锚点小，不是"往回充电"。**
+        //
+        // 11-26 两次都是这条把电量顶上去的：
+        //   ① 10:21:29 对表 `trip set 55.89km <- 68.05km`（anchor shift −12.17），之后 tripKm 被清零到 0.46，
+        //      而 anchorKm 还停在 56 —— `45 − 1.25×(0.46−56)` = 114，夹到 100，屏幕直接按电压 84 走；
+        //   ② 14:02:46 重启，`gap since last run: 138 min (odometer may be short)`，tripKm 只有 16.82，
+        //      anchorKm 仍在上一次会话的 40 多 —— 同样算出 90 多，于是"连上一看九十多"。
+        // 里程只会往前走：跑过的距离一律按 ≥0 算，缺口由 [rebaseIfBehind] 去补。
+        val ran = (km - anchorKm).coerceAtLeast(0f)
+        return (anchorSoc - p * ran).coerceIn(0f, 100f)
     }
 
     /**
