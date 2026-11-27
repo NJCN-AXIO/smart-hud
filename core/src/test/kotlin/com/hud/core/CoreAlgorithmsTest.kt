@@ -1043,7 +1043,56 @@ class CoreAlgorithmsTest {
         assertTrue(t.rejects >= 5)
     }
 
-    // ---------------- v1.0.10：行驶中按电压纠偏 ----------------
+    // ---------------- v1.0.69：上抬留账，跌了就还 ----------------
+
+    @Test
+    fun `上抬依据被电压证伪时一次静置就整段还回来`() {
+        // 11-26 现场：补完电浮电 77.3V（查表 78%）把账本从 60 抬到 78，
+        // 15 分钟后真静置只有 64% —— 上抬依据不成立，不能等"三次确认 + 4 点/次"
+        val t = SocTracker(1.25f, 60f, 0f)
+        t.update(0L, 0f, 60f)
+        t.anchorRestGuarded(1000L, 78f, 0f)
+        assertEquals("先按电压抬上去（差 18 点在中段整段对齐）", 78f, t.anchorSoc, 0.5f)
+        t.anchorRestGuarded(1000L + 15L * 60_000L, 64f, 0f)
+        assertEquals("跌了 14 点就该整段落回", 64f, t.anchorSoc, 0.5f)
+        assertEquals("落回也要记进纠偏预算（并夹到上限）", 12f, t.nudgedTotal, 0.1f)
+        assertEquals("这是整段还账，不该留 reject 计数", 0, t.rejects)
+    }
+
+    @Test
+    fun `上抬后只回落 5 点不算证伪，仍走小额纠偏`() {
+        val t = SocTracker(1.25f, 60f, 0f)
+        t.update(0L, 0f, 60f)
+        t.anchorRestGuarded(1000L, 78f, 0f)
+        t.anchorRestGuarded(2000L, 73f, 0f)
+        // 78 → 最多往下 4 点（不是整段到 73）
+        assertEquals(74f, t.anchorSoc, 0.3f)
+    }
+
+    @Test
+    fun `上抬超过 40 分钟后不再回滚`() {
+        // 40 分钟以后电压再低，多半是真实掉电，该按里程/慢纠偏走，不能翻旧账
+        val t = SocTracker(1.25f, 60f, 0f)
+        t.update(0L, 0f, 60f)
+        t.anchorRestGuarded(1000L, 78f, 0f)
+        t.anchorRestGuarded(1000L + 45L * 60_000L, 64f, 0f)
+        assertEquals("不回滚，第一次仍只是守住账本", 78f, t.anchorSoc, 0.5f)
+        assertEquals(1, t.rejects)
+    }
+
+    @Test
+    fun `满电锚点会清掉上抬的账`() {
+        val t = SocTracker(1.25f, 60f, 0f)
+        t.update(0L, 0f, 60f)
+        t.anchorRestGuarded(1000L, 78f, 0f)
+        t.resetNudgeBudget()
+        assertEquals(0f, t.nudgedTotal, 0.001f)
+        // 清账之后，64 这个读数不再能触发"整段还账"，走回正常的「三次确认」通道
+        t.anchorRestGuarded(2000L, 64f, 0f)
+        assertEquals(78f, t.anchorSoc, 0.5f)
+        assertEquals(1, t.rejects)
+    }
+
 
     @Test
     fun `分歧不到 3 分钟不许动（长坡不能当成电量掉了`() {

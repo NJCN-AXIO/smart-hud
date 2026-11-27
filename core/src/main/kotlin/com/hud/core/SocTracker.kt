@@ -72,6 +72,25 @@ class SocTracker(
     /** v1.0.68：上一次"大幅偏低"的静置读数（%），用来判断电压是否稳定停在同一处 */
     private var lastLowSoc: Float = Float.NaN
 
+    /**
+     * v1.0.69：**上一次"往上抬"留下的账**。
+     *
+     * 11-26 现场把这条的必要性钉死了：用户在家补完电再骑，充电器拔掉后的表面电荷让静置读到
+     * 77.3–78.0V（查表 94），电量于是被一路抬到 94%；十几分钟后电压回落到 74.8V（真值 78），
+     * 账本却掉不下来 —— 每停一次只准往下 4 点、一箱电总共 12 点，等它落回 78 要停五六次，
+     * 这段时间屏幕一直"94% / 续航 60 多公里"，用户就是被这个数骗到推车的。
+     *
+     * 做法：向上抬时记下"抬到了哪个值"，下次静置若电压比这个值低 [upBackPct] 以上，
+     * 说明当初抬的依据（浮电/表面电荷）已经不成立，**整段还回去**，不再走三次确认 + 4 点慢挪。
+     * 只在 [upBackWindowMs] 内有效：40 分钟以前的旧账不再翻（那多半是真实掉电，该按里程走）。
+     */
+    private var upMarkSoc: Float = Float.NaN
+    private var upMarkMs: Long = 0L
+    /** 回落判据：比上抬时的锚点低多少点算"上抬依据失效" */
+    var upBackPct: Float = 10f
+    /** 回落有效期（毫秒）：超过这么久的上抬不再回滚 */
+    var upBackWindowMs: Long = 40L * 60_000L
+
     /** v1.0.57：学习斜率的参考点（上一次被电压确认的锚点），[learnPerKmFromRest] 用 */
     private var learnRefSoc: Float = Float.NaN
     private var learnRefKm: Float = Float.NaN
@@ -275,10 +294,14 @@ class SocTracker(
             rejects = 0
             lastLowSoc = Float.NaN
             if (diff <= maxAnchorJumpPct || (socRest >= 20f && diff <= 20f)) {
-                return anchorRest(nowMs, socRest, km)
+                val learned = anchorRest(nowMs, socRest, km)
+                // v1.0.69：往上抬要留账 —— 这个值之后被电压证伪，就要能整段还回来
+                markUp(nowMs)
+                return learned
             }
             val upStep = minOf(diff, upStepPct)
             anchorRest(nowMs, pred + upStep, km, false)
+            markUp(nowMs)
             return Float.NaN
         }
 
@@ -301,6 +324,25 @@ class SocTracker(
             // 学习只该学"真实的消耗"，不该学"我们自己的修正量"。
             return anchorRest(nowMs, pred - step, km, false)
         }
+        // v1.0.69：**上抬留账，跌了就还。**
+        //
+        // 11-26 的链条：补完电浮电 77.3–78.0V（查表 94）→ 电量被抬到 94 → 十几分钟后电压回落到
+        // 74.8V（真值 78）→ 账本想落，却要过"12 点死区 + 三次确认 + 4 点/次 + 12 点预算"，
+        // 停五六次才落得下来；用户在这中间看到的一直是"94% / 60 多公里"，然后被这个数骗到推车。
+        // 这里给一条专用通道：只要这次静置比"当初上抬时的锚点"低 [upBackPct] 以上，
+        // 就认定那次上抬的依据（浮电/表面电荷）已经不成立，整段落回电压口径。
+        // 不占 rejects、不搞慢挪；但照样记进纠偏预算（"一箱电纠偏有总额度"这条契约不能破）。
+        val upBack = !upMarkSoc.isNaN() && (upMarkSoc - socRest) >= upBackPct
+                && upMarkMs > 0L && nowMs - upMarkMs <= upBackWindowMs
+        if (upBack) {
+            upMarkSoc = Float.NaN
+            upMarkMs = 0L
+            lastLowSoc = Float.NaN
+            rejects = 0
+            nudgedTotal = minOf(nudgeBudgetPct, nudgedTotal + (-diff))
+            return anchorRest(nowMs, socRest, km, false)
+        }
+
         rejects++
         // v1.0.68：**中段账本偏高要能落下来，但必须是"电压两次说到同一处"。**
         // 11-26 现场：17:25 静置 68.99V（查表 23%），账本写着 60% —— 差 37 点被 12 点死区拒掉，
@@ -349,6 +391,15 @@ class SocTracker(
         nudgedTotal = 0f
         divergeSinceMs = 0L
         lastLowSoc = Float.NaN
+        // v1.0.69：新箱电不背上一箱的"上抬账"
+        upMarkSoc = Float.NaN
+        upMarkMs = 0L
+    }
+
+    /** v1.0.69：记下"这次上抬的依据值"，供 [anchorRestGuarded] 判断要不要整段还回来 */
+    private fun markUp(nowMs: Long) {
+        upMarkSoc = anchorSoc
+        upMarkMs = nowMs
     }
 
     /** v1.0.67：新一箱电同时清掉离群拒绝计数（否则上一箱的 reject 残留会把本次静置校准一直挡在拒绝通道） */
@@ -373,6 +424,8 @@ class SocTracker(
         nudgedTotal = 0f
         divergeSinceMs = 0L
         rejects = 0
+        upMarkSoc = Float.NaN
+        upMarkMs = 0L
     }
 
     /**

@@ -1025,6 +1025,14 @@ public class BleService extends Service implements HudBle.Listener {
     private int bootHighFrames = 0;
     /** v1.0.46：断档提示的出现时刻（挂 15 分钟后自动撤掉） */
     private long gapWarnMs = 0L;
+    /**
+     * v1.0.69：链路刚恢复的时刻。
+     *
+     * 断连几分钟以上再连上时，控制器给出的第一段静置电压可能是"刚拔掉充电器的表面电荷"
+     * （11-26 实测 77.3–78.0V 持续十余分钟，真静置只有 74.8V）。这段时间里绝不能拿它
+     * 往上锚定电量 —— 一抬就是十几个点，用户就要按虚高的续航出门。
+     */
+    private long linkBackMs = 0L;
 
     private void maybeLowPowerAlert(long now, float v, float socVal, int src, float ocv, boolean atRest) {
         // 只有"电量真的算出来"才提醒
@@ -1807,6 +1815,7 @@ public class BleService extends Service implements HudBle.Listener {
                 // v1.0.45：直跳不是"第一帧就跳"，而是重连后的 20 秒窗口里，等目标值稳住 6 秒再落位。
                 if (lastLiveTickMs > 0L && now - lastLiveTickMs > 60_000L) {
                     snapWindowUntil = now + 20_000L;
+                    linkBackMs = now;      // v1.0.69：这之后 90 秒内的静置校准只许往下
                     RawLog.sys(now, "soc: link back after " + ((now - lastLiveTickMs) / 60_000L)
                             + " min, snap confirm window open");
                 }
@@ -2605,6 +2614,18 @@ public class BleService extends Service implements HudBle.Listener {
             // 熄火后的旧读数只能往下压，不能往上抬（旧值可能只是带载压降，不是开路电压）
             RawLog.sys(now, String.format(Locale.US,
                     "soc stale rest %.1fV -> %.0f%% > ledger %.0f%%, ignore", v, socRest, pred));
+            return;
+        }
+        // v1.0.69：**刚重连的头 90 秒，只许往下校准。**
+        //
+        // 11-26 14:26 现场：断链 138 分钟后重连，控制器报的静置电压从 76.3V 一路爬到 77.8V
+        // （充电器浮电/表面电荷），电量从 58% 被抬到 94%，而十几分钟后真静置只有 74.8V（78%）。
+        // 这一段"往上抬"全是被浮电带跑的，所以重连初期只接受"往下"的纠正 —— 往下永远安全。
+        if (linkBackMs > 0L && now - linkBackMs <= 90_000L
+                && !Float.isNaN(pred) && socRest > pred + 2f) {
+            RawLog.sys(now, String.format(Locale.US,
+                    "soc calibrate skipped: link just back %.0fs, rise %.0f->%.0f not trusted (v=%.1f)",
+                    (now - linkBackMs) / 1000f, pred, socRest, v));
             return;
         }
 
